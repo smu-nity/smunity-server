@@ -1,5 +1,7 @@
 package com.smunity.server.domain.account.controller;
 
+import com.smunity.server.domain.account.dto.LoginRequestDto;
+import com.smunity.server.domain.account.dto.LoginResponseDto;
 import com.smunity.server.domain.account.dto.RegisterRequestDto;
 import com.smunity.server.domain.account.dto.RegisterResponseDto;
 import com.smunity.server.domain.account.service.AccountService;
@@ -23,5 +25,11 @@ public class AccountController {
     public ResponseEntity<RegisterResponseDto> register(@Valid @RequestBody RegisterRequestDto requestDto) {
         RegisterResponseDto responseDto = accountService.register(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto requestDto) {
+        LoginResponseDto responseDto = accountService.login(requestDto);
+        return ResponseEntity.ok(responseDto);
     }
 }
