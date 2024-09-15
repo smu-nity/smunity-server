@@ -41,7 +41,12 @@ public class SecurityConfig {
 
         // 경로별 인가 작업
         http.authorizeHttpRequests(authorize -> authorize
-                .anyRequest().permitAll()
+                // H2 콘솔과 Swagger UI 및 API 문서에 대한 접근 허용
+                .requestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                // API 계정 관련 요청에 대한 접근 허용
+                .requestMatchers("/api/v1/accounts/**").permitAll()
+                // 나머지 모든 요청은 인증 필요
+                .anyRequest().authenticated()
         );
 
         return http.build();
