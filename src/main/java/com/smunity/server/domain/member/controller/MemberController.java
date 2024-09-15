@@ -2,6 +2,7 @@ package com.smunity.server.domain.member.controller;
 
 import com.smunity.server.domain.member.dto.MemberInfoResponseDto;
 import com.smunity.server.domain.member.service.MemberQueryService;
+import com.smunity.server.global.security.annotation.AuthMember;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -22,5 +23,11 @@ public class MemberController {
     public ResponseEntity<Page<MemberInfoResponseDto>> findAll(@ParameterObject Pageable pageable) {
         Page<MemberInfoResponseDto> responseDtoPage = memberQueryService.findAll(pageable);
         return ResponseEntity.ok(responseDtoPage);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<MemberInfoResponseDto> getMemberInfo(@AuthMember Long memberId) {
+        MemberInfoResponseDto responseDto = memberQueryService.findById(memberId);
+        return ResponseEntity.ok(responseDto);
     }
 }
