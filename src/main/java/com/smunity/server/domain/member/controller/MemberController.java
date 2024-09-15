@@ -3,6 +3,7 @@ package com.smunity.server.domain.member.controller;
 import com.smunity.server.domain.member.dto.MemberInfoResponseDto;
 import com.smunity.server.domain.member.service.MemberQueryService;
 import com.smunity.server.global.security.annotation.AuthMember;
+import com.smunity.server.global.validation.annotation.PermissionCheck;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -27,7 +28,7 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MemberInfoResponseDto> findById(@PathVariable Long id) {
+    public ResponseEntity<MemberInfoResponseDto> findById(@PermissionCheck @PathVariable Long id) {
         MemberInfoResponseDto responseDto = memberQueryService.findById(id);
         return ResponseEntity.ok(responseDto);
     }
