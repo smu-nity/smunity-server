@@ -456,6 +456,7 @@ Temporary Items
 *.icloud
 
 ### Gradle ###
+HELP.md
 .gradle
 **/build/
 !src/**/build/
@@ -481,11 +482,5 @@ gradle-app.setting
 ### Gradle Patch ###
 # Java heap dump
 *.hprof
-
-# yml files
-application-*.yml
-
-# data/mysql/
-**/data/mysql/**
 
 # End of https://www.toptal.com/developers/gitignore/api/macos
