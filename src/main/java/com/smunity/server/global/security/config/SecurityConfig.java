@@ -1,6 +1,6 @@
 package com.smunity.server.global.security.config;
 
-import com.smunity.server.global.security.encoder.Pbkdf2PasswordEncoder;
+import com.smunity.server.global.security.config.encoder.Pbkdf2PasswordEncoder;
 import com.smunity.server.global.security.filter.JwtAuthenticationExceptionFilter;
 import com.smunity.server.global.security.filter.JwtAuthenticationFilter;
 import com.smunity.server.global.security.handler.JwtAccessDeniedHandler;
