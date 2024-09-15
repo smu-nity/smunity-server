@@ -1,9 +1,7 @@
 package com.smunity.server.domain.account.service;
 
-import com.smunity.server.domain.account.dto.LoginRequestDto;
-import com.smunity.server.domain.account.dto.LoginResponseDto;
-import com.smunity.server.domain.account.dto.RegisterRequestDto;
-import com.smunity.server.domain.account.dto.RegisterResponseDto;
+import com.smunity.server.domain.account.dto.*;
+import com.smunity.server.domain.account.entity.RefreshToken;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.entity.enums.MemberRole;
 import com.smunity.server.global.common.repository.MemberRepository;
@@ -36,6 +34,15 @@ public class AccountService {
         Member member = memberRepository.findByUsername(requestDto.username())
                 .orElseThrow(() -> new GeneralException(ErrorCode.ACCOUNT_NOT_FOUND));
         checkPassword(requestDto.password(), member.getPassword());
+        return generateToken(member.getId(), member.getRole());
+    }
+
+    public LoginResponseDto refresh(RefreshRequestDto requestDto) {
+        jwtTokenProvider.validateToken(requestDto.refreshToken(), true);
+        RefreshToken oldRefreshToken = refreshTokenService.findRefreshToken(requestDto.refreshToken());
+        Member member = memberRepository.findById(oldRefreshToken.getMemberId())
+                .orElseThrow(() -> new GeneralException(ErrorCode.ACCOUNT_NOT_FOUND));
+        refreshTokenService.deleteRefreshToken(oldRefreshToken.getToken());
         return generateToken(member.getId(), member.getRole());
     }
 
