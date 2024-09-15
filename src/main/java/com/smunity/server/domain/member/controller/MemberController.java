@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +24,12 @@ public class MemberController {
     public ResponseEntity<Page<MemberInfoResponseDto>> findAll(@ParameterObject Pageable pageable) {
         Page<MemberInfoResponseDto> responseDtoPage = memberQueryService.findAll(pageable);
         return ResponseEntity.ok(responseDtoPage);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MemberInfoResponseDto> findById(@PathVariable Long id) {
+        MemberInfoResponseDto responseDto = memberQueryService.findById(id);
+        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/me")
