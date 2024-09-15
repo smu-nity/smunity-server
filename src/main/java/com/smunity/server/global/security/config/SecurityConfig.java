@@ -3,6 +3,8 @@ package com.smunity.server.global.security.config;
 import com.smunity.server.global.security.encoder.Pbkdf2PasswordEncoder;
 import com.smunity.server.global.security.filter.JwtAuthenticationExceptionFilter;
 import com.smunity.server.global.security.filter.JwtAuthenticationFilter;
+import com.smunity.server.global.security.handler.JwtAccessDeniedHandler;
+import com.smunity.server.global.security.handler.JwtAuthenticationEntryPoint;
 import com.smunity.server.global.security.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -50,6 +52,12 @@ public class SecurityConfig {
 
         // JWT 인증 예외 핸들링 필터 추가
         http.addFilterBefore(new JwtAuthenticationExceptionFilter(), JwtAuthenticationFilter.class);
+
+        // 인증 및 인가 오류 핸들러 추가
+        http.exceptionHandling(exceptionHandling -> exceptionHandling
+                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+                .accessDeniedHandler(new JwtAccessDeniedHandler())
+        );
 
         // 경로별 인가 작업
         http.authorizeHttpRequests(authorize -> authorize
