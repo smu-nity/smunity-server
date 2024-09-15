@@ -1,10 +1,12 @@
 package com.smunity.server.domain.member.controller;
 
+import com.smunity.server.domain.member.dto.ChangePasswordRequestDto;
 import com.smunity.server.domain.member.dto.MemberInfoResponseDto;
 import com.smunity.server.domain.member.service.MemberCommandService;
 import com.smunity.server.domain.member.service.MemberQueryService;
 import com.smunity.server.global.security.annotation.AuthMember;
 import com.smunity.server.global.validation.annotation.PermissionCheck;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -42,5 +44,12 @@ public class MemberController {
     public ResponseEntity<Void> deleteMember(@AuthMember Long memberId) {
         memberCommandService.deleteMember(memberId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/me/password")
+    public ResponseEntity<MemberInfoResponseDto> changePassword(@AuthMember Long memberId,
+                                                                @Valid @RequestBody ChangePasswordRequestDto requestDto) {
+        MemberInfoResponseDto responseDto = memberCommandService.changePassword(memberId, requestDto);
+        return ResponseEntity.ok(responseDto);
     }
 }
