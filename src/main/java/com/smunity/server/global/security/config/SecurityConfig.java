@@ -63,9 +63,14 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
                 // H2 콘솔과 Swagger UI 및 API 문서에 대한 접근 허용
                 .requestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                // API 계정 관련 요청에 대한 접근 허용
+
+                // 모든 사용자
                 .requestMatchers("/api/v1/accounts/**").permitAll()
-                // 나머지 모든 요청은 인증 필요
+
+                // 관리자 권한을 가진 사용자 (ROLE_ADMIN)
+                .requestMatchers("/api/v1/members").hasRole("ADMIN")
+
+                // 인증된 사용자 (ROLE_USER, ROLE_ADMIN)
                 .anyRequest().authenticated()
         );
 
