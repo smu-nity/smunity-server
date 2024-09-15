@@ -4,6 +4,8 @@ import com.smunity.server.domain.account.dto.RegisterRequestDto;
 import com.smunity.server.domain.account.dto.RegisterResponseDto;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.repository.MemberRepository;
+import com.smunity.server.global.exception.GeneralException;
+import com.smunity.server.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,9 @@ public class AccountService {
         return RegisterResponseDto.from(memberRepository.save(member));
     }
 
-    // TODO 회원가입 시 중복된 username 검증 로직 추가
     private void validateUsername(String username) {
+        if (memberRepository.existsByUsername(username)) {
+            throw new GeneralException(ErrorCode.ACCOUNT_CONFLICT);
+        }
     }
 }
