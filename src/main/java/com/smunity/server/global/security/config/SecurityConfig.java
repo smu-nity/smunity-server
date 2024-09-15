@@ -1,6 +1,9 @@
 package com.smunity.server.global.security.config;
 
 import com.smunity.server.global.security.encoder.Pbkdf2PasswordEncoder;
+import com.smunity.server.global.security.filter.JwtAuthenticationExceptionFilter;
+import com.smunity.server.global.security.filter.JwtAuthenticationFilter;
+import com.smunity.server.global.security.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Spring Security 설정을 구성하는 클래스
@@ -19,6 +23,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtTokenProvider jwtTokenProvider;
 
     /**
      * PBKDF2 암호화 방식으로 PasswordEncoder 빈을 생성 (Django 기본 암호화 방식)
@@ -38,6 +44,12 @@ public class SecurityConfig {
 
         // HTTP 응답 헤더 설정
         http.headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+
+        // JWT 기반 인증을 처리하기 위해 JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 이전에 추가
+        http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+
+        // JWT 인증 예외 핸들링 필터 추가
+        http.addFilterBefore(new JwtAuthenticationExceptionFilter(), JwtAuthenticationFilter.class);
 
         // 경로별 인가 작업
         http.authorizeHttpRequests(authorize -> authorize
