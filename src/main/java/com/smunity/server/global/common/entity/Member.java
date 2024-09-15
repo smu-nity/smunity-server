@@ -25,4 +25,8 @@ public class Member extends BaseEntity {
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private MemberRole role = MemberRole.ROLE_USER;
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
 }
