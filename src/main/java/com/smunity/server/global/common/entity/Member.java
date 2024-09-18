@@ -1,8 +1,12 @@
 package com.smunity.server.global.common.entity;
 
+import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.global.common.entity.enums.MemberRole;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,6 +44,9 @@ public class Member extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
+
+    @OneToMany(mappedBy = "member")
+    private List<Course> courses = new ArrayList<>();
 
     public void setInfo(Year year, Department department, String encodePw) {
         this.year = year;
