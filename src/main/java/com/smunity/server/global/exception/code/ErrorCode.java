@@ -27,6 +27,8 @@ public enum ErrorCode {
     UNAUTHORIZED_EXCEPTION(401, "ACCOUNT007", "로그인 후 이용가능합니다. 토큰을 입력해 주세요."),
     FORBIDDEN_EXCEPTION(403, "ACCOUNT008", "권한이 없습니다."),
     INVALID_REFRESH_TOKEN(401, "ACCOUNT009", "리프레시 토큰이 유효하지 않습니다. 다시 로그인 해주세요."),
+    YEAR_NOT_FOUND(404, "ACCOUNT010", "해당 연도를 찾을 수 없습니다."),
+    DEPARTMENT_NOT_FOUND(404, "ACCOUNT010", "해당 학과를 찾을 수 없습니다."),
 
     // Member Errors
     MEMBER_FORBIDDEN(403, "MEMBER001", "사용자 권한이 없습니다."),
