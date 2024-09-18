@@ -19,12 +19,12 @@ public class MemberCommandService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void deleteMember(Long id) {
-        memberRepository.deleteById(id);
+    public void deleteMember(Long memberId) {
+        memberRepository.deleteById(memberId);
     }
 
-    public MemberInfoResponseDto changePassword(Long id, ChangePasswordRequestDto requestDto) {
-        Member member = memberRepository.findById(id).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
+    public MemberInfoResponseDto changePassword(Long memberId, ChangePasswordRequestDto requestDto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         String newEncodedPw = passwordEncoder.encode(requestDto.password());
         member.changePassword(newEncodedPw);
         return MemberInfoResponseDto.from(member);

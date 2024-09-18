@@ -23,8 +23,8 @@ public class MemberQueryService {
         return MemberInfoResponseDto.from(memberPage);
     }
 
-    public MemberInfoResponseDto findById(Long id) {
-        Member member = memberRepository.findById(id)
+    public MemberInfoResponseDto findById(Long memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         return MemberInfoResponseDto.from(member);
     }

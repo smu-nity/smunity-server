@@ -16,10 +16,10 @@ public class CourseQueryRepositoryImpl implements CourseQueryRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public List<Course> findByMemberIdAndCategory(Long id, Category category) {
+    public List<Course> findByMemberIdAndCategory(Long memberId, Category category) {
         return query.selectFrom(course)
                 .where(
-                        memberIdEq(id),
+                        memberIdEq(memberId),
                         categoryEq(category)
                 )
                 .fetch();
