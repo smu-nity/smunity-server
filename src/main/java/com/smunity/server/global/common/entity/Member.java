@@ -57,4 +57,10 @@ public class Member extends BaseEntity {
     public void changePassword(String password) {
         this.password = password;
     }
+
+    public int getCompletedCredits() {
+        return courses.stream()
+                .mapToInt(Course::getCredit)
+                .sum();
+    }
 }
