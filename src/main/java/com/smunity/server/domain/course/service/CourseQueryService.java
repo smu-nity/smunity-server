@@ -27,10 +27,10 @@ public class CourseQueryService {
     private final CourseRepository courseRepository;
     private final StandardRepository standardRepository;
 
-    public ResultResponseDto<CourseResponseDto> getCourses(Long id, Category category) {
-        Member member = memberRepository.findById(id)
+    public ResultResponseDto<CourseResponseDto> getCourses(Long memberId, Category category) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        List<Course> courses = courseRepository.findByMemberIdAndCategory(id, category);
+        List<Course> courses = courseRepository.findByMemberIdAndCategory(memberId, category);
         List<CourseResponseDto> responseDtoList = CourseResponseDto.from(courses);
         int total = getTotal(member.getYear(), category);
         int completed = calculateCompleted(courses);

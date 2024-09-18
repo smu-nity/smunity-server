@@ -1,5 +1,8 @@
 package com.smunity.server.domain.auth.dto;
 
+import com.smunity.server.domain.course.entity.Course;
+import com.smunity.server.global.common.entity.enums.Category;
+import com.smunity.server.global.common.entity.enums.SubDomain;
 import lombok.Builder;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,5 +44,19 @@ public record AuthCourseResponseDto(
 
     private static String getDomain(String domain) {
         return !Objects.equals(domain, "*") ? domain : null;
+    }
+
+    public Course toEntity() {
+        return Course.builder()
+                .name(name)
+                .number(number)
+                .year(year)
+                .semester(semester)
+                .type(type)
+                .domain(domain)
+                .category(Category.of(type))
+                .subDomain(domain != null ? SubDomain.of(domain) : null)
+                .credit(credit)
+                .build();
     }
 }

@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface CourseQueryRepository {
 
-    List<Course> findByMemberIdAndCategory(Long id, Category category);
+    List<Course> findByMemberIdAndCategory(Long memberId, Category category);
 }
