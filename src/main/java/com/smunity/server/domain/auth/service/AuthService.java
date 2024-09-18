@@ -23,8 +23,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final String LOGIN_URL = "https://smsso.smu.ac.kr/Login.do";
-    private final String BASE_URL = "https://smul.smu.ac.kr";
+    private static final String LOGIN_URL = "https://smsso.smu.ac.kr/Login.do";
+    private static final String BASE_URL = "https://smul.smu.ac.kr";
 
     public AuthResponseDto authenticate(AuthRequestDto requestDto) {
         JSONObject response = getData(requestDto, "/UsrSchMng/selectStdInfo.do");
@@ -38,44 +38,62 @@ public class AuthService {
 
     private Map<String, String> login(AuthRequestDto requestDto) {
         try {
-            Connection.Response response = Jsoup.connect(LOGIN_URL)
-                    .data("user_id", requestDto.username())
-                    .data("user_password", requestDto.password())
-                    .method(Connection.Method.POST)
-                    .execute();
-            if (response.url().toString().equals(LOGIN_URL))
-                throw new GeneralException(ErrorCode.AUTH_UNAUTHORIZED);
-            return Jsoup.connect(BASE_URL.concat("/index.do"))
-                    .method(Connection.Method.GET)
-                    .cookies(response.cookies())
-                    .execute()
-                    .cookies();
+            Connection.Response loginResponse = executeLogin(requestDto);
+            return getSessionCookies(loginResponse);
         } catch (IOException e) {
-            throw new GeneralException(ErrorCode.AUTH_INTERNAL_SERVER_ERROR);
+            throw new GeneralException(ErrorCode.AUTH_LOGIN_FAIL);
         }
+    }
+
+    private Connection.Response executeLogin(AuthRequestDto requestDto) throws IOException {
+        Connection.Response response = Jsoup.connect(LOGIN_URL)
+                .data("user_id", requestDto.username())
+                .data("user_password", requestDto.password())
+                .method(Connection.Method.POST)
+                .execute();
+        if (response.url().toString().equals(LOGIN_URL))
+            throw new GeneralException(ErrorCode.AUTH_UNAUTHORIZED);
+        return response;
+    }
+
+    private Map<String, String> getSessionCookies(Connection.Response loginResponse) throws IOException {
+        return Jsoup.connect(BASE_URL + "/index.do")
+                .method(Connection.Method.GET)
+                .cookies(loginResponse.cookies())
+                .execute()
+                .cookies();
     }
 
     private JSONObject getData(AuthRequestDto requestDto, String url) {
         Map<String, String> session = login(requestDto);
         try {
-            URL apiUrl = new URL(BASE_URL.concat(url));
-            HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
-            connection.setRequestMethod("POST");
-            for (Map.Entry<String, String> cookie : session.entrySet())
-                connection.addRequestProperty("Cookie", cookie.getKey() + "=" + cookie.getValue());
-            String requestData = "@d#=@d1#&@d1#tp=dm&_AUTH_MENU_KEY=usrCPsnlInfoUpd-STD&@d1#strStdNo=".concat(requestDto.username());
-            connection.setDoOutput(true);
-            connection.getOutputStream().write(requestData.getBytes());
-
-            StringBuilder response = new StringBuilder();
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                String line;
-                while ((line = reader.readLine()) != null)
-                    response.append(line);
-            }
-            return new JSONObject(response.toString());
+            HttpURLConnection connection = createConnection(BASE_URL + url, session);
+            connection.getOutputStream().write(createRequestData(requestDto));
+            return readResponse(connection);
         } catch (IOException e) {
             throw new GeneralException(ErrorCode.AUTH_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private HttpURLConnection createConnection(String url, Map<String, String> session) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.setRequestMethod("POST");
+        session.forEach((key, value) -> connection.addRequestProperty("Cookie", key + "=" + value));
+        connection.setDoOutput(true);
+        return connection;
+    }
+
+    private byte[] createRequestData(AuthRequestDto requestDto) {
+        return "@d#=@d1#&@d1#tp=dm&_AUTH_MENU_KEY=usrCPsnlInfoUpd-STD&@d1#strStdNo=".concat(requestDto.username()).getBytes();
+    }
+
+    private JSONObject readResponse(HttpURLConnection connection) throws IOException {
+        StringBuilder response = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null)
+                response.append(line);
+        }
+        return new JSONObject(response.toString());
     }
 }
