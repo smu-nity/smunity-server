@@ -2,9 +2,13 @@ package com.smunity.server.domain.account.service;
 
 import com.smunity.server.domain.account.dto.*;
 import com.smunity.server.domain.account.entity.RefreshToken;
+import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.entity.Member;
+import com.smunity.server.global.common.entity.Year;
 import com.smunity.server.global.common.entity.enums.MemberRole;
+import com.smunity.server.global.common.repository.DepartmentRepository;
 import com.smunity.server.global.common.repository.MemberRepository;
+import com.smunity.server.global.common.repository.YearRepository;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import com.smunity.server.global.security.provider.JwtTokenProvider;
@@ -19,14 +23,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountService {
 
     private final MemberRepository memberRepository;
+    private final YearRepository yearRepository;
+    private final DepartmentRepository departmentRepository;
     private final RefreshTokenService refreshTokenService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
     public RegisterResponseDto register(RegisterRequestDto requestDto) {
         validateUsername(requestDto.username());
+        Member member = requestDto.toEntity();
+        Year year = yearRepository.findByName(requestDto.username().substring(0, 4))
+                .orElseThrow(() -> new GeneralException(ErrorCode.YEAR_NOT_FOUND));
+        Department department = departmentRepository.findByName(requestDto.department())
+                .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
         String encodedPw = passwordEncoder.encode(requestDto.password());
-        Member member = requestDto.toEntity(encodedPw);
+        member.setInfo(year, department, encodedPw);
         return RegisterResponseDto.from(memberRepository.save(member));
     }
 
