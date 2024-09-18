@@ -30,6 +30,10 @@ public enum ErrorCode {
     YEAR_NOT_FOUND(404, "ACCOUNT010", "해당 연도를 찾을 수 없습니다."),
     DEPARTMENT_NOT_FOUND(404, "ACCOUNT010", "해당 학과를 찾을 수 없습니다."),
 
+    // Auth Errors
+    AUTH_UNAUTHORIZED(401, "AUTH001", "아이디 및 비밀번호가 일치하지 않습니다."),
+    AUTH_INTERNAL_SERVER_ERROR(500, "AUTH002", "인증 서버 에러, 관리자에게 문의 바랍니다."),
+
     // Member Errors
     MEMBER_FORBIDDEN(403, "MEMBER001", "사용자 권한이 없습니다."),
     MEMBER_NOT_FOUND(404, "MEMBER002", "해당 사용자가 없습니다."),
