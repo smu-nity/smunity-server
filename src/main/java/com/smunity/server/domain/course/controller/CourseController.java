@@ -4,6 +4,7 @@ import com.smunity.server.domain.auth.dto.AuthCourseResponseDto;
 import com.smunity.server.domain.auth.dto.AuthRequestDto;
 import com.smunity.server.domain.auth.service.AuthService;
 import com.smunity.server.domain.course.dto.CourseResponseDto;
+import com.smunity.server.domain.course.dto.CreditResponseDto;
 import com.smunity.server.domain.course.dto.ResultResponseDto;
 import com.smunity.server.domain.course.service.CourseCommandService;
 import com.smunity.server.domain.course.service.CourseQueryService;
@@ -37,5 +38,11 @@ public class CourseController {
         List<AuthCourseResponseDto> requestDtoList = authService.getCourses(requestDto);
         ResultResponseDto<CourseResponseDto> responseDto = courseCommandService.createCourses(memberId, requestDtoList);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    }
+
+    @GetMapping("/credit")
+    public ResponseEntity<CreditResponseDto> getCoursesCredit(@AuthMember Long memberId) {
+        CreditResponseDto responseDto = courseQueryService.getCoursesCredit(memberId);
+        return ResponseEntity.ok(responseDto);
     }
 }

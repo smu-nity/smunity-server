@@ -1,6 +1,7 @@
 package com.smunity.server.global.common.entity;
 
 import com.smunity.server.domain.course.entity.Course;
+import com.smunity.server.global.common.entity.enums.Category;
 import com.smunity.server.global.common.entity.enums.MemberRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -60,6 +61,13 @@ public class Member extends BaseEntity {
 
     public int getCompletedCredits() {
         return courses.stream()
+                .mapToInt(Course::getCredit)
+                .sum();
+    }
+
+    public int getCompletedCredits(Category category) {
+        return courses.stream()
+                .filter(course -> course.getCategory().equals(category))
                 .mapToInt(Course::getCredit)
                 .sum();
     }
