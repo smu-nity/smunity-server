@@ -1,6 +1,7 @@
 package com.smunity.server.domain.course.service;
 
 import com.smunity.server.domain.course.dto.CourseResponseDto;
+import com.smunity.server.domain.course.dto.CreditResponseDto;
 import com.smunity.server.domain.course.dto.ResultResponseDto;
 import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.domain.course.entity.Standard;
@@ -35,6 +36,12 @@ public class CourseQueryService {
         int total = getTotal(member.getYear(), category);
         int completed = calculateCompleted(courses);
         return ResultResponseDto.of(total, completed, responseDtoList);
+    }
+
+    public CreditResponseDto getCoursesCredit(Long memberId) {
+        Member user = memberRepository.findById(memberId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
+        return CreditResponseDto.from(user);
     }
 
     private int getTotal(Year year, Category category) {
