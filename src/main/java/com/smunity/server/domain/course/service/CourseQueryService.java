@@ -2,9 +2,13 @@ package com.smunity.server.domain.course.service;
 
 import com.smunity.server.domain.course.dto.CourseResponseDto;
 import com.smunity.server.domain.course.dto.CreditResponseDto;
+import com.smunity.server.domain.course.dto.CultureResponseDto;
 import com.smunity.server.domain.course.dto.ResultResponseDto;
 import com.smunity.server.domain.course.entity.Course;
+import com.smunity.server.domain.course.entity.Curriculum;
 import com.smunity.server.domain.course.entity.Standard;
+import com.smunity.server.domain.course.entity.enums.Domain;
+import com.smunity.server.domain.course.repository.CurriculumRepository;
 import com.smunity.server.domain.course.repository.StandardRepository;
 import com.smunity.server.domain.course.repository.course.CourseRepository;
 import com.smunity.server.global.common.entity.Member;
@@ -27,6 +31,7 @@ public class CourseQueryService {
     private final MemberRepository memberRepository;
     private final CourseRepository courseRepository;
     private final StandardRepository standardRepository;
+    private final CurriculumRepository curriculumRepository;
 
     public ResultResponseDto<CourseResponseDto> getCourses(Long memberId, Category category) {
         Member member = memberRepository.findById(memberId)
@@ -39,9 +44,19 @@ public class CourseQueryService {
     }
 
     public CreditResponseDto getCoursesCredit(Long memberId) {
-        Member user = memberRepository.findById(memberId)
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        return CreditResponseDto.from(user);
+        return CreditResponseDto.from(member);
+    }
+
+    public ResultResponseDto<CultureResponseDto> getCultureCourses(Long memberId, Domain domain) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
+        List<Curriculum> curriculums = curriculumRepository.findAllByYearAndDomain(member.getYear(), domain);
+        List<CultureResponseDto> responseDtoList = CultureResponseDto.of(curriculums, member);
+        int total = getCultureTotal(curriculums.size(), domain);
+        int completed = calculateCultureCompleted(responseDtoList);
+        return ResultResponseDto.of(total, completed, responseDtoList);
     }
 
     private int getTotal(Year year, Category category) {
@@ -50,9 +65,24 @@ public class CourseQueryService {
                 .orElseGet(year::getTotal);
     }
 
+    private int getCultureTotal(int size, Domain domain) {
+        return switch (domain) {
+            case CORE -> 2;
+            case BALANCE -> 3;
+            default -> size;
+        };
+    }
+
     private int calculateCompleted(List<Course> courses) {
         return courses.stream()
                 .mapToInt(Course::getCredit)
                 .sum();
+    }
+
+    private int calculateCultureCompleted(List<CultureResponseDto> cultures) {
+        return cultures.stream()
+                .filter(CultureResponseDto::completed)
+                .toList()
+                .size();
     }
 }

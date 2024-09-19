@@ -5,7 +5,9 @@ import com.smunity.server.domain.auth.dto.AuthRequestDto;
 import com.smunity.server.domain.auth.service.AuthService;
 import com.smunity.server.domain.course.dto.CourseResponseDto;
 import com.smunity.server.domain.course.dto.CreditResponseDto;
+import com.smunity.server.domain.course.dto.CultureResponseDto;
 import com.smunity.server.domain.course.dto.ResultResponseDto;
+import com.smunity.server.domain.course.entity.enums.Domain;
 import com.smunity.server.domain.course.service.CourseCommandService;
 import com.smunity.server.domain.course.service.CourseQueryService;
 import com.smunity.server.global.common.entity.enums.Category;
@@ -43,6 +45,12 @@ public class CourseController {
     @GetMapping("/credit")
     public ResponseEntity<CreditResponseDto> getCoursesCredit(@AuthMember Long memberId) {
         CreditResponseDto responseDto = courseQueryService.getCoursesCredit(memberId);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @GetMapping("/cultures/{domain}")
+    public ResponseEntity<ResultResponseDto<CultureResponseDto>> getCultureCourses(@AuthMember Long memberId, @PathVariable Domain domain) {
+        ResultResponseDto<CultureResponseDto> responseDto = courseQueryService.getCultureCourses(memberId, domain);
         return ResponseEntity.ok(responseDto);
     }
 }
