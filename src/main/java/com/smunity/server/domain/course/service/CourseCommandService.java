@@ -10,14 +10,12 @@ import com.smunity.server.global.common.repository.MemberRepository;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 
-@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
