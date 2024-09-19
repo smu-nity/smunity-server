@@ -3,11 +3,14 @@ package com.smunity.server.global.common.entity;
 import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.global.common.entity.enums.Category;
 import com.smunity.server.global.common.entity.enums.MemberRole;
+import com.smunity.server.global.common.entity.enums.SubDomain;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.smunity.server.global.common.entity.enums.SubDomain.*;
 
 @Entity
 @Getter
@@ -70,5 +73,16 @@ public class Member extends BaseEntity {
                 .filter(course -> course.getCategory().equals(category))
                 .mapToInt(Course::getCredit)
                 .sum();
+    }
+
+    public SubDomain getSubDomain() {
+        SubDomain subDomain = department.getSubDomain();
+        return year.getValue() >= 2024 && (subDomain.equals(BALANCE_NATURAL) || subDomain.equals(BALANCE_ENGINEER)) ? BALANCE_NATURAL_ENGINEER : subDomain;
+    }
+
+    public boolean checkCompleted(SubDomain subDomain) {
+        return courses.stream()
+                .map(Course::getSubDomain)
+                .anyMatch(subDomain::equals);
     }
 }
