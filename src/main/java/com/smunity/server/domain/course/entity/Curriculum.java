@@ -12,6 +12,7 @@ import lombok.Getter;
 public class Curriculum {
 
     @Id
+    @Column(name = "curriculum_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

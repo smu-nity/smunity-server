@@ -11,6 +11,7 @@ import lombok.Getter;
 public class Standard {
 
     @Id
+    @Column(name = "standard_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
