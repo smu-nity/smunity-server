@@ -75,6 +75,12 @@ public class Member extends BaseEntity {
                 .sum();
     }
 
+    public List<String> getCompletedNumbers() {
+        return courses.stream()
+                .map(Course::getNumber)
+                .toList();
+    }
+
     public SubDomain getSubDomain() {
         SubDomain subDomain = department.getSubDomain();
         return year.getValue() >= 2024 && (subDomain.equals(BALANCE_NATURAL) || subDomain.equals(BALANCE_ENGINEER)) ? BALANCE_NATURAL_ENGINEER : subDomain;
