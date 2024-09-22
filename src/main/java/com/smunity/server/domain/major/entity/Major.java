@@ -16,6 +16,7 @@ import lombok.*;
 public class Major {
 
     @Id
+    @Column(name = "major_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

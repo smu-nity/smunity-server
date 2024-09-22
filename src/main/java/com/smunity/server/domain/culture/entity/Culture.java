@@ -13,6 +13,7 @@ import lombok.*;
 public class Culture {
 
     @Id
+    @Column(name = "culture_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
