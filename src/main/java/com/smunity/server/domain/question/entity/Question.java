@@ -29,13 +29,25 @@ public class Question extends BaseEntity {
     private boolean anonymous;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
-    private Member author;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @OneToOne(mappedBy = "question", fetch = FetchType.LAZY)
     private Answer answer;
 
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
     public void setAnswer(Answer answer) {
         this.answer = answer;
+    }
+
+    public String getAuthor() {
+        return anonymous ? "익명" : member.getName();
+    }
+
+    public boolean getAnswered() {
+        return answer != null;
     }
 }
