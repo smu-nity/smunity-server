@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @Transactional
@@ -28,17 +27,21 @@ public class CourseCommandService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Course> courses = requestDtoList.stream()
-                .filter(dto -> !Objects.equals(dto.grade(), "F") &&
-                        !courseRepository.existsByMemberIdAndNumber(memberId, dto.number())
-                )
-                .map(dto -> {
-                    Course course = dto.toEntity();
-                    course.setMember(member);
-                    return course;
-                })
+                .filter(dto -> isValidCourse(memberId, dto))
+                .map(dto -> toCourse(dto, member))
                 .toList();
         courseRepository.saveAll(courses);
         List<CourseResponseDto> responseDtoList = CourseResponseDto.from(member.getCourses());
         return ResultResponseDto.of(member.getYear().getTotal(), member.getCompletedCredits(), responseDtoList);
+    }
+
+    private boolean isValidCourse(Long memberId, AuthCourseResponseDto dto) {
+        return !dto.grade().equals("F") && !courseRepository.existsByMemberIdAndNumber(memberId, dto.number());
+    }
+
+    private Course toCourse(AuthCourseResponseDto dto, Member member) {
+        Course course = dto.toEntity();
+        course.setMember(member);
+        return course;
     }
 }
