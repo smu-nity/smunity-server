@@ -60,14 +60,14 @@ public class SecurityConfig {
                 .accessDeniedHandler(new JwtAccessDeniedHandler())
         );
 
-        // 경로별정
+        // 경로별 인가 작업
         http.authorizeHttpRequests(authorize -> authorize
                 // H2 콘솔과 Swagger UI 및 API 문서에 대한 접근 허용
                 .requestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
                 // 모든 사용자
                 .requestMatchers("/api/v1/accounts/**", "/api/v1/auth").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/v1/questions").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/questions/**").permitAll()
 
                 // 관리자 권한을 가진 사용자 (ROLE_ADMIN)
                 .requestMatchers("/api/v1/members").hasRole("ADMIN")

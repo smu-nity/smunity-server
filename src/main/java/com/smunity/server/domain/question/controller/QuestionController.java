@@ -35,4 +35,10 @@ public class QuestionController {
         QuestionResponseDto responseDto = questionCommandService.createQuestion(memberId, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
+
+    @GetMapping("/{questionId}")
+    public ResponseEntity<QuestionResponseDto> getQuestion(@PathVariable Long questionId) {
+        QuestionResponseDto responseDto = questionQueryService.getQuestion(questionId);
+        return ResponseEntity.ok(responseDto);
+    }
 }
