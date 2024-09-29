@@ -43,6 +43,12 @@ public class Question extends BaseEntity {
         this.answer = answer;
     }
 
+    public void update(String title, String content, boolean anonymous) {
+        this.title = title;
+        this.content = content;
+        this.anonymous = anonymous;
+    }
+
     public String getAuthor() {
         return anonymous ? "익명" : member.getName();
     }
