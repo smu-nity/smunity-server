@@ -50,4 +50,10 @@ public class QuestionController {
         QuestionResponseDto responseDto = questionCommandService.updateQuestion(memberId, isAdmin, questionId, requestDto);
         return ResponseEntity.ok(responseDto);
     }
+
+    @DeleteMapping("/{questionId}")
+    public ResponseEntity<Void> deleteQuestion(@AuthMember Long memberId, @AuthAdmin Boolean isAdmin, @PathVariable Long questionId) {
+        questionCommandService.deleteQuestion(memberId, isAdmin, questionId);
+        return ResponseEntity.noContent().build();
+    }
 }
