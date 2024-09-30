@@ -4,6 +4,7 @@ import com.smunity.server.domain.question.dto.QuestionRequestDto;
 import com.smunity.server.domain.question.dto.QuestionResponseDto;
 import com.smunity.server.domain.question.service.QuestionCommandService;
 import com.smunity.server.domain.question.service.QuestionQueryService;
+import com.smunity.server.global.security.annotation.AuthAdmin;
 import com.smunity.server.global.security.annotation.AuthMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,14 @@ public class QuestionController {
     @GetMapping("/{questionId}")
     public ResponseEntity<QuestionResponseDto> getQuestion(@PathVariable Long questionId) {
         QuestionResponseDto responseDto = questionQueryService.getQuestion(questionId);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PutMapping("/{questionId}")
+    public ResponseEntity<QuestionResponseDto> updateQuestion(
+            @AuthMember Long memberId, @AuthAdmin Boolean isAdmin,
+            @PathVariable Long questionId, @RequestBody @Valid QuestionRequestDto requestDto) {
+        QuestionResponseDto responseDto = questionCommandService.updateQuestion(memberId, isAdmin, questionId, requestDto);
         return ResponseEntity.ok(responseDto);
     }
 }
