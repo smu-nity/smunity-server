@@ -11,7 +11,7 @@ import com.smunity.server.domain.course.entity.enums.Domain;
 import com.smunity.server.domain.course.service.CourseCommandService;
 import com.smunity.server.domain.course.service.CourseQueryService;
 import com.smunity.server.global.common.entity.enums.Category;
-import com.smunity.server.global.security.resolver.annotation.AuthMember;
+import com.smunity.server.global.security.annotation.AuthMember;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

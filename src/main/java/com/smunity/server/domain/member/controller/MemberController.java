@@ -4,7 +4,7 @@ import com.smunity.server.domain.member.dto.ChangePasswordRequestDto;
 import com.smunity.server.domain.member.dto.MemberInfoResponseDto;
 import com.smunity.server.domain.member.service.MemberCommandService;
 import com.smunity.server.domain.member.service.MemberQueryService;
-import com.smunity.server.global.security.resolver.annotation.AuthMember;
+import com.smunity.server.global.security.annotation.AuthMember;
 import com.smunity.server.global.validation.annotation.PermissionCheck;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

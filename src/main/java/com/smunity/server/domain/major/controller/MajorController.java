@@ -4,7 +4,7 @@ import com.smunity.server.domain.major.dto.MajorResponseDto;
 import com.smunity.server.domain.major.service.MajorQueryService;
 import com.smunity.server.domain.member.dto.SubjectResponseDto;
 import com.smunity.server.global.common.entity.enums.Category;
-import com.smunity.server.global.security.resolver.annotation.AuthMember;
+import com.smunity.server.global.security.annotation.AuthMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
