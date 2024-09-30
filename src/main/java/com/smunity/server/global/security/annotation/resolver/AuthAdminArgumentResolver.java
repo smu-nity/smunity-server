@@ -18,7 +18,7 @@ import java.util.Collection;
 import static com.smunity.server.global.common.entity.enums.MemberRole.ROLE_ADMIN;
 
 /**
- * 컨트롤러 메서드의 파라미터가 @AuthRole Boolean 타입일 때 해당 파라미터를 처리하도록 지정하는 클래스
+ * 컨트롤러 메서드의 파라미터가 @AuthAdmin Boolean 타입일 때 해당 파라미터를 처리하도록 지정하는 클래스
  */
 @Component
 @RequiredArgsConstructor
@@ -32,8 +32,8 @@ public class AuthAdminArgumentResolver implements HandlerMethodArgumentResolver 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean hasAuthAdminAnnotation = parameter.hasParameterAnnotation(AuthAdmin.class);
-        boolean isMemberRoleType = Boolean.class.isAssignableFrom(parameter.getParameterType());
-        return hasAuthAdminAnnotation && isMemberRoleType;
+        boolean isBooleanType = Boolean.class.isAssignableFrom(parameter.getParameterType());
+        return hasAuthAdminAnnotation && isBooleanType;
     }
 
     /**
