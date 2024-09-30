@@ -36,4 +36,11 @@ public class QuestionCommandService {
         question.update(requestDto.title(), requestDto.content(), requestDto.anonymous());
         return QuestionResponseDto.from(question);
     }
+
+    public void deleteQuestion(Long memberId, Boolean isAdmin, Long questionId) {
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
+        PermissionUtil.validatePermission(memberId, isAdmin, question.getMember().getId());
+        questionRepository.delete(question);
+    }
 }
