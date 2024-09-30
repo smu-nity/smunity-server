@@ -30,17 +30,17 @@ public class QuestionCommandService {
     }
 
     public QuestionResponseDto updateQuestion(Long memberId, Long questionId, QuestionRequestDto requestDto) {
-        validateAccess(memberId, questionId);
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
+        validateAccess(memberId, question.getMember().getId());
         question.update(requestDto.title(), requestDto.content(), requestDto.anonymous());
         return QuestionResponseDto.from(question);
     }
 
-    private void validateAccess(Long memberId, Long questionId) {
+    private void validateAccess(Long memberId, Long authorId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        if (!memberId.equals(questionId) && !member.getRole().equals(MemberRole.ROLE_ADMIN)) {
+        if (!memberId.equals(authorId) && !member.getRole().equals(MemberRole.ROLE_ADMIN)) {
             throw new GeneralException(ErrorCode.QUESTION_FORBIDDEN);
         }
     }
