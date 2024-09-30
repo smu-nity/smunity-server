@@ -27,8 +27,8 @@ public class AuthMemberArgumentResolver implements HandlerMethodArgumentResolver
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean hasAuthMemberAnnotation = parameter.hasParameterAnnotation(AuthMember.class);
-        boolean isMemberType = Long.class.isAssignableFrom(parameter.getParameterType());
-        return hasAuthMemberAnnotation && isMemberType;
+        boolean isLongType = Long.class.isAssignableFrom(parameter.getParameterType());
+        return hasAuthMemberAnnotation && isLongType;
     }
 
     /**
