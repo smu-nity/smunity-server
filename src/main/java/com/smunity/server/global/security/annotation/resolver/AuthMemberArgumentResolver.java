@@ -1,5 +1,6 @@
-package com.smunity.server.global.security.annotation;
+package com.smunity.server.global.security.annotation.resolver;
 
+import com.smunity.server.global.security.annotation.AuthMember;
 import com.smunity.server.global.security.provider.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;

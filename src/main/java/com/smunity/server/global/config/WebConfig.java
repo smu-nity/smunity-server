@@ -1,6 +1,6 @@
 package com.smunity.server.global.config;
 
-import com.smunity.server.global.security.annotation.AuthMemberArgumentResolver;
+import com.smunity.server.global.security.annotation.resolver.AuthMemberArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
