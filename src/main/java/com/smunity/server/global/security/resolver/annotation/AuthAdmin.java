@@ -1,4 +1,4 @@
-package com.smunity.server.global.security.annotation;
+package com.smunity.server.global.security.resolver.annotation;
 
 import io.swagger.v3.oas.annotations.Parameter;
 
