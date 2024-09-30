@@ -34,4 +34,9 @@ public class Answer extends BaseEntity {
         this.question = question;
         question.setAnswer(this);
     }
+
+    public void setData(Member member, Question question) {
+        this.member = member;
+        setQuestion(question);
+    }
 }
