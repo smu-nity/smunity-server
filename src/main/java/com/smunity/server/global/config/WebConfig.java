@@ -1,6 +1,7 @@
 package com.smunity.server.global.config;
 
-import com.smunity.server.global.security.annotation.AuthMemberArgumentResolver;
+import com.smunity.server.global.security.resolver.AuthAdminArgumentResolver;
+import com.smunity.server.global.security.resolver.AuthMemberArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -17,10 +18,12 @@ import java.util.List;
 public class WebConfig implements WebMvcConfigurer {
 
     private final AuthMemberArgumentResolver authMemberArgumentResolver;
+    private final AuthAdminArgumentResolver authAdminArgumentResolver;
 
     // 커스텀 Argument Resolver 추가
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(authMemberArgumentResolver);
+        resolvers.add(authAdminArgumentResolver);
     }
 }

@@ -1,5 +1,6 @@
-package com.smunity.server.global.security.annotation;
+package com.smunity.server.global.security.resolver;
 
+import com.smunity.server.global.security.annotation.AuthMember;
 import com.smunity.server.global.security.provider.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
@@ -26,8 +27,8 @@ public class AuthMemberArgumentResolver implements HandlerMethodArgumentResolver
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean hasAuthMemberAnnotation = parameter.hasParameterAnnotation(AuthMember.class);
-        boolean isMemberType = Long.class.isAssignableFrom(parameter.getParameterType());
-        return hasAuthMemberAnnotation && isMemberType;
+        boolean isLongType = Long.class.isAssignableFrom(parameter.getParameterType());
+        return hasAuthMemberAnnotation && isLongType;
     }
 
     /**

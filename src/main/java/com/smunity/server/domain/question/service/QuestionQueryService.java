@@ -24,7 +24,8 @@ public class QuestionQueryService {
     }
 
     public QuestionResponseDto getQuestion(Long questionId) {
-        Question question = questionRepository.findById(questionId).orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
         return QuestionResponseDto.from(question);
     }
 }
