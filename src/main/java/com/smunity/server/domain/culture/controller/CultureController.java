@@ -19,8 +19,8 @@ public class CultureController {
     private final CultureQueryService cultureQueryService;
 
     @GetMapping
-    public ResponseEntity<SubjectResponseDto<CultureResponseDto>> getCultures(@RequestParam(required = false) SubDomain subDomain) {
-        SubjectResponseDto<CultureResponseDto> responseDto = cultureQueryService.getCultures(subDomain);
+    public ResponseEntity<SubjectResponseDto<CultureResponseDto>> readCultures(@RequestParam(required = false) SubDomain subDomain) {
+        SubjectResponseDto<CultureResponseDto> responseDto = cultureQueryService.readCultures(subDomain);
         return ResponseEntity.ok(responseDto);
     }
 }
