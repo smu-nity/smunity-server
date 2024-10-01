@@ -20,8 +20,8 @@ public class AnswerController {
     private final AnswerCommandService answerCommandService;
 
     @GetMapping
-    public ResponseEntity<AnswerResponseDto> getAnswer(@PathVariable Long questionId) {
-        AnswerResponseDto answer = answerQueryService.getAnswer(questionId);
+    public ResponseEntity<AnswerResponseDto> readAnswer(@PathVariable Long questionId) {
+        AnswerResponseDto answer = answerQueryService.readAnswer(questionId);
         return ResponseEntity.ok(answer);
     }
 
