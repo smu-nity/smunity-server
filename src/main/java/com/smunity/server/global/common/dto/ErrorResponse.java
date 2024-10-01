@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smunity.server.global.exception.code.ErrorCode;
+import lombok.Builder;
 import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Builder
 public record ErrorResponse<T>(
         @NonNull
         String code,
@@ -41,9 +43,9 @@ public record ErrorResponse<T>(
     }
 
     private static Map<String, String> convertErrors(List<FieldError> fieldErrors) {
-        return fieldErrors.stream().collect(
-                Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage)
-        );
+        return fieldErrors.stream()
+                .filter(fieldError -> fieldError.getDefaultMessage() != null)
+                .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
     }
 
     public String toJsonString() throws JsonProcessingException {
