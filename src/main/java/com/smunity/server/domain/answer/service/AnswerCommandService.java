@@ -32,4 +32,13 @@ public class AnswerCommandService {
         answer.setData(member, question);
         return AnswerResponseDto.from(answerRepository.save(answer));
     }
+
+    public AnswerResponseDto updateAnswer(Long memberId, Long questionId, AnswerRequestDto requestDto) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
+        Answer answer = answerRepository.findByQuestionId(questionId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.ANSWER_NOT_FOUND));
+        answer.update(member, requestDto.content());
+        return AnswerResponseDto.from(answer);
+    }
 }

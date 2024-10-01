@@ -21,13 +21,19 @@ public class AnswerController {
 
     @GetMapping
     public ResponseEntity<AnswerResponseDto> readAnswer(@PathVariable Long questionId) {
-        AnswerResponseDto answer = answerQueryService.readAnswer(questionId);
-        return ResponseEntity.ok(answer);
+        AnswerResponseDto responseDto = answerQueryService.readAnswer(questionId);
+        return ResponseEntity.ok(responseDto);
     }
 
     @PostMapping
     public ResponseEntity<AnswerResponseDto> createAnswer(@AuthMember Long memberId, @PathVariable Long questionId, @Valid @RequestBody AnswerRequestDto requestDto) {
         AnswerResponseDto responseDto = answerCommandService.createAnswer(memberId, questionId, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    }
+
+    @PutMapping
+    public ResponseEntity<AnswerResponseDto> updateAnswer(@AuthMember Long memberId, @PathVariable Long questionId, @Valid @RequestBody AnswerRequestDto requestDto) {
+        AnswerResponseDto responseDto = answerCommandService.updateAnswer(memberId, questionId, requestDto);
+        return ResponseEntity.ok(responseDto);
     }
 }
