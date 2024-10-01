@@ -41,4 +41,10 @@ public class AnswerCommandService {
         answer.update(member, requestDto.content());
         return AnswerResponseDto.from(answer);
     }
+
+    public void deleteAnswer(Long questionId) {
+        Answer answer = answerRepository.findByQuestionId(questionId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.ANSWER_NOT_FOUND));
+        answerRepository.delete(answer);
+    }
 }
