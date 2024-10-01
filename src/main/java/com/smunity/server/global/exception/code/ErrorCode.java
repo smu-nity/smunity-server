@@ -44,7 +44,10 @@ public enum ErrorCode {
     REDIS_SYSTEM_EXCEPTION(500, "REDIS002", "Redis 시스템 예외가 발생했습니다."),
 
     // Question Errors
-    QUESTION_NOT_FOUND(404, "QUESTION001", "해당 질문을 찾을 수 없습니다.");
+    QUESTION_NOT_FOUND(404, "QUESTION001", "해당 질문을 찾을 수 없습니다."),
+
+    // Answer Errors
+    ANSWER_NOT_FOUND(404, "ANSWER001", "해당 답변을 찾을 수 없습니다.");
 
     private final int value;
     private final String code;
