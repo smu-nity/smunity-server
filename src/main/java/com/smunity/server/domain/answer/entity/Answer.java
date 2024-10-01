@@ -39,4 +39,9 @@ public class Answer extends BaseEntity {
         this.member = member;
         setQuestion(question);
     }
+
+    public void update(Member member, String content) {
+        this.member = member;
+        this.content = content;
+    }
 }
