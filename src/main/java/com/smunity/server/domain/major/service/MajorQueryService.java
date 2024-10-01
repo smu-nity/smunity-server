@@ -23,7 +23,7 @@ public class MajorQueryService {
     private final MemberRepository memberRepository;
     private final MajorQueryRepository majorQueryRepository;
 
-    public SubjectResponseDto<MajorResponseDto> getMajors(Long memberId, Category category) {
+    public SubjectResponseDto<MajorResponseDto> readMajors(Long memberId, Category category) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Major> majors = majorQueryRepository.findByDepartmentAndCategory(member.getDepartment(), category, member.getCompletedNumbers());
