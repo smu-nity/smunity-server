@@ -18,7 +18,7 @@ public class CultureQueryService {
 
     private final CultureQueryRepository cultureQueryRepository;
 
-    public SubjectResponseDto<CultureResponseDto> getCultures(SubDomain subDomain) {
+    public SubjectResponseDto<CultureResponseDto> readCultures(SubDomain subDomain) {
         List<Culture> cultures = cultureQueryRepository.findBySubDomain(subDomain);
         List<CultureResponseDto> responseDtoList = CultureResponseDto.from(cultures);
         return SubjectResponseDto.from(responseDtoList);

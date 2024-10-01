@@ -16,7 +16,7 @@ public class AnswerQueryService {
 
     private final AnswerRepository answerRepository;
 
-    public AnswerResponseDto getAnswer(Long questionId) {
+    public AnswerResponseDto readAnswer(Long questionId) {
         Answer answer = answerRepository.findByQuestionId(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.ANSWER_NOT_FOUND));
         return AnswerResponseDto.from(answer);

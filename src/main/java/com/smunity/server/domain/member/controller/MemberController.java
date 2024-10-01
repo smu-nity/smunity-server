@@ -23,20 +23,20 @@ public class MemberController {
     private final MemberCommandService memberCommandService;
 
     @GetMapping
-    public ResponseEntity<Page<MemberInfoResponseDto>> findAll(@ParameterObject Pageable pageable) {
-        Page<MemberInfoResponseDto> responseDtoPage = memberQueryService.findAll(pageable);
+    public ResponseEntity<Page<MemberInfoResponseDto>> readMembers(@ParameterObject Pageable pageable) {
+        Page<MemberInfoResponseDto> responseDtoPage = memberQueryService.readMembers(pageable);
         return ResponseEntity.ok(responseDtoPage);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MemberInfoResponseDto> findById(@PermissionCheck @PathVariable Long id) {
-        MemberInfoResponseDto responseDto = memberQueryService.findById(id);
+    public ResponseEntity<MemberInfoResponseDto> readMember(@PermissionCheck @PathVariable Long id) {
+        MemberInfoResponseDto responseDto = memberQueryService.readMember(id);
         return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MemberInfoResponseDto> getMemberInfo(@AuthMember Long memberId) {
-        MemberInfoResponseDto responseDto = memberQueryService.findById(memberId);
+    public ResponseEntity<MemberInfoResponseDto> readMemberInfo(@AuthMember Long memberId) {
+        MemberInfoResponseDto responseDto = memberQueryService.readMember(memberId);
         return ResponseEntity.ok(responseDto);
     }
 

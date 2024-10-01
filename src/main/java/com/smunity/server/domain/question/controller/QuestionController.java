@@ -26,8 +26,8 @@ public class QuestionController {
     private final QuestionCommandService questionCommandService;
 
     @GetMapping
-    public ResponseEntity<Page<QuestionResponseDto>> getQuestions(@ParameterObject @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<QuestionResponseDto> responseDtoPage = questionQueryService.getQuestions(pageable);
+    public ResponseEntity<Page<QuestionResponseDto>> readQuestions(@ParameterObject @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<QuestionResponseDto> responseDtoPage = questionQueryService.readQuestions(pageable);
         return ResponseEntity.ok(responseDtoPage);
     }
 
@@ -38,8 +38,8 @@ public class QuestionController {
     }
 
     @GetMapping("/{questionId}")
-    public ResponseEntity<QuestionResponseDto> getQuestion(@PathVariable Long questionId) {
-        QuestionResponseDto responseDto = questionQueryService.getQuestion(questionId);
+    public ResponseEntity<QuestionResponseDto> readQuestion(@PathVariable Long questionId) {
+        QuestionResponseDto responseDto = questionQueryService.readQuestion(questionId);
         return ResponseEntity.ok(responseDto);
     }
 

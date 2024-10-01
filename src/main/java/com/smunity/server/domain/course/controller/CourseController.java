@@ -30,27 +30,27 @@ public class CourseController {
     private final AuthService authService;
 
     @GetMapping
-    public ResponseEntity<ResultResponseDto<CourseResponseDto>> getCourses(@AuthMember Long memberId, @RequestParam(required = false) Category category) {
-        ResultResponseDto<CourseResponseDto> responseDto = courseQueryService.getCourses(memberId, category);
+    public ResponseEntity<ResultResponseDto<CourseResponseDto>> readCourses(@AuthMember Long memberId, @RequestParam(required = false) Category category) {
+        ResultResponseDto<CourseResponseDto> responseDto = courseQueryService.readCourses(memberId, category);
         return ResponseEntity.ok(responseDto);
     }
 
     @PostMapping("/upload")
     public ResponseEntity<ResultResponseDto<CourseResponseDto>> uploadCourses(@AuthMember Long memberId, @RequestBody @Valid AuthRequestDto requestDto) {
-        List<AuthCourseResponseDto> requestDtoList = authService.getCourses(requestDto);
+        List<AuthCourseResponseDto> requestDtoList = authService.readCourses(requestDto);
         ResultResponseDto<CourseResponseDto> responseDto = courseCommandService.createCourses(memberId, requestDtoList);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @GetMapping("/credit")
-    public ResponseEntity<CreditResponseDto> getCoursesCredit(@AuthMember Long memberId) {
-        CreditResponseDto responseDto = courseQueryService.getCoursesCredit(memberId);
+    public ResponseEntity<CreditResponseDto> readCoursesCredit(@AuthMember Long memberId) {
+        CreditResponseDto responseDto = courseQueryService.readCoursesCredit(memberId);
         return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/cultures/{domain}")
-    public ResponseEntity<ResultResponseDto<CultureResponseDto>> getCultureCourses(@AuthMember Long memberId, @PathVariable Domain domain) {
-        ResultResponseDto<CultureResponseDto> responseDto = courseQueryService.getCultureCourses(memberId, domain);
+    public ResponseEntity<ResultResponseDto<CultureResponseDto>> readCultureCourses(@AuthMember Long memberId, @PathVariable Domain domain) {
+        ResultResponseDto<CultureResponseDto> responseDto = courseQueryService.readCultureCourses(memberId, domain);
         return ResponseEntity.ok(responseDto);
     }
 }

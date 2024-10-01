@@ -31,7 +31,7 @@ public class AuthService {
         return AuthResponseDto.from(response.getJSONArray("dsStdInfoList"));
     }
 
-    public List<AuthCourseResponseDto> getCourses(AuthRequestDto requestDto) {
+    public List<AuthCourseResponseDto> readCourses(AuthRequestDto requestDto) {
         JSONObject response = getData(requestDto, "/UsrRecMatt/list.do");
         return AuthCourseResponseDto.from(response.getJSONArray("dsRecMattList"));
     }

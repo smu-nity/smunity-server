@@ -18,12 +18,12 @@ public class MemberQueryService {
 
     private final MemberRepository memberRepository;
 
-    public Page<MemberInfoResponseDto> findAll(Pageable pageable) {
+    public Page<MemberInfoResponseDto> readMembers(Pageable pageable) {
         Page<Member> memberPage = memberRepository.findAll(pageable);
         return MemberInfoResponseDto.from(memberPage);
     }
 
-    public MemberInfoResponseDto findById(Long memberId) {
+    public MemberInfoResponseDto readMember(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         return MemberInfoResponseDto.from(member);

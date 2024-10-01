@@ -20,8 +20,8 @@ public class MajorController {
     private final MajorQueryService majorQueryService;
 
     @GetMapping
-    public ResponseEntity<SubjectResponseDto<MajorResponseDto>> getMajors(@AuthMember Long memberId, @RequestParam(required = false) Category category) {
-        SubjectResponseDto<MajorResponseDto> responseDto = majorQueryService.getMajors(memberId, category);
+    public ResponseEntity<SubjectResponseDto<MajorResponseDto>> readMajors(@AuthMember Long memberId, @RequestParam(required = false) Category category) {
+        SubjectResponseDto<MajorResponseDto> responseDto = majorQueryService.readMajors(memberId, category);
         return ResponseEntity.ok(responseDto);
     }
 }
