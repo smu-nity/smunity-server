@@ -18,12 +18,12 @@ public class QuestionQueryService {
 
     private final QuestionRepository questionRepository;
 
-    public Page<QuestionResponseDto> getQuestions(Pageable pageable) {
+    public Page<QuestionResponseDto> readQuestions(Pageable pageable) {
         Page<Question> questions = questionRepository.findAll(pageable);
         return QuestionResponseDto.from(questions);
     }
 
-    public QuestionResponseDto getQuestion(Long questionId) {
+    public QuestionResponseDto readQuestion(Long questionId) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
         return QuestionResponseDto.from(question);
