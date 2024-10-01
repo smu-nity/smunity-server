@@ -36,4 +36,10 @@ public class AnswerController {
         AnswerResponseDto responseDto = answerCommandService.updateAnswer(memberId, questionId, requestDto);
         return ResponseEntity.ok(responseDto);
     }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAnswer(@PathVariable Long questionId) {
+        answerCommandService.deleteAnswer(questionId);
+        return ResponseEntity.noContent().build();
+    }
 }
