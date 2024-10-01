@@ -33,7 +33,7 @@ public class CourseQueryService {
     private final StandardRepository standardRepository;
     private final CurriculumRepository curriculumRepository;
 
-    public ResultResponseDto<CourseResponseDto> getCourses(Long memberId, Category category) {
+    public ResultResponseDto<CourseResponseDto> readCourses(Long memberId, Category category) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Course> courses = courseRepository.findByMemberIdAndCategory(memberId, category);
@@ -43,13 +43,13 @@ public class CourseQueryService {
         return ResultResponseDto.of(total, completed, responseDtoList);
     }
 
-    public CreditResponseDto getCoursesCredit(Long memberId) {
+    public CreditResponseDto readCoursesCredit(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         return CreditResponseDto.from(member);
     }
 
-    public ResultResponseDto<CultureResponseDto> getCultureCourses(Long memberId, Domain domain) {
+    public ResultResponseDto<CultureResponseDto> readCultureCourses(Long memberId, Domain domain) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Curriculum> curriculums = curriculumRepository.findAllByYearAndDomain(member.getYear(), domain);
