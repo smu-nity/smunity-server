@@ -5,11 +5,16 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.info.GitProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@RequiredArgsConstructor
 public class SwaggerConfig {
+
+    private final GitProperties gitProperties;
 
     @Bean
     public OpenAPI openAPI() {
@@ -20,10 +25,12 @@ public class SwaggerConfig {
     }
 
     private Info info() {
+        String version = gitProperties.get("build.version");
+        String commit = gitProperties.get("commit.id.abbrev");
         return new Info()
                 .title("SMUNITY API")
                 .description("상명대학교 졸업요건 검사 사이트 API 명세서")
-                .version("v1.0.0");
+                .version("%s (%s)".formatted(version, commit));
     }
 
     private SecurityScheme securityScheme() {
