@@ -50,7 +50,7 @@ public class Member extends BaseEntity {
     private Department department;
 
     @OneToMany(mappedBy = "member")
-    private List<Course> courses = new ArrayList<>();
+    private final List<Course> courses = new ArrayList<>();
 
     public void setInfo(Year year, Department department, String encodePw) {
         this.year = year;

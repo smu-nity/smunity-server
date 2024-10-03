@@ -3,13 +3,13 @@ package com.smunity.server.global.security.config;
 import io.jsonwebtoken.Jwts;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 
-@Component
+@Configuration
 @ConfigurationProperties(prefix = "jwt")
 @Data
 public class JwtProperties {

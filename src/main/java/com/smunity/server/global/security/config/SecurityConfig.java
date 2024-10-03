@@ -66,12 +66,11 @@ public class SecurityConfig {
                 .requestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
                 // 모든 사용자
-                .requestMatchers("/api/v1/accounts/**", "/api/v1/auth").permitAll()
+                .requestMatchers("/api/v1/accounts/**", "/api/v1/auth", "/actuator/info").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/questions/**").permitAll()
 
                 // 관리자 권한을 가진 사용자 (ROLE_ADMIN)
-                .requestMatchers("/api/v1/members").hasRole("ADMIN")
-                .requestMatchers("/api/v1/questions/{questionId}/answer").hasRole("ADMIN")
+                .requestMatchers("/api/v1/members", "/api/v1/questions/{questionId}/answer", "/actuator/**").hasRole("ADMIN")
 
                 // 인증된 사용자 (ROLE_USER, ROLE_ADMIN)
                 .anyRequest().authenticated()
