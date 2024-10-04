@@ -24,14 +24,6 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew clean build
-        env:
-          SPRING_PROFILE: release
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          DB_URL: ${{ secrets.DB_URL }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          REDIS_URL: ${{ secrets.REDIS_URL }}
-          REDIS_PORT: ${{ secrets.REDIS_PORT }}
 
       - name: Get current time
         uses: josStorer/get-current-time@v2.0.2
