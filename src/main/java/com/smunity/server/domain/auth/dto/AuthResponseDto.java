@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 @Builder
 public record AuthResponseDto(
+        String username,
         String name,
         String department,
         String email
@@ -17,6 +18,7 @@ public record AuthResponseDto(
 
     private static AuthResponseDto from(JSONObject obj) {
         return AuthResponseDto.builder()
+                .username(obj.getString("STDNO"))
                 .name(obj.getString("NM_KOR"))
                 .department(getDepartment(obj.getString("TMP_DEPT_MJR_NM")))
                 .email(obj.getString("EMAIL"))
