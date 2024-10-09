@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import java.time.LocalDateTime;
 
 @Builder
-public record MemberInfoResponseDto(
+public record MemberResponseDto(
         Long id,
         String username,
         MemberRole memberRole,
@@ -16,8 +16,8 @@ public record MemberInfoResponseDto(
         LocalDateTime updatedAt
 ) {
 
-    public static MemberInfoResponseDto from(Member member) {
-        return MemberInfoResponseDto.builder()
+    public static MemberResponseDto from(Member member) {
+        return MemberResponseDto.builder()
                 .id(member.getId())
                 .username(member.getUsername())
                 .memberRole(member.getRole())
@@ -26,7 +26,7 @@ public record MemberInfoResponseDto(
                 .build();
     }
 
-    public static Page<MemberInfoResponseDto> from(Page<Member> memberPage) {
-        return memberPage.map(MemberInfoResponseDto::from);
+    public static Page<MemberResponseDto> from(Page<Member> memberPage) {
+        return memberPage.map(MemberResponseDto::from);
     }
 }

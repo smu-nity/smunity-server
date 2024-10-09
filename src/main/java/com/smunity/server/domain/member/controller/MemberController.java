@@ -1,7 +1,7 @@
 package com.smunity.server.domain.member.controller;
 
 import com.smunity.server.domain.member.dto.ChangePasswordRequestDto;
-import com.smunity.server.domain.member.dto.MemberInfoResponseDto;
+import com.smunity.server.domain.member.dto.MemberResponseDto;
 import com.smunity.server.domain.member.service.MemberCommandService;
 import com.smunity.server.domain.member.service.MemberQueryService;
 import com.smunity.server.global.security.annotation.AuthMember;
@@ -23,20 +23,20 @@ public class MemberController {
     private final MemberCommandService memberCommandService;
 
     @GetMapping
-    public ResponseEntity<Page<MemberInfoResponseDto>> readMembers(@ParameterObject Pageable pageable) {
-        Page<MemberInfoResponseDto> responseDtoPage = memberQueryService.readMembers(pageable);
+    public ResponseEntity<Page<MemberResponseDto>> readMembers(@ParameterObject Pageable pageable) {
+        Page<MemberResponseDto> responseDtoPage = memberQueryService.readMembers(pageable);
         return ResponseEntity.ok(responseDtoPage);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MemberInfoResponseDto> readMember(@PermissionCheck @PathVariable Long id) {
-        MemberInfoResponseDto responseDto = memberQueryService.readMember(id);
+    public ResponseEntity<MemberResponseDto> readMember(@PermissionCheck @PathVariable Long id) {
+        MemberResponseDto responseDto = memberQueryService.readMember(id);
         return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MemberInfoResponseDto> readMemberInfo(@AuthMember Long memberId) {
-        MemberInfoResponseDto responseDto = memberQueryService.readMember(memberId);
+    public ResponseEntity<MemberResponseDto> readMemberInfo(@AuthMember Long memberId) {
+        MemberResponseDto responseDto = memberQueryService.readMember(memberId);
         return ResponseEntity.ok(responseDto);
     }
 
@@ -47,9 +47,9 @@ public class MemberController {
     }
 
     @PutMapping("/me/password")
-    public ResponseEntity<MemberInfoResponseDto> changePassword(@AuthMember Long memberId,
-                                                                @Valid @RequestBody ChangePasswordRequestDto requestDto) {
-        MemberInfoResponseDto responseDto = memberCommandService.changePassword(memberId, requestDto);
+    public ResponseEntity<MemberResponseDto> changePassword(@AuthMember Long memberId,
+                                                            @Valid @RequestBody ChangePasswordRequestDto requestDto) {
+        MemberResponseDto responseDto = memberCommandService.changePassword(memberId, requestDto);
         return ResponseEntity.ok(responseDto);
     }
 }
