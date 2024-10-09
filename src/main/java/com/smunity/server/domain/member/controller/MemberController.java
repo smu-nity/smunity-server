@@ -1,6 +1,7 @@
 package com.smunity.server.domain.member.controller;
 
 import com.smunity.server.domain.member.dto.ChangePasswordRequestDto;
+import com.smunity.server.domain.member.dto.MemberInfoResponseDto;
 import com.smunity.server.domain.member.dto.MemberResponseDto;
 import com.smunity.server.domain.member.service.MemberCommandService;
 import com.smunity.server.domain.member.service.MemberQueryService;
@@ -29,14 +30,14 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MemberResponseDto> readMember(@PermissionCheck @PathVariable Long id) {
-        MemberResponseDto responseDto = memberQueryService.readMember(id);
+    public ResponseEntity<MemberInfoResponseDto> readMember(@PermissionCheck @PathVariable Long id) {
+        MemberInfoResponseDto responseDto = memberQueryService.readMember(id);
         return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MemberResponseDto> readMemberInfo(@AuthMember Long memberId) {
-        MemberResponseDto responseDto = memberQueryService.readMember(memberId);
+    public ResponseEntity<MemberInfoResponseDto> readMemberInfo(@AuthMember Long memberId) {
+        MemberInfoResponseDto responseDto = memberQueryService.readMember(memberId);
         return ResponseEntity.ok(responseDto);
     }
 
@@ -47,9 +48,9 @@ public class MemberController {
     }
 
     @PutMapping("/me/password")
-    public ResponseEntity<MemberResponseDto> changePassword(@AuthMember Long memberId,
-                                                            @Valid @RequestBody ChangePasswordRequestDto requestDto) {
-        MemberResponseDto responseDto = memberCommandService.changePassword(memberId, requestDto);
+    public ResponseEntity<MemberInfoResponseDto> changePassword(@AuthMember Long memberId,
+                                                                @Valid @RequestBody ChangePasswordRequestDto requestDto) {
+        MemberInfoResponseDto responseDto = memberCommandService.changePassword(memberId, requestDto);
         return ResponseEntity.ok(responseDto);
     }
 }
