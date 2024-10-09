@@ -1,6 +1,8 @@
 package com.smunity.server.global.common.entity;
 
+import com.smunity.server.domain.answer.entity.Answer;
 import com.smunity.server.domain.course.entity.Course;
+import com.smunity.server.domain.question.entity.Question;
 import com.smunity.server.global.common.entity.enums.Category;
 import com.smunity.server.global.common.entity.enums.MemberRole;
 import com.smunity.server.global.common.entity.enums.SubDomain;
@@ -49,8 +51,14 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "department_id")
     private Department department;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Course> courses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Question> questions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Answer> answers = new ArrayList<>();
 
     public void setInfo(Year year, Department department, String encodePw) {
         this.year = year;

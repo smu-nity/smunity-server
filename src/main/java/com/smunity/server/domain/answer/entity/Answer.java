@@ -30,13 +30,18 @@ public class Answer extends BaseEntity {
     @JoinColumn(name = "question_id")
     private Question question;
 
+    public void setMember(Member member) {
+        this.member = member;
+        member.getAnswers().add(this);
+    }
+
     public void setQuestion(Question question) {
         this.question = question;
         question.setAnswer(this);
     }
 
     public void setData(Member member, Question question) {
-        this.member = member;
+        setMember(member);
         setQuestion(question);
     }
 
