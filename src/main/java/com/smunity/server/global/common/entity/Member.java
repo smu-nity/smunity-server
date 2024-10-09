@@ -1,6 +1,8 @@
 package com.smunity.server.global.common.entity;
 
+import com.smunity.server.domain.answer.entity.Answer;
 import com.smunity.server.domain.course.entity.Course;
+import com.smunity.server.domain.question.entity.Question;
 import com.smunity.server.global.common.entity.enums.Category;
 import com.smunity.server.global.common.entity.enums.MemberRole;
 import com.smunity.server.global.common.entity.enums.SubDomain;
@@ -51,6 +53,12 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member")
     private final List<Course> courses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private final List<Question> questions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private final List<Answer> answers = new ArrayList<>();
 
     public void setInfo(Year year, Department department, String encodePw) {
         this.year = year;
