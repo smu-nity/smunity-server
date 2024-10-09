@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 public record MemberResponseDto(
         Long id,
         String username,
+        String name,
+        String department,
+        String email,
         MemberRole memberRole,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
@@ -20,6 +23,9 @@ public record MemberResponseDto(
         return MemberResponseDto.builder()
                 .id(member.getId())
                 .username(member.getUsername())
+                .name(member.getName())
+                .department(member.getDepartment().getName())
+                .email(member.getEmail())
                 .memberRole(member.getRole())
                 .createdAt(member.getCreatedAt())
                 .updatedAt(member.getUpdatedAt())
