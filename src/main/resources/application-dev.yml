@@ -5,11 +5,6 @@ spring:
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  data:
-    redis:
-      host: ${REDIS_URL}
-      port: ${REDIS_PORT}
-
   jpa:
     properties:
       hibernate:
