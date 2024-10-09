@@ -1,6 +1,7 @@
 package com.smunity.server.domain.member.service;
 
 import com.smunity.server.domain.member.dto.MemberInfoResponseDto;
+import com.smunity.server.domain.member.dto.MemberResponseDto;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.repository.MemberRepository;
 import com.smunity.server.global.exception.GeneralException;
@@ -18,9 +19,9 @@ public class MemberQueryService {
 
     private final MemberRepository memberRepository;
 
-    public Page<MemberInfoResponseDto> readMembers(Pageable pageable) {
+    public Page<MemberResponseDto> readMembers(Pageable pageable) {
         Page<Member> memberPage = memberRepository.findAll(pageable);
-        return MemberInfoResponseDto.from(memberPage);
+        return MemberResponseDto.from(memberPage);
     }
 
     public MemberInfoResponseDto readMember(Long memberId) {
