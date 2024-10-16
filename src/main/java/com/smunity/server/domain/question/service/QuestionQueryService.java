@@ -1,6 +1,6 @@
 package com.smunity.server.domain.question.service;
 
-import com.smunity.server.domain.question.dto.QuestionResponseDto;
+import com.smunity.server.domain.question.dto.QuestionReadResponseDto;
 import com.smunity.server.domain.question.entity.Question;
 import com.smunity.server.domain.question.repository.QuestionRepository;
 import com.smunity.server.global.exception.GeneralException;
@@ -18,14 +18,14 @@ public class QuestionQueryService {
 
     private final QuestionRepository questionRepository;
 
-    public Page<QuestionResponseDto> readQuestions(Pageable pageable) {
+    public Page<QuestionReadResponseDto> readQuestions(Long memberId, Pageable pageable) {
         Page<Question> questions = questionRepository.findAll(pageable);
-        return QuestionResponseDto.from(questions);
+        return QuestionReadResponseDto.of(memberId, questions);
     }
 
-    public QuestionResponseDto readQuestion(Long questionId) {
+    public QuestionReadResponseDto readQuestion(Long memberId, Long questionId) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
-        return QuestionResponseDto.from(question);
+        return QuestionReadResponseDto.of(memberId, question);
     }
 }

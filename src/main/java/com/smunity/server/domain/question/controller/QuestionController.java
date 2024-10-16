@@ -1,5 +1,6 @@
 package com.smunity.server.domain.question.controller;
 
+import com.smunity.server.domain.question.dto.QuestionReadResponseDto;
 import com.smunity.server.domain.question.dto.QuestionRequestDto;
 import com.smunity.server.domain.question.dto.QuestionResponseDto;
 import com.smunity.server.domain.question.service.QuestionCommandService;
@@ -26,8 +27,8 @@ public class QuestionController {
     private final QuestionCommandService questionCommandService;
 
     @GetMapping
-    public ResponseEntity<Page<QuestionResponseDto>> readQuestions(@ParameterObject @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<QuestionResponseDto> responseDtoPage = questionQueryService.readQuestions(pageable);
+    public ResponseEntity<Page<QuestionReadResponseDto>> readQuestions(@AuthMember Long memberId, @ParameterObject @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<QuestionReadResponseDto> responseDtoPage = questionQueryService.readQuestions(memberId, pageable);
         return ResponseEntity.ok(responseDtoPage);
     }
 
@@ -38,8 +39,8 @@ public class QuestionController {
     }
 
     @GetMapping("/{questionId}")
-    public ResponseEntity<QuestionResponseDto> readQuestion(@PathVariable Long questionId) {
-        QuestionResponseDto responseDto = questionQueryService.readQuestion(questionId);
+    public ResponseEntity<QuestionReadResponseDto> readQuestion(@AuthMember Long memberId, @PathVariable Long questionId) {
+        QuestionReadResponseDto responseDto = questionQueryService.readQuestion(memberId, questionId);
         return ResponseEntity.ok(responseDto);
     }
 

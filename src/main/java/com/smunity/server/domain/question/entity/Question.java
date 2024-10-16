@@ -54,6 +54,10 @@ public class Question extends BaseEntity {
         return anonymous ? "익명" : member.getName();
     }
 
+    public boolean getIsAuthor(Long memberId) {
+        return member.getId().equals(memberId);
+    }
+
     public boolean getAnswered() {
         return answer != null;
     }
