@@ -1,5 +1,6 @@
 package com.smunity.server.domain.member.controller;
 
+import com.smunity.server.domain.auth.dto.AuthRequestDto;
 import com.smunity.server.domain.member.dto.ChangePasswordRequestDto;
 import com.smunity.server.domain.member.dto.MemberInfoResponseDto;
 import com.smunity.server.domain.member.dto.MemberResponseDto;
@@ -45,6 +46,12 @@ public class MemberController {
     public ResponseEntity<Void> deleteMember(@AuthMember Long memberId) {
         memberCommandService.deleteMember(memberId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/me")
+    public ResponseEntity<MemberInfoResponseDto> updateMember(@AuthMember Long memberId, AuthRequestDto requestDto) {
+        MemberInfoResponseDto responseDto = memberCommandService.updateMember(memberId, requestDto);
+        return ResponseEntity.ok(responseDto);
     }
 
     @PutMapping("/me/password")
