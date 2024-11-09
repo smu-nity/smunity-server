@@ -38,6 +38,7 @@ public enum ErrorCode {
     // Member Errors
     MEMBER_FORBIDDEN(403, "MEMBER001", "사용자 권한이 없습니다."),
     MEMBER_NOT_FOUND(404, "MEMBER002", "해당 사용자가 없습니다."),
+    MEMBER_NOT_EDITABLE(400, "MEMBER003", "수정할 수 없는 학과 입니다."),
 
     // Redis Errors
     REDIS_CONNECTION_FAILURE(500, "REDIS001", "Redis 서버에 연결할 수 없습니다."),

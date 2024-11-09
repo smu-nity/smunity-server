@@ -49,6 +49,8 @@ public class MemberCommandService {
 
     public MemberInfoResponseDto changeDepartment(Long memberId, ChangeDepartmentRequestDto requestDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
+        if (!member.getDepartment().isEditable())
+            throw new GeneralException(ErrorCode.MEMBER_NOT_EDITABLE);
         Department department = departmentRepository.findById(requestDto.departmentId())
                 .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
         member.changeDepartment(department);
