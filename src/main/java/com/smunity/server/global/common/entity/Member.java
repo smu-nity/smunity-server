@@ -76,6 +76,10 @@ public class Member extends BaseEntity {
         this.password = password;
     }
 
+    public void changeDepartment(Department department) {
+        this.department = department;
+    }
+
     public int getCompletedCredits() {
         return courses.stream()
                 .mapToInt(Course::getCredit)

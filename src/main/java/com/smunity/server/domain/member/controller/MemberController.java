@@ -1,6 +1,7 @@
 package com.smunity.server.domain.member.controller;
 
 import com.smunity.server.domain.auth.dto.AuthRequestDto;
+import com.smunity.server.domain.member.dto.ChangeDepartmentRequestDto;
 import com.smunity.server.domain.member.dto.ChangePasswordRequestDto;
 import com.smunity.server.domain.member.dto.MemberInfoResponseDto;
 import com.smunity.server.domain.member.dto.MemberResponseDto;
@@ -58,6 +59,13 @@ public class MemberController {
     public ResponseEntity<MemberInfoResponseDto> changePassword(@AuthMember Long memberId,
                                                                 @Valid @RequestBody ChangePasswordRequestDto requestDto) {
         MemberInfoResponseDto responseDto = memberCommandService.changePassword(memberId, requestDto);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PatchMapping("/me/department")
+    public ResponseEntity<MemberInfoResponseDto> changeDepartment(@AuthMember Long memberId,
+                                                                  @Valid @RequestBody ChangeDepartmentRequestDto requestDto) {
+        MemberInfoResponseDto responseDto = memberCommandService.changeDepartment(memberId, requestDto);
         return ResponseEntity.ok(responseDto);
     }
 }
