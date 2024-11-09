@@ -23,4 +23,7 @@ public class Department {
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     private SubDomain subDomain;
+
+    @Column(nullable = false)
+    private boolean isEditable;
 }

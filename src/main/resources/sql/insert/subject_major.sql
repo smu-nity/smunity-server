@@ -3106,3 +3106,5 @@ INSERT INTO subject_major (category, credit, grade, name, number, semester, type
 VALUES ('MAJOR_ADVANCED', 2, 'FOURTH', '영상음악작곡법', 'HAGO0103', 'SECOND', '1전심', 35);
 INSERT INTO subject_major (category, credit, grade, name, number, semester, type, department_id)
 VALUES ('MAJOR_OPTIONAL', 2, 'FOURTH', '오페라클래스2(캡스톤디자인)', 'HAGO0104', 'SECOND', '1전선', 35);
+
+COMMIT;

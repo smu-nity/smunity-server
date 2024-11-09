@@ -23,3 +23,5 @@ VALUES (2, 'CULTURE', 36),
        (9, 'CULTURE', 33),
        (9, 'MAJOR_ADVANCED', 15),
        (9, 'MAJOR_OPTIONAL', 60);
+
+COMMIT;

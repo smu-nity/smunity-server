@@ -3,6 +3,7 @@ package com.smunity.server.domain.member.service;
 import com.smunity.server.domain.auth.dto.AuthRequestDto;
 import com.smunity.server.domain.auth.dto.AuthResponseDto;
 import com.smunity.server.domain.auth.service.AuthService;
+import com.smunity.server.domain.member.dto.ChangeDepartmentRequestDto;
 import com.smunity.server.domain.member.dto.ChangePasswordRequestDto;
 import com.smunity.server.domain.member.dto.MemberInfoResponseDto;
 import com.smunity.server.global.common.entity.Department;
@@ -43,6 +44,16 @@ public class MemberCommandService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         String newEncodedPw = passwordEncoder.encode(requestDto.password());
         member.changePassword(newEncodedPw);
+        return MemberInfoResponseDto.from(member);
+    }
+
+    public MemberInfoResponseDto changeDepartment(Long memberId, ChangeDepartmentRequestDto requestDto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
+        if (!member.getDepartment().isEditable())
+            throw new GeneralException(ErrorCode.MEMBER_NOT_EDITABLE);
+        Department department = departmentRepository.findById(requestDto.departmentId())
+                .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
+        member.changeDepartment(department);
         return MemberInfoResponseDto.from(member);
     }
 }
