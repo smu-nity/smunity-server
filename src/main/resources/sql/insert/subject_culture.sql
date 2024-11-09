@@ -184,3 +184,5 @@ INSERT INTO subject_culture (sub_domain, credit, name, number)
 VALUES ('CORE_CONVERGENCE', 2, '융합창의수학', 'HALF9432');
 INSERT INTO subject_culture (sub_domain, credit, name, number)
 VALUES ('CORE_CONVERGENCE', 3, '색채심리학', 'HALF1271');
+
+COMMIT;

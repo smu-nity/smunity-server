@@ -34,3 +34,5 @@ VALUES ('융합공과대학', '컴퓨터과학전공', 'BALANCE_ENGINEER', false
        ('문화예술대학', '조형예술전공', 'BALANCE_ART', false),
        ('문화예술대학', '생활예술전공', 'BALANCE_ART', false),
        ('문화예술대학', '음악학부', 'BALANCE_ART', false);
+
+COMMIT;
