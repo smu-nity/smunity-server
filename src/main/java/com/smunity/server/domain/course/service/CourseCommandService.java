@@ -1,6 +1,8 @@
 package com.smunity.server.domain.course.service;
 
 import com.smunity.server.domain.auth.dto.AuthCourseResponseDto;
+import com.smunity.server.domain.auth.dto.AuthRequestDto;
+import com.smunity.server.domain.auth.service.AuthService;
 import com.smunity.server.domain.course.dto.CourseResponseDto;
 import com.smunity.server.domain.course.dto.ResultResponseDto;
 import com.smunity.server.domain.course.entity.Course;
@@ -20,10 +22,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CourseCommandService {
 
+    private final AuthService authService;
     private final MemberRepository memberRepository;
     private final CourseRepository courseRepository;
 
-    public ResultResponseDto<CourseResponseDto> createCourses(Long memberId, List<AuthCourseResponseDto> requestDtoList) {
+    public ResultResponseDto<CourseResponseDto> createCourses(Long memberId, AuthRequestDto requestDto) {
+        List<AuthCourseResponseDto> requestDtoList = authService.readCourses(requestDto);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Course> courses = requestDtoList.stream()

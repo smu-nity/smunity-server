@@ -1,8 +1,13 @@
 package com.smunity.server.domain.member.service;
 
+import com.smunity.server.domain.auth.dto.AuthRequestDto;
+import com.smunity.server.domain.auth.dto.AuthResponseDto;
+import com.smunity.server.domain.auth.service.AuthService;
 import com.smunity.server.domain.member.dto.ChangePasswordRequestDto;
 import com.smunity.server.domain.member.dto.MemberInfoResponseDto;
+import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.entity.Member;
+import com.smunity.server.global.common.repository.DepartmentRepository;
 import com.smunity.server.global.common.repository.MemberRepository;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
@@ -16,8 +21,19 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberCommandService {
 
+    private final AuthService authService;
     private final MemberRepository memberRepository;
+    private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
+
+    public MemberInfoResponseDto updateMember(Long memberId, AuthRequestDto requestDto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
+        AuthResponseDto auth = authService.authenticate(requestDto);
+        Department department = departmentRepository.findByName(auth.department())
+                .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
+        member.update(department, auth.name(), auth.email());
+        return MemberInfoResponseDto.from(member);
+    }
 
     public void deleteMember(Long memberId) {
         memberRepository.deleteById(memberId);
