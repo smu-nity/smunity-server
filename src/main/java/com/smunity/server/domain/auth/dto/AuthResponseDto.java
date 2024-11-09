@@ -4,6 +4,8 @@ import lombok.Builder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 @Builder
 public record AuthResponseDto(
         String username,
@@ -11,6 +13,11 @@ public record AuthResponseDto(
         String department,
         String email
 ) {
+
+    private static final Map<String, String> DEPT_MAP = Map.of(
+            "지능·데이터융합학부", "핀테크전공",
+            "융합전자공학전공", "지능IOT융합전공"
+    );
 
     public static AuthResponseDto from(JSONArray json) {
         return from(json.getJSONObject(0));
@@ -27,6 +34,7 @@ public record AuthResponseDto(
 
     private static String getDepartment(String dept) {
         String[] depts = dept.split(" ");
-        return depts[depts.length - 1];
+        String department = depts[depts.length - 1];
+        return DEPT_MAP.getOrDefault(department, department);
     }
 }
