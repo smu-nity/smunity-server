@@ -2,6 +2,7 @@ package com.smunity.server.domain.account.controller;
 
 import com.smunity.server.domain.account.dto.*;
 import com.smunity.server.domain.account.service.AccountService;
+import com.smunity.server.global.security.annotation.AuthVerified;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,8 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDto> register(@RequestBody @Valid RegisterRequestDto requestDto) {
-        RegisterResponseDto responseDto = accountService.register(requestDto);
+    public ResponseEntity<RegisterResponseDto> register(@AuthVerified String verifiedUser, @RequestBody @Valid RegisterRequestDto requestDto) {
+        RegisterResponseDto responseDto = accountService.register(verifiedUser, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
