@@ -44,6 +44,18 @@ public class JwtTokenProvider {
     }
 
     /**
+     * JWT auth 토큰 생성 (재학생 인증)
+     */
+    public String createAuthToken(String username) {
+        return Jwts.builder()
+                .subject(username)
+                .claim("memberRole", MemberRole.ROLE_VERIFIED)
+                .signWith(jwtProperties.getSecretKey())
+                .expiration(expirationDate(false))
+                .compact();
+    }
+
+    /**
      * 요청 헤더에서 JWT 토큰 추출
      */
     public String resolveToken(HttpServletRequest request) {

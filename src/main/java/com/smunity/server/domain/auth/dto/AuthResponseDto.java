@@ -11,7 +11,8 @@ public record AuthResponseDto(
         String username,
         String name,
         String department,
-        String email
+        String email,
+        String authToken
 ) {
 
     private static final Map<String, String> DEPT_MAP = Map.of(
@@ -19,16 +20,17 @@ public record AuthResponseDto(
             "융합전자공학전공", "지능IOT융합전공"
     );
 
-    public static AuthResponseDto from(JSONArray json) {
-        return from(json.getJSONObject(0));
+    public static AuthResponseDto of(JSONArray json, String authToken) {
+        return of(json.getJSONObject(0), authToken);
     }
 
-    private static AuthResponseDto from(JSONObject obj) {
+    private static AuthResponseDto of(JSONObject obj, String authToken) {
         return AuthResponseDto.builder()
                 .username(obj.getString("STDNO"))
                 .name(obj.getString("NM_KOR"))
                 .department(getDepartment(obj.getString("TMP_DEPT_MJR_NM")))
                 .email(obj.getString("EMAIL"))
+                .authToken(authToken)
                 .build();
     }
 
