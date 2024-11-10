@@ -26,13 +26,15 @@ public class AnswerController {
     }
 
     @PostMapping
-    public ResponseEntity<AnswerResponseDto> createAnswer(@AuthMember Long memberId, @PathVariable Long questionId, @Valid @RequestBody AnswerRequestDto requestDto) {
+    public ResponseEntity<AnswerResponseDto> createAnswer(@AuthMember Long memberId, @PathVariable Long questionId,
+                                                          @RequestBody @Valid AnswerRequestDto requestDto) {
         AnswerResponseDto responseDto = answerCommandService.createAnswer(memberId, questionId, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @PutMapping
-    public ResponseEntity<AnswerResponseDto> updateAnswer(@AuthMember Long memberId, @PathVariable Long questionId, @Valid @RequestBody AnswerRequestDto requestDto) {
+    public ResponseEntity<AnswerResponseDto> updateAnswer(@AuthMember Long memberId, @PathVariable Long questionId,
+                                                          @RequestBody @Valid AnswerRequestDto requestDto) {
         AnswerResponseDto responseDto = answerCommandService.updateAnswer(memberId, questionId, requestDto);
         return ResponseEntity.ok(responseDto);
     }
