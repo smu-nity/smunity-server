@@ -27,7 +27,9 @@ public class QuestionController {
     private final QuestionCommandService questionCommandService;
 
     @GetMapping
-    public ResponseEntity<Page<QuestionReadResponseDto>> readQuestions(@AuthMember Long memberId, @ParameterObject @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<Page<QuestionReadResponseDto>> readQuestions(
+            @AuthMember Long memberId,
+            @ParameterObject @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<QuestionReadResponseDto> responseDtoPage = questionQueryService.readQuestions(memberId, pageable);
         return ResponseEntity.ok(responseDtoPage);
     }
@@ -53,7 +55,8 @@ public class QuestionController {
     }
 
     @DeleteMapping("/{questionId}")
-    public ResponseEntity<Void> deleteQuestion(@AuthMember Long memberId, @AuthAdmin Boolean isAdmin, @PathVariable Long questionId) {
+    public ResponseEntity<Void> deleteQuestion(@AuthMember Long memberId, @AuthAdmin Boolean isAdmin,
+                                               @PathVariable Long questionId) {
         questionCommandService.deleteQuestion(memberId, isAdmin, questionId);
         return ResponseEntity.noContent().build();
     }

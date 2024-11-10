@@ -65,6 +65,9 @@ public class SecurityConfig {
                 // H2 콘솔과 Swagger UI 및 API 문서에 대한 접근 허용
                 .requestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
+                // 재학생 인증을 완료한 사용자 (ROLE_VERIFIED)
+                .requestMatchers("/api/v1/accounts/register").hasRole("VERIFIED")
+
                 // 모든 사용자
                 .requestMatchers("/api/v1/accounts/**", "/api/v1/auth", "/actuator/info").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/questions/**").permitAll()

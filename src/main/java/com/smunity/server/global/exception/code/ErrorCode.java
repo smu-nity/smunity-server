@@ -29,6 +29,7 @@ public enum ErrorCode {
     INVALID_REFRESH_TOKEN(401, "ACCOUNT009", "리프레시 토큰이 유효하지 않습니다. 다시 로그인 해주세요."),
     YEAR_NOT_FOUND(404, "ACCOUNT010", "해당 연도를 찾을 수 없습니다."),
     DEPARTMENT_NOT_FOUND(404, "ACCOUNT010", "해당 학과를 찾을 수 없습니다."),
+    UNVERIFIED_USER(401, "ACCOUNT011", "인증되지 않은 사용자입니다."),
 
     // Auth Errors
     AUTH_UNAUTHORIZED(401, "AUTH001", "아이디 및 비밀번호가 일치하지 않습니다."),

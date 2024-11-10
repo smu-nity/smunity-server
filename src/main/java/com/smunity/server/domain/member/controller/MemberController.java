@@ -50,21 +50,19 @@ public class MemberController {
     }
 
     @PutMapping("/me")
-    public ResponseEntity<MemberInfoResponseDto> updateMember(@AuthMember Long memberId, AuthRequestDto requestDto) {
+    public ResponseEntity<MemberInfoResponseDto> updateMember(@AuthMember Long memberId, @RequestBody @Valid AuthRequestDto requestDto) {
         MemberInfoResponseDto responseDto = memberCommandService.updateMember(memberId, requestDto);
         return ResponseEntity.ok(responseDto);
     }
 
     @PatchMapping("/me/password")
-    public ResponseEntity<MemberInfoResponseDto> changePassword(@AuthMember Long memberId,
-                                                                @Valid @RequestBody ChangePasswordRequestDto requestDto) {
+    public ResponseEntity<MemberInfoResponseDto> changePassword(@AuthMember Long memberId, @RequestBody @Valid ChangePasswordRequestDto requestDto) {
         MemberInfoResponseDto responseDto = memberCommandService.changePassword(memberId, requestDto);
         return ResponseEntity.ok(responseDto);
     }
 
     @PatchMapping("/me/department")
-    public ResponseEntity<MemberInfoResponseDto> changeDepartment(@AuthMember Long memberId,
-                                                                  @Valid @RequestBody ChangeDepartmentRequestDto requestDto) {
+    public ResponseEntity<MemberInfoResponseDto> changeDepartment(@AuthMember Long memberId, @RequestBody @Valid ChangeDepartmentRequestDto requestDto) {
         MemberInfoResponseDto responseDto = memberCommandService.changeDepartment(memberId, requestDto);
         return ResponseEntity.ok(responseDto);
     }

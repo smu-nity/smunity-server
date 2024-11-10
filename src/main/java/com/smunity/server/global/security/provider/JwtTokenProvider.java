@@ -29,18 +29,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
+    private static final String CLAIM_IS_ACCESS_TOKEN = "isAccessToken";
+    private static final String CLAIM_MEMBER_ROLE = "memberRole";
+
     private final JwtProperties jwtProperties;
 
     /**
      * JWT access 토큰 생성
      */
     public String createAccessToken(Long memberId, MemberRole memberRole, boolean isRefresh) {
-        return Jwts.builder()
-                .subject(String.valueOf(memberId))
-                .claim("memberRole", memberRole.name())
-                .signWith(jwtProperties.getSecretKey())
-                .expiration(expirationDate(isRefresh))
-                .compact();
+        return createToken(String.valueOf(memberId), true, memberRole, isRefresh);
+    }
+
+    /**
+     * JWT auth 토큰 생성 (재학생 인증)
+     */
+    public String createAuthToken(String username) {
+        return createToken(username, false, MemberRole.ROLE_VERIFIED, false);
     }
 
     /**
@@ -74,10 +79,29 @@ public class JwtTokenProvider {
      */
     public Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
-        String memberRole = claims.get("memberRole").toString();
+        String memberRole = claims.get(CLAIM_MEMBER_ROLE, String.class);
         Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(memberRole));
         User principal = new User(claims.getSubject(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+    }
+
+    /**
+     * JWT auth 토큰의 사용자 이름 추출 (재학생 인증)
+     */
+    public String getUsername(String token) {
+        Claims claims = getClaims(token);
+        return !claims.get(CLAIM_IS_ACCESS_TOKEN, Boolean.class) ? claims.getSubject() : null;
+    }
+
+    // JWT 토큰 생성
+    private String createToken(String subject, boolean isAccessToken, MemberRole memberRole, boolean isRefresh) {
+        return Jwts.builder()
+                .subject(subject)
+                .claim(CLAIM_IS_ACCESS_TOKEN, isAccessToken)
+                .claim(CLAIM_MEMBER_ROLE, memberRole.name())
+                .signWith(jwtProperties.getSecretKey())
+                .expiration(expirationDate(isRefresh))
+                .compact();
     }
 
     // 액세스 토큰의 만료 시간 계산
