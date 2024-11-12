@@ -56,4 +56,9 @@ public class MemberCommandService {
         member.changeDepartment(department);
         return MemberInfoResponseDto.from(member);
     }
+
+    public MemberInfoResponseDto changePasswordByAuth(String username, ChangePasswordRequestDto requestDto) {
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
+        return changePassword(member.getId(), requestDto);
+    }
 }

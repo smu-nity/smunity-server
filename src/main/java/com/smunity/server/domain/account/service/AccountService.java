@@ -29,8 +29,8 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public RegisterResponseDto register(String verifiedUser, RegisterRequestDto requestDto) {
-        validateUser(verifiedUser, requestDto.username());
+    public RegisterResponseDto register(String memberName, RegisterRequestDto requestDto) {
+        validateUser(memberName, requestDto.username());
         Member member = requestDto.toEntity();
         Year year = yearRepository.findByName(requestDto.username().substring(0, 4))
                 .orElseThrow(() -> new GeneralException(ErrorCode.YEAR_NOT_FOUND));
@@ -64,8 +64,8 @@ public class AccountService {
         return LoginResponseDto.of(memberId, memberRole, accessToken, refreshToken);
     }
 
-    private void validateUser(String verifiedUser, String username) {
-        validateVerified(verifiedUser, username);
+    private void validateUser(String memberName, String username) {
+        validateVerified(memberName, username);
         validateUsername(username);
     }
 
