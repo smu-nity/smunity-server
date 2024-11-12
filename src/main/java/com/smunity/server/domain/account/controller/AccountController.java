@@ -20,8 +20,8 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponseDto> register(@AuthVerified String verifiedUser, @RequestBody @Valid RegisterRequestDto requestDto) {
-        RegisterResponseDto responseDto = accountService.register(verifiedUser, requestDto);
+    public ResponseEntity<RegisterResponseDto> register(@AuthVerified String memberName, @RequestBody @Valid RegisterRequestDto requestDto) {
+        RegisterResponseDto responseDto = accountService.register(memberName, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
