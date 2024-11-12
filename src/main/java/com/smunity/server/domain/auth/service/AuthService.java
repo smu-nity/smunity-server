@@ -7,6 +7,7 @@ import com.smunity.server.domain.auth.util.AuthUtil;
 import com.smunity.server.global.security.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,13 +19,13 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     public AuthResponseDto authenticate(AuthRequestDto requestDto) {
-        JSONArray response = AuthUtil.getData(requestDto, "/UsrSchMng/selectStdInfo.do", "dsStdInfoList");
+        JSONObject response = AuthUtil.getInfo(requestDto);
         String authToken = jwtTokenProvider.createAuthToken(requestDto.username());
         return AuthResponseDto.of(response, authToken);
     }
 
     public List<AuthCourseResponseDto> readCourses(AuthRequestDto requestDto) {
-        JSONArray response = AuthUtil.getData(requestDto, "/UsrRecMatt/list.do", "dsRecMattList");
+        JSONArray response = AuthUtil.getCourses(requestDto);
         return AuthCourseResponseDto.from(response);
     }
 }
