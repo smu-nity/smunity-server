@@ -20,13 +20,13 @@ public class AuthUtil {
     private static final String LOGIN_URL = "https://smsso.smu.ac.kr/Login.do";
     private static final String BASE_URL = "https://smul.smu.ac.kr";
 
+    public static JSONArray getCourses(AuthRequestDto requestDto) {
+        return getData(requestDto, "/UsrRecMatt/list.do", "dsRecMattList");
+    }
+
     public static JSONObject getInfo(AuthRequestDto requestDto) {
         JSONArray response = getData(requestDto, "/UsrSchMng/selectStdInfo.do", "dsStdInfoList");
         return response.getJSONObject(0);
-    }
-
-    public static JSONArray getCourses(AuthRequestDto requestDto) {
-        return getData(requestDto, "/UsrRecMatt/list.do", "dsRecMattList");
     }
 
     private static JSONArray getData(AuthRequestDto requestDto, String url, String key) {
