@@ -8,6 +8,7 @@ import com.smunity.server.domain.member.dto.MemberResponseDto;
 import com.smunity.server.domain.member.service.MemberCommandService;
 import com.smunity.server.domain.member.service.MemberQueryService;
 import com.smunity.server.global.security.annotation.AuthMember;
+import com.smunity.server.global.security.annotation.AuthVerified;
 import com.smunity.server.global.validation.annotation.PermissionCheck;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -64,6 +65,12 @@ public class MemberController {
     @PatchMapping("/me/department")
     public ResponseEntity<MemberInfoResponseDto> changeDepartment(@AuthMember Long memberId, @RequestBody @Valid ChangeDepartmentRequestDto requestDto) {
         MemberInfoResponseDto responseDto = memberCommandService.changeDepartment(memberId, requestDto);
+        return ResponseEntity.ok(responseDto);
+    }
+
+    @PatchMapping("/password/reset")
+    public ResponseEntity<MemberInfoResponseDto> changePasswordByAuth(@AuthVerified String memberName, @RequestBody @Valid ChangePasswordRequestDto requestDto) {
+        MemberInfoResponseDto responseDto = memberCommandService.changePasswordByAuth(memberName, requestDto);
         return ResponseEntity.ok(responseDto);
     }
 }
