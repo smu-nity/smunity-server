@@ -22,4 +22,14 @@ public class AuthController {
     public ResponseEntity<AuthResponseDto> authenticate(@RequestBody @Valid AuthRequestDto requestDto) {
         return ResponseEntity.ok(authService.authenticate(requestDto));
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponseDto> registerAuth(@RequestBody @Valid AuthRequestDto requestDto) {
+        return ResponseEntity.ok(authService.registerAuth(requestDto));
+    }
+
+    @PostMapping("/password/reset")
+    public ResponseEntity<AuthResponseDto> resetPassword(@RequestBody @Valid AuthRequestDto requestDto) {
+        return ResponseEntity.ok(authService.resetPassword(requestDto));
+    }
 }
