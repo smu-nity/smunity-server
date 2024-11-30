@@ -36,10 +36,6 @@ public class MemberCommandService {
         return MemberInfoResponseDto.from(member);
     }
 
-    public void deleteMember(Long memberId) {
-        memberRepository.deleteById(memberId);
-    }
-
     public MemberInfoResponseDto changePassword(Long memberId, ChangePasswordRequestDto requestDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         String newEncodedPw = passwordEncoder.encode(requestDto.password());
@@ -60,5 +56,9 @@ public class MemberCommandService {
     public MemberInfoResponseDto changePasswordByAuth(String username, ChangePasswordRequestDto requestDto) {
         Member member = memberRepository.findByUsername(username).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         return changePassword(member.getId(), requestDto);
+    }
+
+    public void deleteMember(Long memberId) {
+        memberRepository.deleteById(memberId);
     }
 }

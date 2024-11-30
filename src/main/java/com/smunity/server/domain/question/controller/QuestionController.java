@@ -34,16 +34,16 @@ public class QuestionController {
         return ResponseEntity.ok(responseDtoPage);
     }
 
-    @PostMapping
-    public ResponseEntity<QuestionResponseDto> createQuestion(@AuthMember Long memberId, @RequestBody @Valid QuestionRequestDto requestDto) {
-        QuestionResponseDto responseDto = questionCommandService.createQuestion(memberId, requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
-    }
-
     @GetMapping("/{questionId}")
     public ResponseEntity<QuestionReadResponseDto> readQuestion(@AuthMember Long memberId, @PathVariable Long questionId) {
         QuestionReadResponseDto responseDto = questionQueryService.readQuestion(memberId, questionId);
         return ResponseEntity.ok(responseDto);
+    }
+    
+    @PostMapping
+    public ResponseEntity<QuestionResponseDto> createQuestion(@AuthMember Long memberId, @RequestBody @Valid QuestionRequestDto requestDto) {
+        QuestionResponseDto responseDto = questionCommandService.createQuestion(memberId, requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @PutMapping("/{questionId}")

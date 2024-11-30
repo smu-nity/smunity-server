@@ -30,12 +30,6 @@ public class CourseController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<ResultResponseDto<CourseResponseDto>> uploadCourses(@AuthMember Long memberId, @RequestBody @Valid AuthRequestDto requestDto) {
-        ResultResponseDto<CourseResponseDto> responseDto = courseCommandService.createCourses(memberId, requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
-    }
-
     @GetMapping("/credit")
     public ResponseEntity<CreditResponseDto> readCoursesCredit(@AuthMember Long memberId) {
         CreditResponseDto responseDto = courseQueryService.readCoursesCredit(memberId);
@@ -46,5 +40,11 @@ public class CourseController {
     public ResponseEntity<ResultResponseDto<CultureResponseDto>> readCultureCourses(@AuthMember Long memberId, @PathVariable Domain domain) {
         ResultResponseDto<CultureResponseDto> responseDto = courseQueryService.readCultureCourses(memberId, domain);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<ResultResponseDto<CourseResponseDto>> uploadCourses(@AuthMember Long memberId, @RequestBody @Valid AuthRequestDto requestDto) {
+        ResultResponseDto<CourseResponseDto> responseDto = courseCommandService.createCourses(memberId, requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 }
