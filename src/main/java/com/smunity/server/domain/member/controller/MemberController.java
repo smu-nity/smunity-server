@@ -44,12 +44,6 @@ public class MemberController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @DeleteMapping("/me")
-    public ResponseEntity<Void> deleteMember(@AuthMember Long memberId) {
-        memberCommandService.deleteMember(memberId);
-        return ResponseEntity.noContent().build();
-    }
-
     @PutMapping("/me")
     public ResponseEntity<MemberInfoResponseDto> updateMember(@AuthMember Long memberId, @RequestBody @Valid AuthRequestDto requestDto) {
         MemberInfoResponseDto responseDto = memberCommandService.updateMember(memberId, requestDto);
@@ -72,5 +66,11 @@ public class MemberController {
     public ResponseEntity<MemberInfoResponseDto> changePasswordByAuth(@AuthVerified String memberName, @RequestBody @Valid ChangePasswordRequestDto requestDto) {
         MemberInfoResponseDto responseDto = memberCommandService.changePasswordByAuth(memberName, requestDto);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deleteMember(@AuthMember Long memberId) {
+        memberCommandService.deleteMember(memberId);
+        return ResponseEntity.noContent().build();
     }
 }
