@@ -5,7 +5,6 @@ import lombok.Builder;
 
 @Builder
 public record MemberInfoResponseDto(
-        Long id,
         String username,
         String name,
         String department,
@@ -14,7 +13,6 @@ public record MemberInfoResponseDto(
 
     public static MemberInfoResponseDto from(Member member) {
         return MemberInfoResponseDto.builder()
-                .id(member.getId())
                 .username(member.getUsername())
                 .name(member.getName())
                 .department(member.getDepartment().getName())
