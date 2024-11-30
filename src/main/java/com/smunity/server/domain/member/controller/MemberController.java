@@ -31,12 +31,6 @@ public class MemberController {
         return ResponseEntity.ok(responseDtoPage);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<MemberInfoResponseDto> readMember(@PathVariable Long id) {
-        MemberInfoResponseDto responseDto = memberQueryService.readMember(id);
-        return ResponseEntity.ok(responseDto);
-    }
-
     @GetMapping("/me")
     public ResponseEntity<MemberInfoResponseDto> readMemberInfo(@AuthMember Long memberId) {
         MemberInfoResponseDto responseDto = memberQueryService.readMember(memberId);
