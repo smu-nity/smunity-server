@@ -45,7 +45,7 @@ public class AccountService {
         Member member = memberRepository.findByUsername(requestDto.username())
                 .orElseThrow(() -> new GeneralException(ErrorCode.ACCOUNT_NOT_FOUND));
         checkPassword(requestDto.password(), member.getPassword());
-        return generateToken(member.getId(), member.getRole());
+        return generateToken(member.getUsername(), member.getId(), member.getRole());
     }
 
     public LoginResponseDto refresh(RefreshRequestDto requestDto) {
@@ -54,14 +54,14 @@ public class AccountService {
         Member member = memberRepository.findById(oldRefreshToken.getMemberId())
                 .orElseThrow(() -> new GeneralException(ErrorCode.ACCOUNT_NOT_FOUND));
         refreshTokenService.deleteRefreshToken(oldRefreshToken.getToken());
-        return generateToken(member.getId(), member.getRole());
+        return generateToken(member.getUsername(), member.getId(), member.getRole());
     }
 
-    private LoginResponseDto generateToken(Long memberId, MemberRole memberRole) {
+    private LoginResponseDto generateToken(String username, Long memberId, MemberRole memberRole) {
         String accessToken = jwtTokenProvider.createAccessToken(memberId, memberRole, false);
         String refreshToken = jwtTokenProvider.createAccessToken(memberId, memberRole, true);
         refreshTokenService.saveRefreshToken(memberId, refreshToken);
-        return LoginResponseDto.of(memberId, memberRole, accessToken, refreshToken);
+        return LoginResponseDto.of(username, memberRole, accessToken, refreshToken);
     }
 
     private void validateUser(String memberName, String username) {

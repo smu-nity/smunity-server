@@ -5,15 +5,15 @@ import lombok.Builder;
 
 @Builder
 public record LoginResponseDto(
-        Long memberId,
+        String username,
         MemberRole memberRole,
         String accessToken,
         String refreshToken
 ) {
 
-    public static LoginResponseDto of(Long memberId, MemberRole memberRole, String accessToken, String refreshToken) {
+    public static LoginResponseDto of(String username, MemberRole memberRole, String accessToken, String refreshToken) {
         return LoginResponseDto.builder()
-                .memberId(memberId)
+                .username(username)
                 .memberRole(memberRole)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)

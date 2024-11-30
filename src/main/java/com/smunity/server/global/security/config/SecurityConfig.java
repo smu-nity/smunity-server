@@ -73,7 +73,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/v1/questions/**").permitAll()
 
                 // 관리자 권한을 가진 사용자 (ROLE_ADMIN)
-                .requestMatchers("/api/v1/members", "/api/v1/questions/{questionId}/answer", "/actuator/**").hasRole("ADMIN")
+                .requestMatchers("/api/v1/members", "/api/v1/questions/{questionId}/answer").hasRole("ADMIN")
 
                 // 인증된 사용자 (ROLE_USER, ROLE_ADMIN)
                 .anyRequest().authenticated()

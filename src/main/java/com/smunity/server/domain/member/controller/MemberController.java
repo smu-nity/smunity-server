@@ -9,7 +9,6 @@ import com.smunity.server.domain.member.service.MemberCommandService;
 import com.smunity.server.domain.member.service.MemberQueryService;
 import com.smunity.server.global.security.annotation.AuthMember;
 import com.smunity.server.global.security.annotation.AuthVerified;
-import com.smunity.server.global.validation.annotation.PermissionCheck;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -30,12 +29,6 @@ public class MemberController {
     public ResponseEntity<Page<MemberResponseDto>> readMembers(@ParameterObject Pageable pageable) {
         Page<MemberResponseDto> responseDtoPage = memberQueryService.readMembers(pageable);
         return ResponseEntity.ok(responseDtoPage);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<MemberInfoResponseDto> readMember(@PermissionCheck @PathVariable Long id) {
-        MemberInfoResponseDto responseDto = memberQueryService.readMember(id);
-        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/me")
