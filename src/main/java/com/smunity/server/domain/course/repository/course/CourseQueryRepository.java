@@ -1,6 +1,5 @@
 package com.smunity.server.domain.course.repository.course;
 
-
 import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.global.common.entity.enums.Category;
 
