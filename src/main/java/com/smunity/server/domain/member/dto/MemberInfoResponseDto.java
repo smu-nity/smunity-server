@@ -8,7 +8,8 @@ public record MemberInfoResponseDto(
         String username,
         String name,
         String department,
-        String email
+        String deptCode,
+        boolean deptEditable
 ) {
 
     public static MemberInfoResponseDto from(Member member) {
@@ -16,7 +17,8 @@ public record MemberInfoResponseDto(
                 .username(member.getUsername())
                 .name(member.getName())
                 .department(member.getDepartment().getName())
-                .email(member.getEmail())
+                .deptCode(member.getDepartment().getCode())
+                .deptEditable(member.getDepartment().isEditable())
                 .build();
     }
 }
