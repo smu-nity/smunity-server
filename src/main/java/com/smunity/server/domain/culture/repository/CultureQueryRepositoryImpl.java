@@ -11,7 +11,6 @@ import java.util.List;
 
 import static com.smunity.server.domain.culture.entity.QCulture.culture;
 
-
 @Repository
 @RequiredArgsConstructor
 public class CultureQueryRepositoryImpl implements CultureQueryRepository {
