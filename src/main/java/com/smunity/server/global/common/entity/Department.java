@@ -26,4 +26,6 @@ public class Department {
 
     @Column(nullable = false)
     private boolean isEditable;
+
+    private String code;
 }
