@@ -2,7 +2,7 @@ package com.smunity.server.domain.culture.controller;
 
 import com.smunity.server.domain.culture.dto.CultureResponseDto;
 import com.smunity.server.domain.culture.service.CultureQueryService;
-import com.smunity.server.domain.member.dto.SubjectResponseDto;
+import com.smunity.server.global.common.dto.ListResponseDto;
 import com.smunity.server.global.common.entity.enums.SubDomain;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class CultureController {
     private final CultureQueryService cultureQueryService;
 
     @GetMapping
-    public ResponseEntity<SubjectResponseDto<CultureResponseDto>> readCultures(@RequestParam(required = false) SubDomain subDomain) {
-        SubjectResponseDto<CultureResponseDto> responseDto = cultureQueryService.readCultures(subDomain);
+    public ResponseEntity<ListResponseDto<CultureResponseDto>> readCultures(@RequestParam(required = false) SubDomain subDomain) {
+        ListResponseDto<CultureResponseDto> responseDto = cultureQueryService.readCultures(subDomain);
         return ResponseEntity.ok(responseDto);
     }
 }

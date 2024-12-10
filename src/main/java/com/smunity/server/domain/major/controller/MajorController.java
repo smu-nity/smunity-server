@@ -2,7 +2,7 @@ package com.smunity.server.domain.major.controller;
 
 import com.smunity.server.domain.major.dto.MajorResponseDto;
 import com.smunity.server.domain.major.service.MajorQueryService;
-import com.smunity.server.domain.member.dto.SubjectResponseDto;
+import com.smunity.server.global.common.dto.ListResponseDto;
 import com.smunity.server.global.common.entity.enums.Category;
 import com.smunity.server.global.security.annotation.AuthMember;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +20,8 @@ public class MajorController {
     private final MajorQueryService majorQueryService;
 
     @GetMapping
-    public ResponseEntity<SubjectResponseDto<MajorResponseDto>> readMajors(@AuthMember Long memberId, @RequestParam(required = false) Category category) {
-        SubjectResponseDto<MajorResponseDto> responseDto = majorQueryService.readMajors(memberId, category);
+    public ResponseEntity<ListResponseDto<MajorResponseDto>> readMajors(@AuthMember Long memberId, @RequestParam(required = false) Category category) {
+        ListResponseDto<MajorResponseDto> responseDto = majorQueryService.readMajors(memberId, category);
         return ResponseEntity.ok(responseDto);
     }
 }
