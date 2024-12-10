@@ -7,8 +7,7 @@ import lombok.Builder;
 public record MemberInfoResponseDto(
         String username,
         String name,
-        String department,
-        String email
+        String department
 ) {
 
     public static MemberInfoResponseDto from(Member member) {
@@ -16,7 +15,6 @@ public record MemberInfoResponseDto(
                 .username(member.getUsername())
                 .name(member.getName())
                 .department(member.getDepartment().getName())
-                .email(member.getEmail())
                 .build();
     }
 }
