@@ -7,7 +7,9 @@ import lombok.Builder;
 public record MemberInfoResponseDto(
         String username,
         String name,
-        String department
+        String department,
+        String deptCode,
+        boolean deptEditable
 ) {
 
     public static MemberInfoResponseDto from(Member member) {
@@ -15,6 +17,8 @@ public record MemberInfoResponseDto(
                 .username(member.getUsername())
                 .name(member.getName())
                 .department(member.getDepartment().getName())
+                .deptCode(member.getDepartment().getCode())
+                .deptEditable(member.getDepartment().isEditable())
                 .build();
     }
 }
