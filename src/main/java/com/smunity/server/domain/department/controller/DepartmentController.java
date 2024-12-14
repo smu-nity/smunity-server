@@ -1,6 +1,7 @@
 package com.smunity.server.domain.department.controller;
 
 import com.smunity.server.domain.department.dto.DepartmentEditResponseDto;
+import com.smunity.server.domain.department.dto.DepartmentResponseDto;
 import com.smunity.server.domain.department.service.DepartmentService;
 import com.smunity.server.global.common.dto.ListResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class DepartmentController {
 
     private final DepartmentService departmentService;
+
+    @GetMapping
+    public ResponseEntity<ListResponseDto<DepartmentResponseDto>> readDepartments() {
+        ListResponseDto<DepartmentResponseDto> responseDto = departmentService.readDepartments();
+        return ResponseEntity.ok(responseDto);
+    }
 
     @GetMapping("/editable")
     public ResponseEntity<ListResponseDto<DepartmentEditResponseDto>> readEditableDepartments() {
