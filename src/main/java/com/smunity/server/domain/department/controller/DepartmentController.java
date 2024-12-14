@@ -16,7 +16,7 @@ public class DepartmentController {
 
     private final DepartmentService departmentService;
 
-    @GetMapping("/isEditable")
+    @GetMapping("/editable")
     public ResponseEntity<ListResponseDto<DepartmentEditResponseDto>> readDepartmentsIsEditable() {
         ListResponseDto<DepartmentEditResponseDto> responseDto = departmentService.readDepartmentsIsEditable(true);
         return ResponseEntity.ok(responseDto);
