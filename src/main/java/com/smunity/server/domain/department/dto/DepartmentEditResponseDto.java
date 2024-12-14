@@ -8,13 +8,15 @@ import java.util.List;
 @Builder
 public record DepartmentEditResponseDto(
         Long id,
-        String name
+        String name,
+        boolean isEditable
 ) {
 
     public static DepartmentEditResponseDto from(Department department) {
         return DepartmentEditResponseDto.builder()
                 .id(department.getId())
                 .name(department.getName())
+                .isEditable(department.isEditable())
                 .build();
     }
 
