@@ -1,5 +1,6 @@
 package com.smunity.server.domain.member.service;
 
+import com.smunity.server.domain.member.dto.MemberCountDto;
 import com.smunity.server.domain.member.dto.MemberInfoResponseDto;
 import com.smunity.server.domain.member.dto.MemberResponseDto;
 import com.smunity.server.global.common.entity.Member;
@@ -28,5 +29,10 @@ public class MemberQueryService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         return MemberInfoResponseDto.from(member);
+    }
+
+    public MemberCountDto countMembers() {
+        long count = memberRepository.count();
+        return MemberCountDto.of(count);
     }
 }

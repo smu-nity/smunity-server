@@ -1,10 +1,7 @@
 package com.smunity.server.domain.member.controller;
 
 import com.smunity.server.domain.auth.dto.AuthRequestDto;
-import com.smunity.server.domain.member.dto.ChangeDepartmentRequestDto;
-import com.smunity.server.domain.member.dto.ChangePasswordRequestDto;
-import com.smunity.server.domain.member.dto.MemberInfoResponseDto;
-import com.smunity.server.domain.member.dto.MemberResponseDto;
+import com.smunity.server.domain.member.dto.*;
 import com.smunity.server.domain.member.service.MemberCommandService;
 import com.smunity.server.domain.member.service.MemberQueryService;
 import com.smunity.server.global.security.annotation.AuthMember;
@@ -29,6 +26,12 @@ public class MemberController {
     public ResponseEntity<Page<MemberResponseDto>> readMembers(@ParameterObject Pageable pageable) {
         Page<MemberResponseDto> responseDtoPage = memberQueryService.readMembers(pageable);
         return ResponseEntity.ok(responseDtoPage);
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<MemberCountDto> countMembers() {
+        MemberCountDto responseDto = memberQueryService.countMembers();
+        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/me")

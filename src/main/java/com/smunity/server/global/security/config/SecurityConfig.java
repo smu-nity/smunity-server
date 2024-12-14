@@ -70,7 +70,7 @@ public class SecurityConfig {
 
                 // 모든 사용자
                 .requestMatchers("/api/v1/accounts/**", "/api/v1/auth/**", "/api/v1/departments").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/v1/questions/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/questions/**", "/api/v1/members/count").permitAll()
 
                 // 관리자 권한을 가진 사용자 (ROLE_ADMIN)
                 .requestMatchers("/api/v1/members", "/api/v1/questions/{questionId}/answer").hasRole("ADMIN")
