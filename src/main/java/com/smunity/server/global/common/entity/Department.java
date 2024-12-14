@@ -4,6 +4,9 @@ import com.smunity.server.global.common.entity.enums.SubDomain;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Table(name = "common_department")
@@ -28,4 +31,7 @@ public class Department {
     private boolean isEditable;
 
     private String code;
+
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Member> members = new ArrayList<>();
 }
