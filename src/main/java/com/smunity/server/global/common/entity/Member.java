@@ -60,9 +60,14 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Answer> answers = new ArrayList<>();
 
+    public void setDepartment(Department department) {
+        this.department = department;
+        department.getMembers().add(this);
+    }
+
     public void setInfo(Year year, Department department, String encodePw) {
         this.year = year;
-        this.department = department;
+        setDepartment(department);
         password = encodePw;
     }
 
