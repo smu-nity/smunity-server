@@ -25,6 +25,7 @@ public class AccountService {
     private final MemberRepository memberRepository;
     private final YearRepository yearRepository;
     private final DepartmentRepository departmentRepository;
+    private final LoginStatusService loginStatusService;
     private final RefreshTokenService refreshTokenService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -45,6 +46,7 @@ public class AccountService {
         Member member = memberRepository.findByUsername(requestDto.username())
                 .orElseThrow(() -> new GeneralException(ErrorCode.ACCOUNT_NOT_FOUND));
         checkPassword(requestDto.password(), member.getPassword());
+        loginStatusService.createLoginStatus(requestDto);
         return generateToken(member.getUsername(), member.getId(), member.getRole());
     }
 
