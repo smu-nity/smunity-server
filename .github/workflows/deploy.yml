@@ -3,7 +3,7 @@ name: Release CI/CD
 on:
   push:
     branches:
-      - feature/126
+      - main
 
 jobs:
   build:
@@ -52,4 +52,3 @@ jobs:
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
           deployment_package: deploy/smunity.zip
-          wait_for_deployment: false
