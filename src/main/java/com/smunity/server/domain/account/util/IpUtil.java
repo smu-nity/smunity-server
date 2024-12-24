@@ -16,11 +16,16 @@ public class IpUtil {
         return IP_HEADER_CANDIDATES.stream()
                 .map(request::getHeader)
                 .filter(IpUtil::isValidIp)
+                .map(IpUtil::extractFirstIp)
                 .findFirst()
                 .orElseGet(request::getRemoteAddr);
     }
 
     private static boolean isValidIp(String ip) {
         return ip != null && !ip.isEmpty() && !"unknown".equalsIgnoreCase(ip);
+    }
+
+    private static String extractFirstIp(String ip) {
+        return ip.split(",")[0].trim();
     }
 }
