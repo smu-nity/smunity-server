@@ -39,11 +39,7 @@ jobs:
         run: echo "artifact=$(ls ./build/libs)" >> $GITHUB_ENV
 
       - name: Generate deployment package
-        run: |
-          mkdir -p deploy
-          cp ./build/libs/${{env.artifact}} ./deploy/${{env.artifact}}
-          cp -r .ebextensions ./deploy/.ebextensions
-          zip -r ./deploy/smunity.zip ./deploy
+        run: zip -r smunity.zip ./build/libs/${{env.artifact}} .ebextensions
 
       - name: Beanstalk Deploy
         uses: einaregilsson/beanstalk-deploy@v20
@@ -54,5 +50,5 @@ jobs:
           environment_name: smunity-env
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
           region: ap-northeast-2
-          deployment_package: ./deploy/smunity.zip
+          deployment_package: ./smunity.zip
           wait_for_deployment: false
