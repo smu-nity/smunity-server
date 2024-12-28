@@ -63,7 +63,7 @@ public class SecurityConfig {
         // 경로별 인가 작업
         http.authorizeHttpRequests(authorize -> authorize
                 // H2 콘솔, Swagger UI 및 API 문서, Actuator 에 대한 접근 허용
-                .requestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**", "/actuator/info").permitAll()
+                .requestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**", "/actuator/prometheus").permitAll()
 
                 // 재학생 인증을 완료한 사용자 (ROLE_VERIFIED)
                 .requestMatchers("/api/v1/accounts/register").hasRole("VERIFIED")
