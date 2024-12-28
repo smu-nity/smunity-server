@@ -3,7 +3,7 @@ name: Release CI/CD
 on:
   push:
     branches:
-      - feature/125
+      - main
 
 jobs:
   build:
