@@ -14,6 +14,8 @@
 
 - #### [SMUNITY Web](https://github.com/smu-nity/smunity-web)
 
+- #### [SMUNITY Infra](https://github.com/smu-nity/smunity-infra)
+
 ## ⏳ Previous Version
 
 - #### [SMUNITY 1.0](https://github.com/smu-nity/SMUNITY)
