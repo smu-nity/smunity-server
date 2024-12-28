@@ -45,6 +45,9 @@ dependencies {
     // Prometheus
     implementation 'io.micrometer:micrometer-registry-prometheus'
 
+    // Loki
+    implementation 'com.github.loki4j:loki-logback-appender:1.5.2'
+
     // JSON Web Token
     implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
