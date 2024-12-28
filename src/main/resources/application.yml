@@ -12,7 +12,11 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
-  info:
-    git:
-      mode: full
+        include: "prometheus"
+  server:
+    port: 8000
+
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
