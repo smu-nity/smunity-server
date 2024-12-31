@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -38,12 +39,38 @@ public class SecurityConfig {
     }
 
     /**
-     * Spring Security의 필터 체인 설정 구성
+     * Spring Security 의 formLogin 필터 체인 설정 구성
      */
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain formLoginFilterChain(HttpSecurity http) throws Exception {
+        // Swagger UI 및 API 문서 경로, 로그인 페이지에 대한 보안 설정
+        http.securityMatcher("/swagger-ui/**", "/v3/api-docs/**", "/login");
+
+        // 로그인 성공 시 Swagger UI 로 이동
+        http.formLogin(authorize -> authorize
+                .defaultSuccessUrl("/swagger-ui/index.html")
+                .permitAll()
+        );
+
+        // 경로별 인가 작업
+        http.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").authenticated()
+                .anyRequest().permitAll()
+        );
+
+        return http.build();
+    }
+
+    /**
+     * Spring Security 의 JWT 필터 체인 설정 구성
+     */
+    @Bean
+    public SecurityFilterChain jwtFilterChain(HttpSecurity http) throws Exception {
         // CSRF 보호 비활성화
         http.csrf(AbstractHttpConfigurer::disable);
+
+        // 세션 사용 안함
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // HTTP 응답 헤더 설정
         http.headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
@@ -62,8 +89,8 @@ public class SecurityConfig {
 
         // 경로별 인가 작업
         http.authorizeHttpRequests(authorize -> authorize
-                // H2 콘솔, Swagger UI 및 API 문서, Actuator 에 대한 접근 허용
-                .requestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**", "/actuator/prometheus").permitAll()
+                // H2 콘솔, Actuator 에 대한 접근 허용
+                .requestMatchers("/h2-console/**", "/actuator/prometheus").permitAll()
 
                 // 재학생 인증을 완료한 사용자 (ROLE_VERIFIED)
                 .requestMatchers("/api/v1/accounts/register").hasRole("VERIFIED")

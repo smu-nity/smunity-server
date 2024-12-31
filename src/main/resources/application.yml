@@ -13,6 +13,10 @@ springdoc:
     tags-sorter: alpha
     operations-sorter: alpha
 
+swagger:
+  username: ${SWAGGER_USERNAME}
+  password: ${SWAGGER_PASSWORD}
+
 management:
   endpoints:
     web:
