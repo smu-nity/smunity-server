@@ -8,6 +8,11 @@ jwt:
     access-expiration-time: 1800 # 30 minutes
     refresh-expiration-time: 1209600 # 14 days
 
+springdoc:
+  swagger-ui:
+    tags-sorter: alpha
+    operations-sorter: alpha
+
 management:
   endpoints:
     web:
