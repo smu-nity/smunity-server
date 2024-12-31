@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/courses")
-@Tag(name = "Course API", description = "이수과목 관련 API")
+@Tag(name = "05 Course API", description = "이수과목 관련 API")
 public class CourseController {
 
     private final CourseQueryService courseQueryService;

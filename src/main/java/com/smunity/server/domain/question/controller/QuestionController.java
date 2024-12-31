@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/questions")
-@Tag(name = "Question API", description = "질문 관련 API")
+@Tag(name = "08 Question API", description = "질문 관련 API")
 public class QuestionController {
 
     private final QuestionQueryService questionQueryService;

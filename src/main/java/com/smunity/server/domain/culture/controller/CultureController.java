@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/cultures")
-@Tag(name = "Culture API", description = "교양과목 관련 API")
+@Tag(name = "07 Culture API", description = "교양과목 관련 API")
 public class CultureController {
 
     private final CultureQueryService cultureQueryService;

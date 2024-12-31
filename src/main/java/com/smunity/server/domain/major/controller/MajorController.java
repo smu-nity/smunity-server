@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/majors")
-@Tag(name = "Major API", description = "전공과목 관련 API")
+@Tag(name = "06 Major API", description = "전공과목 관련 API")
 public class MajorController {
 
     private final MajorQueryService majorQueryService;

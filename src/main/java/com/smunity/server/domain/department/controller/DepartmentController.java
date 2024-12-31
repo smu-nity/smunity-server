@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/departments")
-@Tag(name = "Department API", description = "학과 관련 API")
+@Tag(name = "04 Department API", description = "학과 관련 API")
 public class DepartmentController {
 
     private final DepartmentService departmentService;

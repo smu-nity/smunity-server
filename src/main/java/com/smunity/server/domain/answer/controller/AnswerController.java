@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/questions/{questionId}/answer")
-@Tag(name = "Answer API", description = "답변 관련 API")
+@Tag(name = "09 Answer API", description = "답변 관련 API")
 public class AnswerController {
 
     private final AnswerQueryService answerQueryService;
