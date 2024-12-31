@@ -22,7 +22,7 @@ public class CultureController {
     private final CultureQueryService cultureQueryService;
 
     @GetMapping
-    @Operation(summary = "교양 강의 조회", description = "서브 도메인을 기준으로 교양 강의 목록을 조회합니다. 서브 도메인은 선택 사항입니다.")
+    @Operation(summary = "교양과목 목록 조회", description = "교양 영역을 기준으로 교양과목 목록을 조회합니다.")
     public ResponseEntity<ListResponseDto<CultureResponseDto>> readCultures(@RequestParam(required = false) SubDomain subDomain) {
         ListResponseDto<CultureResponseDto> responseDto = cultureQueryService.readCultures(subDomain);
         return ResponseEntity.ok(responseDto);

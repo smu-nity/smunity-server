@@ -30,7 +30,7 @@ public class QuestionController {
     private final QuestionCommandService questionCommandService;
 
     @GetMapping
-    @Operation(summary = "질문 목록 조회", description = "로그인한 회원의 질문 목록을 페이징 처리하여 조회합니다.")
+    @Operation(summary = "질문 목록 조회", description = "질문 목록을 페이징 처리하여 조회합니다.")
     public ResponseEntity<Page<QuestionReadResponseDto>> readQuestions(
             @AuthMember Long memberId,
             @ParameterObject @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -39,21 +39,21 @@ public class QuestionController {
     }
 
     @GetMapping("/{questionId}")
-    @Operation(summary = "질문 조회", description = "특정 질문의 상세 정보를 조회합니다.")
+    @Operation(summary = "질문 조회", description = "질문을 조회합니다.")
     public ResponseEntity<QuestionReadResponseDto> readQuestion(@AuthMember Long memberId, @PathVariable Long questionId) {
         QuestionReadResponseDto responseDto = questionQueryService.readQuestion(memberId, questionId);
         return ResponseEntity.ok(responseDto);
     }
 
     @PostMapping
-    @Operation(summary = "질문 생성", description = "새로운 질문을 생성합니다.")
+    @Operation(summary = "질문 생성", description = "로그인한 회원으로 질문을 생성합니다.")
     public ResponseEntity<QuestionResponseDto> createQuestion(@AuthMember Long memberId, @RequestBody @Valid QuestionRequestDto requestDto) {
         QuestionResponseDto responseDto = questionCommandService.createQuestion(memberId, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @PutMapping("/{questionId}")
-    @Operation(summary = "질문 수정", description = "특정 질문의 내용을 수정합니다.")
+    @Operation(summary = "질문 수정", description = "로그인한 회원이 본인이 작성한 질문을 수정합니다.")
     public ResponseEntity<QuestionResponseDto> updateQuestion(
             @AuthMember Long memberId, @AuthAdmin Boolean isAdmin,
             @PathVariable Long questionId, @RequestBody @Valid QuestionRequestDto requestDto) {
@@ -62,7 +62,7 @@ public class QuestionController {
     }
 
     @DeleteMapping("/{questionId}")
-    @Operation(summary = "질문 삭제", description = "특정 질문을 삭제합니다.")
+    @Operation(summary = "질문 삭제", description = "로그인한 회원이 본인이 작성한 질문을 삭제합니다.")
     public ResponseEntity<Void> deleteQuestion(@AuthMember Long memberId, @AuthAdmin Boolean isAdmin,
                                                @PathVariable Long questionId) {
         questionCommandService.deleteQuestion(memberId, isAdmin, questionId);

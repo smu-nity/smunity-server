@@ -26,7 +26,7 @@ public class MemberController {
     private final MemberCommandService memberCommandService;
 
     @GetMapping
-    @Operation(summary = "회원 목록 조회", description = "페이징 처리를 통해 회원 목록을 조회합니다.")
+    @Operation(summary = "회원 목록 조회", description = "회원 목록을 페이징 처리하여 조회합니다.")
     public ResponseEntity<Page<MemberResponseDto>> readMembers(@ParameterObject Pageable pageable) {
         Page<MemberResponseDto> responseDtoPage = memberQueryService.readMembers(pageable);
         return ResponseEntity.ok(responseDtoPage);
@@ -61,14 +61,14 @@ public class MemberController {
     }
 
     @PatchMapping("/me/department")
-    @Operation(summary = "부서 변경", description = "로그인한 회원의 부서를 변경합니다.")
+    @Operation(summary = "학과 변경", description = "로그인한 회원의 학과를 변경합니다.")
     public ResponseEntity<MemberInfoResponseDto> changeDepartment(@AuthMember Long memberId, @RequestBody @Valid ChangeDepartmentRequestDto requestDto) {
         MemberInfoResponseDto responseDto = memberCommandService.changeDepartment(memberId, requestDto);
         return ResponseEntity.ok(responseDto);
     }
 
     @PatchMapping("/password/reset")
-    @Operation(summary = "비밀번호 재설정", description = "회원 이름을 통해 인증 후 비밀번호를 변경합니다.")
+    @Operation(summary = "비밀번호 재설정", description = "인증 토큰 검증 후 비밀번호를 변경합니다.")
     public ResponseEntity<MemberInfoResponseDto> changePasswordByAuth(@AuthVerified String memberName, @RequestBody @Valid ChangePasswordRequestDto requestDto) {
         MemberInfoResponseDto responseDto = memberCommandService.changePasswordByAuth(memberName, requestDto);
         return ResponseEntity.ok(responseDto);

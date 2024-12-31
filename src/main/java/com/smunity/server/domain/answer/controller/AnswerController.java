@@ -23,14 +23,14 @@ public class AnswerController {
     private final AnswerCommandService answerCommandService;
 
     @GetMapping
-    @Operation(summary = "답변 조회", description = "질문 ID를 기반으로 답변을 조회합니다.")
+    @Operation(summary = "답변 조회", description = "질문에 대한 답변을 조회합니다.")
     public ResponseEntity<AnswerResponseDto> readAnswer(@PathVariable Long questionId) {
         AnswerResponseDto responseDto = answerQueryService.readAnswer(questionId);
         return ResponseEntity.ok(responseDto);
     }
 
     @PostMapping
-    @Operation(summary = "답변 생성", description = "회원 ID와 질문 ID를 기반으로 새로운 답변을 생성합니다.")
+    @Operation(summary = "답변 생성", description = "관리자가 질문에 대한 답변을 생성합니다.")
     public ResponseEntity<AnswerResponseDto> createAnswer(@AuthMember Long memberId, @PathVariable Long questionId,
                                                           @RequestBody @Valid AnswerRequestDto requestDto) {
         AnswerResponseDto responseDto = answerCommandService.createAnswer(memberId, questionId, requestDto);
@@ -38,7 +38,7 @@ public class AnswerController {
     }
 
     @PutMapping
-    @Operation(summary = "답변 수정", description = "회원 ID와 질문 ID를 기반으로 답변을 수정합니다.")
+    @Operation(summary = "답변 수정", description = "관리자가 질문에 대한 답변을 수정합니다.")
     public ResponseEntity<AnswerResponseDto> updateAnswer(@AuthMember Long memberId, @PathVariable Long questionId,
                                                           @RequestBody @Valid AnswerRequestDto requestDto) {
         AnswerResponseDto responseDto = answerCommandService.updateAnswer(memberId, questionId, requestDto);
@@ -46,7 +46,7 @@ public class AnswerController {
     }
 
     @DeleteMapping
-    @Operation(summary = "답변 삭제", description = "질문 ID를 기반으로 답변을 삭제합니다.")
+    @Operation(summary = "답변 삭제", description = " 관리자가 질문에 대한 답변을 삭제합니다.")
     public ResponseEntity<Void> deleteAnswer(@PathVariable Long questionId) {
         answerCommandService.deleteAnswer(questionId);
         return ResponseEntity.noContent().build();
