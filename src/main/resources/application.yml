@@ -4,6 +4,9 @@ spring:
 
   jpa:
     open-in-view: false
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
 
 jwt:
   secret: ${JWT_SECRET:secret}
