@@ -27,7 +27,7 @@ public record DepartmentResponseDto(
                 .college(department.getCollege())
                 .name(department.getName())
                 .code(department.getCode())
-                .count(department.getMembers().size())
+                .count(department.getMemberCount())
                 .build();
     }
 }

@@ -30,8 +30,15 @@ public class Department {
     @Column(nullable = false)
     private boolean isEditable;
 
+    @Column(nullable = false)
+    private int memberCount = 0;
+
     private String code;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Member> members = new ArrayList<>();
+
+    public void updateMemberCount() {
+        this.memberCount = members.size();
+    }
 }

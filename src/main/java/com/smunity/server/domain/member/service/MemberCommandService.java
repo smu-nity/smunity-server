@@ -60,6 +60,6 @@ public class MemberCommandService {
 
     public void deleteMember(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        memberRepository.delete(member);
+        member.delete();
     }
 }

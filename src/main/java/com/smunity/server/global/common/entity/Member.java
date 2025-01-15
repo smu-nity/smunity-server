@@ -67,6 +67,7 @@ public class Member extends BaseEntity {
     public void setDepartment(Department department) {
         this.department = department;
         department.getMembers().add(this);
+        department.updateMemberCount();
     }
 
     public void setInfo(Year year, Department department, String encodePw) {
@@ -79,6 +80,13 @@ public class Member extends BaseEntity {
         this.department = department;
         this.name = name;
         this.email = email;
+    }
+
+    public void delete() {
+        Department department = this.department;
+        this.department = null;
+        department.getMembers().remove(this);
+        department.updateMemberCount();
     }
 
     public void changePassword(String password) {
