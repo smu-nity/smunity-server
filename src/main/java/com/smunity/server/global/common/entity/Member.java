@@ -82,6 +82,13 @@ public class Member extends BaseEntity {
         this.email = email;
     }
 
+    public void delete() {
+        Department department = this.department;
+        this.department = null;
+        department.getMembers().remove(this);
+        department.updateMemberCount();
+    }
+
     public void changePassword(String password) {
         this.password = password;
     }
