@@ -37,4 +37,8 @@ public class Department {
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Member> members = new ArrayList<>();
+
+    public void updateMemberCount() {
+        this.memberCount = members.size();
+    }
 }

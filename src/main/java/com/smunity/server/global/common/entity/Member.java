@@ -67,6 +67,7 @@ public class Member extends BaseEntity {
     public void setDepartment(Department department) {
         this.department = department;
         department.getMembers().add(this);
+        department.updateMemberCount();
     }
 
     public void setInfo(Year year, Department department, String encodePw) {
