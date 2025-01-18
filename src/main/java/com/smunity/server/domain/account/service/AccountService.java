@@ -59,6 +59,13 @@ public class AccountService {
         return generateToken(member.getUsername(), member.getId(), member.getRole());
     }
 
+    public void logout(Long memberId, RefreshRequestDto requestDto) {
+        jwtTokenProvider.validateToken(requestDto.refreshToken(), true);
+        RefreshToken oldRefreshToken = refreshTokenService.findRefreshToken(requestDto.refreshToken());
+        validateMember(memberId, oldRefreshToken);
+        refreshTokenService.deleteRefreshToken(oldRefreshToken.getToken());
+    }
+
     private LoginResponseDto generateToken(String username, Long memberId, MemberRole memberRole) {
         String accessToken = jwtTokenProvider.createAccessToken(memberId, memberRole, false);
         String refreshToken = jwtTokenProvider.createAccessToken(memberId, memberRole, true);
@@ -80,6 +87,12 @@ public class AccountService {
     private void validateUsername(String username) {
         if (memberRepository.existsByUsername(username)) {
             throw new GeneralException(ErrorCode.ACCOUNT_CONFLICT);
+        }
+    }
+
+    private void validateMember(Long memberId, RefreshToken refreshToken) {
+        if (!memberId.equals(refreshToken.getMemberId())) {
+            throw new GeneralException(ErrorCode.FORBIDDEN_EXCEPTION);
         }
     }
 

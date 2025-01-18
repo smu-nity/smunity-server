@@ -2,6 +2,7 @@ package com.smunity.server.domain.account.controller;
 
 import com.smunity.server.domain.account.dto.*;
 import com.smunity.server.domain.account.service.AccountService;
+import com.smunity.server.global.security.annotation.AuthMember;
 import com.smunity.server.global.security.annotation.AuthVerified;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,5 +42,12 @@ public class AccountController {
     public ResponseEntity<LoginResponseDto> refresh(@RequestBody @Valid RefreshRequestDto requestDto) {
         LoginResponseDto responseDto = accountService.refresh(requestDto);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @PostMapping("/logout")
+    @Operation(summary = "로그아웃", description = "동일 사용자 검증 후 리프레시 토큰을 무효화합니다.")
+    public ResponseEntity<Void> logout(@AuthMember Long memberId, @RequestBody @Valid RefreshRequestDto requestDto) {
+        accountService.logout(memberId, requestDto);
+        return ResponseEntity.noContent().build();
     }
 }
