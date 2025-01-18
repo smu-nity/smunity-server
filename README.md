@@ -24,7 +24,7 @@
 
 - #### Backend
 
-  <img src="https://img.shields.io/badge/Java-17-007396?style=round-square&logo=oracle&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Java-17-007396?style=round-square&logo=java&logoColor=white"/>
   <img src="https://img.shields.io/badge/Spring-6DB33F?style=round-square&logo=Spring&logoColor=white"/>
   <img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=round-square&logo=springboot&logoColor=white"/>
   <img src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=round-square&logo=SpringSecurity&logoColor=white"/>
@@ -36,6 +36,10 @@
 - #### DBMS
 
   <img src="https://img.shields.io/badge/MySQL-8.0.28-4479A1?style=round-square&logo=MySQL&logoColor=white"/>
+
+- #### NoSQL
+
+  <img src="https://img.shields.io/badge/Redis-FF4438?style=round-square&logo=redis&logoColor=white"/>
 
 - #### CI/CD
 
@@ -49,3 +53,4 @@
   <img src="https://img.shields.io/badge/EC2-FF9900?style=round-square&logo=amazonec2&logoColor=white"/>
   <img src="https://img.shields.io/badge/Elastic Beanstalk-FF9900?style=round-square&logo=awselasticloadbalancing&logoColor=white"/>
   <img src="https://img.shields.io/badge/RDS-527FFF?style=round-square&logo=amazonrds&logoColor=white"/>
+  <img src="https://img.shields.io/badge/ElastiCache-C925D1?style=round-square&logo=amazonelasticache&logoColor=white"/>
