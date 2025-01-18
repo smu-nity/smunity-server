@@ -89,15 +89,14 @@ public class SecurityConfig {
 
         // 경로별 인가 작업
         http.authorizeHttpRequests(authorize -> authorize
-                // H2 콘솔, Actuator 에 대한 접근 허용
+                // 모든 사용자
                 .requestMatchers("/h2-console/**", "/actuator/prometheus").permitAll()
+                .requestMatchers("/api/v1/accounts/login", "/api/v1/accounts/refresh").permitAll()
+                .requestMatchers("/api/v1/auth/**", "/api/v1/departments", "/api/v1/members/count").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/questions/**").permitAll()
 
                 // 재학생 인증을 완료한 사용자 (ROLE_VERIFIED)
                 .requestMatchers("/api/v1/accounts/register").hasRole("VERIFIED")
-
-                // 모든 사용자
-                .requestMatchers("/api/v1/accounts/refresh", "/api/v1/auth/**", "/api/v1/departments", "/api/v1/members/count").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/v1/questions/**").permitAll()
 
                 // 관리자 권한을 가진 사용자 (ROLE_ADMIN)
                 .requestMatchers("/api/v1/members", "/api/v1/questions/{questionId}/answer").hasRole("ADMIN")
