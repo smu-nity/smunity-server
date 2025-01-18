@@ -7,9 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum MemberRole {
 
+    ROLE_VERIFIED("인증된 회원"),
     ROLE_USER("회원"),
-    ROLE_ADMIN("관리자"),
-    ROLE_VERIFIED("인증된 회원");
+    ROLE_ADMIN("관리자");
 
     private final String description;
 }
