@@ -1,4 +1,4 @@
-package com.smunity.server.domain.major.entity.enums;
+package com.smunity.server.global.common.entity.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

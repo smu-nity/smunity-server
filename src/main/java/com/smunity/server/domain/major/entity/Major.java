@@ -1,9 +1,9 @@
 package com.smunity.server.domain.major.entity;
 
 import com.smunity.server.domain.major.entity.enums.Grade;
-import com.smunity.server.domain.major.entity.enums.Semester;
 import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.entity.enums.Category;
+import com.smunity.server.global.common.entity.enums.Semester;
 import jakarta.persistence.*;
 import lombok.*;
 
