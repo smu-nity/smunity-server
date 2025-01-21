@@ -91,8 +91,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
                 // 모든 사용자
                 .requestMatchers("/h2-console/**", "/actuator/prometheus").permitAll()
-                .requestMatchers("/api/v1/accounts/login", "/api/v1/accounts/refresh").permitAll()
-                .requestMatchers("/api/v1/auth/**", "/api/v1/departments", "/api/v1/members/count").permitAll()
+                .requestMatchers("/api/v1/accounts/login", "/api/v1/accounts/refresh", "/api/v1/auth/**").permitAll()
+                .requestMatchers("/api/v1/terms/**", "/api/v1/departments", "/api/v1/members/count").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/questions/**").permitAll()
 
                 // 재학생 인증을 완료한 사용자 (ROLE_VERIFIED)
