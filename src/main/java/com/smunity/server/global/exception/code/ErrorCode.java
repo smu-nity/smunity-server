@@ -49,7 +49,10 @@ public enum ErrorCode {
     QUESTION_NOT_FOUND(404, "QUESTION001", "해당 질문을 찾을 수 없습니다."),
 
     // Answer Errors
-    ANSWER_NOT_FOUND(404, "ANSWER001", "해당 답변을 찾을 수 없습니다.");
+    ANSWER_NOT_FOUND(404, "ANSWER001", "해당 답변을 찾을 수 없습니다."),
+
+    // Term Errors
+    TERM_NOT_FOUND(404, "TERM001", "해당 학기를 찾을 수 없습니다.");
 
     private final int value;
     private final String code;
