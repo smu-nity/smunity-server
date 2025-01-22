@@ -19,15 +19,5 @@ public class Year {
     @Column(name = "year_value")
     private Integer value;
 
-    @Column(name = "major_i")
-    private Integer majorI;
-
-    @Column(name = "major_s")
-    private Integer majorS;
-
-    private Integer culture;
-
-    private Integer cultureCnt;
-
     private Integer total;
 }
