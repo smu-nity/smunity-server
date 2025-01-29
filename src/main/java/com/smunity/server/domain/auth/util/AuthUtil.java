@@ -3,7 +3,9 @@ package com.smunity.server.domain.auth.util;
 import com.smunity.server.domain.auth.dto.AuthRequestDto;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -15,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
+@Slf4j
 public class AuthUtil {
 
     private static final String LOGIN_URL = "https://smsso.smu.ac.kr/Login.do";
@@ -31,7 +34,12 @@ public class AuthUtil {
 
     private static JSONArray getData(AuthRequestDto requestDto, String url, String key) {
         JSONObject response = getData(requestDto, url);
-        return response.getJSONArray(key);
+        try {
+            return response.getJSONArray(key);
+        } catch (JSONException e) {
+            log.error("[ERROR] Failed to get JSONArray for key '{}'. Response: {}", key, response, e);
+            throw new GeneralException(ErrorCode.AUTH_INVALID_FORMAT);
+        }
     }
 
     private static JSONObject getData(AuthRequestDto requestDto, String url) {
@@ -41,6 +49,7 @@ public class AuthUtil {
             connection.getOutputStream().write(createRequestData(requestDto));
             return readResponse(connection);
         } catch (IOException e) {
+            log.error("[ERROR] Failed to fetch data from URL: '{}'. Request: {}", url, requestDto, e);
             throw new GeneralException(ErrorCode.AUTH_INTERNAL_SERVER_ERROR);
         }
     }

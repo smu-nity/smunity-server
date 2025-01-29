@@ -63,7 +63,7 @@ public class GeneralExceptionHandler {
     // 기타 모든 예외(Exception) 처리 메서드
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse<Void>> handleException(Exception ex) {
-        log.error("[ERROR] {} : {}", ex.getClass(), ex.getMessage());
+        log.error("[ERROR] {} : {}", ex.getClass(), ex.getMessage(), ex);
         ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
         return ErrorResponse.handle(errorCode);
     }
