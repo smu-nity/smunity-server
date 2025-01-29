@@ -24,6 +24,7 @@ public record StatusResponseDto(
     }
 
     public static int calculateCompletion(int total, int completed) {
-        return Math.min(100, completed * 100 / total);
+        int percentage = total != 0 ? completed * 100 / total : 100;
+        return Math.min(100, percentage);
     }
 }

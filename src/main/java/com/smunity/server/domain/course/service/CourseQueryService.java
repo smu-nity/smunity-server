@@ -11,6 +11,7 @@ import com.smunity.server.domain.course.entity.enums.Domain;
 import com.smunity.server.domain.course.repository.CurriculumRepository;
 import com.smunity.server.domain.course.repository.StandardRepository;
 import com.smunity.server.domain.course.repository.course.CourseRepository;
+import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.entity.Year;
 import com.smunity.server.global.common.entity.enums.Category;
@@ -38,7 +39,7 @@ public class CourseQueryService {
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Course> courses = courseRepository.findByMemberIdAndCategory(memberId, category);
         List<CourseResponseDto> responseDtoList = CourseResponseDto.from(courses);
-        int total = getTotal(member.getYear(), category);
+        int total = getTotal(member.getYear(), member.getDepartment(), category);
         int completed = calculateCompleted(courses);
         return ResultResponseDto.of(total, completed, responseDtoList);
     }
@@ -59,10 +60,23 @@ public class CourseQueryService {
         return ResultResponseDto.of(total, completed, responseDtoList);
     }
 
+    private int getTotal(Year year, Department department, Category category) {
+        int total = getTotal(year, category);
+        return department.isHasAdvanced() ? total : getTotal(total, category);
+    }
+
     private int getTotal(Year year, Category category) {
         return standardRepository.findByYearAndCategory(year, category)
                 .map(Standard::getTotal)
                 .orElseGet(year::getTotal);
+    }
+
+    private int getTotal(int total, Category category) {
+        return switch (category) {
+            case MAJOR_ADVANCED -> 0;
+            case MAJOR_OPTIONAL -> 60;
+            default -> total;
+        };
     }
 
     private int getCultureTotal(int size, Domain domain) {
