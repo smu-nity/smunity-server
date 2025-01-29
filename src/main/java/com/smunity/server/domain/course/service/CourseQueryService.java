@@ -6,14 +6,10 @@ import com.smunity.server.domain.course.dto.CultureResponseDto;
 import com.smunity.server.domain.course.dto.ResultResponseDto;
 import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.domain.course.entity.Curriculum;
-import com.smunity.server.domain.course.entity.Standard;
 import com.smunity.server.domain.course.entity.enums.Domain;
 import com.smunity.server.domain.course.repository.CurriculumRepository;
-import com.smunity.server.domain.course.repository.StandardRepository;
 import com.smunity.server.domain.course.repository.course.CourseRepository;
-import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.entity.Member;
-import com.smunity.server.global.common.entity.Year;
 import com.smunity.server.global.common.entity.enums.Category;
 import com.smunity.server.global.common.repository.MemberRepository;
 import com.smunity.server.global.exception.GeneralException;
@@ -29,9 +25,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CourseQueryService {
 
+    private final StandardService standardService;
     private final MemberRepository memberRepository;
     private final CourseRepository courseRepository;
-    private final StandardRepository standardRepository;
     private final CurriculumRepository curriculumRepository;
 
     public ResultResponseDto<CourseResponseDto> readCourses(Long memberId, Category category) {
@@ -39,7 +35,7 @@ public class CourseQueryService {
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Course> courses = courseRepository.findByMemberIdAndCategory(memberId, category);
         List<CourseResponseDto> responseDtoList = CourseResponseDto.from(courses);
-        int total = getTotal(member.getYear(), member.getDepartment(), category);
+        int total = standardService.getTotal(member.getYear(), member.getDepartment(), category);
         int completed = calculateCompleted(courses);
         return ResultResponseDto.of(total, completed, responseDtoList);
     }
@@ -47,7 +43,8 @@ public class CourseQueryService {
     public CreditResponseDto readCoursesCredit(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        return CreditResponseDto.from(member);
+        int total = standardService.getTotal(member.getYear(), Category.ALL);
+        return CreditResponseDto.from(total, member);
     }
 
     public ResultResponseDto<CultureResponseDto> readCultureCourses(Long memberId, Domain domain) {
@@ -55,36 +52,9 @@ public class CourseQueryService {
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Curriculum> curriculums = curriculumRepository.findAllByYearAndDomain(member.getYear(), domain);
         List<CultureResponseDto> responseDtoList = CultureResponseDto.of(curriculums, member);
-        int total = getCultureTotal(curriculums.size(), domain);
+        int total = standardService.getCultureTotal(curriculums.size(), domain);
         int completed = calculateCultureCompleted(responseDtoList);
         return ResultResponseDto.of(total, completed, responseDtoList);
-    }
-
-    private int getTotal(Year year, Department department, Category category) {
-        int total = getTotal(year, category);
-        return department.isHasAdvanced() ? total : getTotal(total, category);
-    }
-
-    private int getTotal(Year year, Category category) {
-        return standardRepository.findByYearAndCategory(year, category)
-                .map(Standard::getTotal)
-                .orElseGet(year::getTotal);
-    }
-
-    private int getTotal(int total, Category category) {
-        return switch (category) {
-            case MAJOR_ADVANCED -> 0;
-            case MAJOR_OPTIONAL -> 60;
-            default -> total;
-        };
-    }
-
-    private int getCultureTotal(int size, Domain domain) {
-        return switch (domain) {
-            case CORE -> 2;
-            case BALANCE -> 3;
-            default -> size;
-        };
     }
 
     private int calculateCompleted(List<Course> courses) {

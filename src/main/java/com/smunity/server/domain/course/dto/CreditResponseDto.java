@@ -20,8 +20,7 @@ public record CreditResponseDto(
         int completion
 ) {
 
-    public static CreditResponseDto from(Member member) {
-        int total = member.getYear().getTotal();
+    public static CreditResponseDto from(int total, Member member) {
         int completed = member.getCompletedCredits();
         int major = member.getCompletedCredits(MAJOR_ADVANCED) + member.getCompletedCredits(MAJOR_OPTIONAL);
         int culture = member.getCompletedCredits(CULTURE);

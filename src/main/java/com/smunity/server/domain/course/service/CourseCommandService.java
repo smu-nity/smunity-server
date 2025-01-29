@@ -8,6 +8,7 @@ import com.smunity.server.domain.course.dto.ResultResponseDto;
 import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.domain.course.repository.course.CourseRepository;
 import com.smunity.server.global.common.entity.Member;
+import com.smunity.server.global.common.entity.enums.Category;
 import com.smunity.server.global.common.repository.MemberRepository;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
@@ -23,6 +24,7 @@ import java.util.List;
 public class CourseCommandService {
 
     private final AuthService authService;
+    private final StandardService standardService;
     private final MemberRepository memberRepository;
     private final CourseRepository courseRepository;
 
@@ -36,7 +38,8 @@ public class CourseCommandService {
                 .toList();
         courseRepository.saveAll(courses);
         List<CourseResponseDto> responseDtoList = CourseResponseDto.from(member.getCourses());
-        return ResultResponseDto.of(member.getYear().getTotal(), member.getCompletedCredits(), responseDtoList);
+        int total = standardService.getTotal(member.getYear(), Category.ALL);
+        return ResultResponseDto.of(total, member.getCompletedCredits(), responseDtoList);
     }
 
     private boolean isValidCourse(Long memberId, AuthCourseResponseDto dto) {
