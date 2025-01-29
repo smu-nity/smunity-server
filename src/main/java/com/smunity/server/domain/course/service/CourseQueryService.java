@@ -35,7 +35,7 @@ public class CourseQueryService {
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Course> courses = courseRepository.findByMemberIdAndCategory(memberId, category);
         List<CourseResponseDto> responseDtoList = CourseResponseDto.from(courses);
-        int total = standardService.getTotal(member.getYear(), member.getDepartment(), category);
+        int total = standardService.getTotal(member.getYear(), member.getDepartment(), getCategory(category));
         int completed = calculateCompleted(courses);
         return ResultResponseDto.of(total, completed, responseDtoList);
     }
@@ -55,6 +55,10 @@ public class CourseQueryService {
         int total = standardService.getCultureTotal(curriculums.size(), domain);
         int completed = calculateCultureCompleted(responseDtoList);
         return ResultResponseDto.of(total, completed, responseDtoList);
+    }
+
+    private Category getCategory(Category category) {
+        return category != null ? category : Category.ALL;
     }
 
     private int calculateCompleted(List<Course> courses) {
