@@ -31,6 +31,9 @@ public class Department {
     private boolean isEditable;
 
     @Column(nullable = false)
+    private boolean hasAdvanced;
+
+    @Column(nullable = false)
     private int memberCount = 0;
 
     private String code;
