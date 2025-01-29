@@ -27,7 +27,7 @@ public class StandardService {
 
     public int getTotal(Year year, Department department, Category category) {
         int total = getTotal(year, category);
-        return department.isHasAdvanced() ? total : getTotal(total, category);
+        return department.isHasAdvanced() || category == null ? total : getTotal(total, category);
     }
 
     public int getTotal(Year year, Category category) {

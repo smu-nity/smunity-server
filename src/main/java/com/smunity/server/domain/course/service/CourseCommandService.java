@@ -8,7 +8,6 @@ import com.smunity.server.domain.course.dto.ResultResponseDto;
 import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.domain.course.repository.course.CourseRepository;
 import com.smunity.server.global.common.entity.Member;
-import com.smunity.server.global.common.entity.enums.Category;
 import com.smunity.server.global.common.repository.MemberRepository;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
@@ -38,7 +37,7 @@ public class CourseCommandService {
                 .toList();
         courseRepository.saveAll(courses);
         List<CourseResponseDto> responseDtoList = CourseResponseDto.from(member.getCourses());
-        int total = standardService.getTotal(member.getYear(), Category.ALL);
+        int total = standardService.getTotal(member.getYear(), null);
         return ResultResponseDto.of(total, member.getCompletedCredits(), responseDtoList);
     }
 
