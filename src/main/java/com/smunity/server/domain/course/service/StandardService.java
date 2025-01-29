@@ -25,12 +25,16 @@ public class StandardService {
         };
     }
 
+    public int getTotal(Year year) {
+        return getTotal(year, null);
+    }
+
     public int getTotal(Year year, Department department, Category category) {
         int total = getTotal(year, category);
         return department.isHasAdvanced() || category == null ? total : getTotal(total, category);
     }
 
-    public int getTotal(Year year, Category category) {
+    private int getTotal(Year year, Category category) {
         return standardRepository.findByYearAndCategory(year, category)
                 .map(Standard::getTotal)
                 .orElse(0);

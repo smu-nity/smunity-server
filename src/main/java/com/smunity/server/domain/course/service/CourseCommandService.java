@@ -37,7 +37,7 @@ public class CourseCommandService {
                 .toList();
         courseRepository.saveAll(courses);
         List<CourseResponseDto> responseDtoList = CourseResponseDto.from(member.getCourses());
-        int total = standardService.getTotal(member.getYear(), null);
+        int total = standardService.getTotal(member.getYear());
         return ResultResponseDto.of(total, member.getCompletedCredits(), responseDtoList);
     }
 

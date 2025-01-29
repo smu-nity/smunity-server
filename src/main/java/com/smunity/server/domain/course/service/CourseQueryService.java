@@ -43,7 +43,7 @@ public class CourseQueryService {
     public CreditResponseDto readCoursesCredit(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        int total = standardService.getTotal(member.getYear(), null);
+        int total = standardService.getTotal(member.getYear());
         return CreditResponseDto.from(total, member);
     }
 
