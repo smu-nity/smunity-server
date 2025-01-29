@@ -13,6 +13,7 @@ public enum ErrorCode {
     UNAUTHORIZED(401, "COMMON002", "로그인이 필요합니다."),
     METHOD_NOT_ALLOWED(405, "COMMON003", "지원하지 않는 Http Method 입니다."),
     FORBIDDEN(403, "COMMON004", "금지된 요청입니다."),
+    INVALID_ENUM_VALUE(400, "COMMON005", "잘못된 요청 값입니다."),
 
     // Validation Errors
     VALIDATION_FAILED(400, "VALID001", "입력값에 대한 검증에 실패했습니다."),
