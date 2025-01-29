@@ -18,6 +18,4 @@ public class Year {
 
     @Column(name = "year_value")
     private Integer value;
-
-    private Integer total;
 }
