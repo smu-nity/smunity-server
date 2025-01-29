@@ -49,6 +49,7 @@ public class AuthUtil {
             connection.getOutputStream().write(createRequestData(requestDto));
             return readResponse(connection);
         } catch (IOException e) {
+            log.error("[ERROR] Failed to fetch data from URL: '{}'. Request: {}", url, requestDto, e);
             throw new GeneralException(ErrorCode.AUTH_INTERNAL_SERVER_ERROR);
         }
     }
