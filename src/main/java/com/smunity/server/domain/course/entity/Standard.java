@@ -19,7 +19,6 @@ public class Standard {
     @JoinColumn(name = "year_id")
     private Year year;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Category category;
 

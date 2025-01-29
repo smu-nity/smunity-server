@@ -10,7 +10,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public enum Category {
 
-    ALL("전체"),
     MAJOR_ADVANCED("1전심"),
     MAJOR_OPTIONAL("1전선"),
     CULTURE("교양"),
