@@ -4,6 +4,7 @@ import com.smunity.server.domain.auth.dto.AuthRequestDto;
 import com.smunity.server.domain.auth.dto.AuthResponseDto;
 import com.smunity.server.domain.auth.service.AuthService;
 import com.smunity.server.domain.member.dto.ChangeDepartmentRequestDto;
+import com.smunity.server.domain.member.dto.ChangeExemptionRequestDto;
 import com.smunity.server.domain.member.dto.ChangePasswordRequestDto;
 import com.smunity.server.domain.member.dto.MemberInfoResponseDto;
 import com.smunity.server.global.common.entity.Department;
@@ -50,6 +51,12 @@ public class MemberCommandService {
         Department department = departmentRepository.findById(requestDto.departmentId())
                 .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
         member.changeDepartment(department);
+        return MemberInfoResponseDto.from(member);
+    }
+
+    public MemberInfoResponseDto changeExemption(Long memberId, ChangeExemptionRequestDto requestDto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
+        member.changeExemption(requestDto.exemption());
         return MemberInfoResponseDto.from(member);
     }
 
