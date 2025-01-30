@@ -101,6 +101,10 @@ public class Member extends BaseEntity {
         this.department = department;
     }
 
+    public void changeExemption(Exemption exemption) {
+        this.exemption = exemption;
+    }
+
     public int getCompletedCredits() {
         return courses.stream()
                 .mapToInt(Course::getCredit)

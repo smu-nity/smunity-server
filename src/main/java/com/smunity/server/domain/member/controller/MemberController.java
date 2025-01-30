@@ -67,6 +67,13 @@ public class MemberController {
         return ResponseEntity.ok(responseDto);
     }
 
+    @PatchMapping("/me/exemption")
+    @Operation(summary = "이수 면제 설정 변경", description = "로그인한 회원의 이수 면제 설정을 변경합니다.")
+    public ResponseEntity<MemberInfoResponseDto> changeExemption(@AuthMember Long memberId, @RequestBody @Valid ChangeExemptionRequestDto requestDto) {
+        MemberInfoResponseDto responseDto = memberCommandService.changeExemption(memberId, requestDto);
+        return ResponseEntity.ok(responseDto);
+    }
+
     @PatchMapping("/password/reset")
     @Operation(summary = "비밀번호 재설정", description = "인증 토큰 검증 후 비밀번호를 변경합니다.")
     public ResponseEntity<MemberInfoResponseDto> changePasswordByAuth(@AuthVerified String memberName, @RequestBody @Valid ChangePasswordRequestDto requestDto) {
