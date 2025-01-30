@@ -11,8 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.smunity.server.global.common.entity.enums.SubDomain.*;
 
@@ -28,15 +29,15 @@ public class CurriculumService {
         return CultureResponseDto.of(curriculums, getExemptions(member.getExemption()), member);
     }
 
-    private List<SubDomain> getExemptions(Exemption exemption) {
-        return exemption != null ? getExemptionCultures(exemption) : new ArrayList<>();
+    private Set<SubDomain> getExemptions(Exemption exemption) {
+        return exemption != null ? getExemptionCultures(exemption) : new HashSet<>();
     }
 
-    private List<SubDomain> getExemptionCultures(Exemption exemption) {
+    private Set<SubDomain> getExemptionCultures(Exemption exemption) {
         return switch (exemption) {
-            case FOREIGN -> List.of(BASIC_COMPUTER, BASIC_COMPUTER_1, BASIC_COMPUTER_2);
-            case DISABLED -> List.of(BASIC_ENG_MATH);
-            default -> new ArrayList<>();
+            case FOREIGN -> Set.of(BASIC_COMPUTER, BASIC_COMPUTER_1, BASIC_COMPUTER_2);
+            case DISABLED -> Set.of(BASIC_ENG_MATH);
+            default -> new HashSet<>();
         };
     }
 }
