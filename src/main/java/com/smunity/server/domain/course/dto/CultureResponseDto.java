@@ -6,6 +6,7 @@ import com.smunity.server.global.common.entity.enums.SubDomain;
 import lombok.Builder;
 
 import java.util.List;
+import java.util.Set;
 
 @Builder
 public record CultureResponseDto(
@@ -22,9 +23,10 @@ public record CultureResponseDto(
                 .build();
     }
 
-    public static List<CultureResponseDto> of(List<Curriculum> curriculums, Member member) {
+    public static List<CultureResponseDto> of(List<Curriculum> curriculums, Set<SubDomain> exemptions, Member member) {
         return curriculums.stream()
-                .filter(curriculum -> !curriculum.getSubDomain().equals(member.getSubDomain()))
+                .filter(curriculum -> !member.getSubDomain().equals(curriculum.getSubDomain()))
+                .filter(curriculum -> !exemptions.contains(curriculum.getSubDomain()))
                 .map(curriculum -> of(curriculum.getSubDomain(), member))
                 .toList();
     }
