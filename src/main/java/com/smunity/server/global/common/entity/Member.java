@@ -5,6 +5,7 @@ import com.smunity.server.domain.answer.entity.Answer;
 import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.domain.question.entity.Question;
 import com.smunity.server.global.common.entity.enums.Category;
+import com.smunity.server.global.common.entity.enums.Exemption;
 import com.smunity.server.global.common.entity.enums.MemberRole;
 import com.smunity.server.global.common.entity.enums.SubDomain;
 import jakarta.persistence.*;
@@ -51,6 +52,9 @@ public class Member extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     private Department department;
+
+    @Enumerated(EnumType.STRING)
+    private Exemption exemption;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Course> courses = new ArrayList<>();
