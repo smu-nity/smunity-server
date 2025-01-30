@@ -17,10 +17,10 @@ public class StandardService {
 
     private final StandardRepository standardRepository;
 
-    public int getCultureTotal(int size, Domain domain) {
+    public int getCultureTotal(Department department, int size, Domain domain) {
         return switch (domain) {
             case CORE -> 2;
-            case BALANCE -> 3;
+            case BALANCE -> department.isHasAdvanced() ? 3 : 0;
             default -> size;
         };
     }
