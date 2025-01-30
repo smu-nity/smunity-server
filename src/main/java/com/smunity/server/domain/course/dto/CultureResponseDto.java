@@ -22,9 +22,10 @@ public record CultureResponseDto(
                 .build();
     }
 
-    public static List<CultureResponseDto> of(List<Curriculum> curriculums, Member member) {
+    public static List<CultureResponseDto> of(List<Curriculum> curriculums, List<SubDomain> exemptions, Member member) {
         return curriculums.stream()
                 .filter(curriculum -> !curriculum.getSubDomain().equals(member.getSubDomain()))
+                .filter(curriculum -> !exemptions.contains(curriculum.getSubDomain()))
                 .map(curriculum -> of(curriculum.getSubDomain(), member))
                 .toList();
     }
