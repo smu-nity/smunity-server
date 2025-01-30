@@ -52,7 +52,7 @@ public class CourseQueryService {
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Curriculum> curriculums = curriculumRepository.findAllByYearAndDomain(member.getYear(), domain);
         List<CultureResponseDto> responseDtoList = CultureResponseDto.of(curriculums, member);
-        int total = standardService.getCultureTotal(curriculums.size(), domain);
+        int total = standardService.getCultureTotal(member.getDepartment(), curriculums.size(), domain);
         int completed = calculateCultureCompleted(responseDtoList);
         return ResultResponseDto.of(total, completed, responseDtoList);
     }
