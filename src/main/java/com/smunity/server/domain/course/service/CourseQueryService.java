@@ -5,9 +5,7 @@ import com.smunity.server.domain.course.dto.CreditResponseDto;
 import com.smunity.server.domain.course.dto.CultureResponseDto;
 import com.smunity.server.domain.course.dto.ResultResponseDto;
 import com.smunity.server.domain.course.entity.Course;
-import com.smunity.server.domain.course.entity.Curriculum;
 import com.smunity.server.domain.course.entity.enums.Domain;
-import com.smunity.server.domain.course.repository.CurriculumRepository;
 import com.smunity.server.domain.course.repository.course.CourseRepository;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.entity.enums.Category;
@@ -26,9 +24,9 @@ import java.util.List;
 public class CourseQueryService {
 
     private final StandardService standardService;
+    private final CurriculumService curriculumService;
     private final MemberRepository memberRepository;
     private final CourseRepository courseRepository;
-    private final CurriculumRepository curriculumRepository;
 
     public ResultResponseDto<CourseResponseDto> readCourses(Long memberId, Category category) {
         Member member = memberRepository.findById(memberId)
@@ -50,11 +48,10 @@ public class CourseQueryService {
     public ResultResponseDto<CultureResponseDto> readCultureCourses(Long memberId, Domain domain) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        List<Curriculum> curriculums = curriculumRepository.findAllByYearAndDomain(member.getYear(), domain);
-        List<CultureResponseDto> responseDtoList = CultureResponseDto.of(curriculums, member);
-        int total = standardService.getCultureTotal(member.getExemption(), member.getDepartment(), curriculums.size(), domain);
-        int completed = calculateCultureCompleted(responseDtoList);
-        return ResultResponseDto.of(total, completed, responseDtoList);
+        List<CultureResponseDto> cultures = curriculumService.readCurriculums(member, domain);
+        int total = standardService.getCultureTotal(member.getExemption(), member.getDepartment(), cultures.size(), domain);
+        int completed = calculateCultureCompleted(cultures);
+        return ResultResponseDto.of(total, completed, cultures);
     }
 
     private int calculateCompleted(List<Course> courses) {
