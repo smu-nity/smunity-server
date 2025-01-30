@@ -25,7 +25,7 @@ public record CultureResponseDto(
 
     public static List<CultureResponseDto> of(List<Curriculum> curriculums, Set<SubDomain> exemptions, Member member) {
         return curriculums.stream()
-                .filter(curriculum -> !curriculum.getSubDomain().equals(member.getSubDomain()))
+                .filter(curriculum -> !member.getSubDomain().equals(curriculum.getSubDomain()))
                 .filter(curriculum -> !exemptions.contains(curriculum.getSubDomain()))
                 .map(curriculum -> of(curriculum.getSubDomain(), member))
                 .toList();
