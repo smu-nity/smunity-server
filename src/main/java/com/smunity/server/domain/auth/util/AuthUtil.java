@@ -21,14 +21,14 @@ import java.util.Map;
 public class AuthUtil {
 
     private static final String LOGIN_URL = "https://smsso.smu.ac.kr/Login.do";
-    private static final String BASE_URL = "https://smul.smu.ac.kr";
+    private static final String BASE_URL = "https://smul.smu.ac.kr/";
 
     public static JSONArray getCourses(AuthRequestDto requestDto) {
-        return getData(requestDto, "/UsrRecMatt/list.do", "dsRecMattList");
+        return getData(requestDto, "UsrRecMatt/list.do", "dsRecMattList");
     }
 
     public static JSONObject getInfo(AuthRequestDto requestDto) {
-        JSONArray response = getData(requestDto, "/UsrSchMng/selectStdInfo.do", "dsStdInfoList");
+        JSONArray response = getData(requestDto, "UsrSchMng/selectStdInfo.do", "dsStdInfoList");
         return response.getJSONObject(0);
     }
 
@@ -49,8 +49,8 @@ public class AuthUtil {
             connection.getOutputStream().write(createRequestData(requestDto));
             return readResponse(connection);
         } catch (IOException e) {
-            log.error("[ERROR] Failed to fetch data from URL: '{}'. Request: {}", url, requestDto, e);
-            throw new GeneralException(ErrorCode.AUTH_INTERNAL_SERVER_ERROR);
+            log.error("[ERROR] Failed to fetch data from URL: '{}'.", url, e);
+            throw new GeneralException(ErrorCode.AUTH_FETCH_FAILURE);
         }
     }
 
@@ -59,6 +59,7 @@ public class AuthUtil {
             Connection.Response loginResponse = executeLogin(requestDto);
             return getSessionCookies(loginResponse);
         } catch (IOException e) {
+            log.error("[ERROR] Failed to Login.", e);
             throw new GeneralException(ErrorCode.AUTH_LOGIN_FAIL);
         }
     }
@@ -75,11 +76,13 @@ public class AuthUtil {
     }
 
     private static Map<String, String> getSessionCookies(Connection.Response loginResponse) throws IOException {
-        return Jsoup.connect(BASE_URL + "/index.do")
+        Connection.Response response = Jsoup.connect(BASE_URL + "index.do")
                 .method(Connection.Method.GET)
                 .cookies(loginResponse.cookies())
-                .execute()
-                .cookies();
+                .execute();
+        if (!response.url().toString().equals(BASE_URL))
+            throw new GeneralException(ErrorCode.AUTH_EXCEEDED_LOGIN_ATTEMPTS);
+        return response.cookies();
     }
 
     private static HttpURLConnection createConnection(String url, Map<String, String> session) throws IOException {
