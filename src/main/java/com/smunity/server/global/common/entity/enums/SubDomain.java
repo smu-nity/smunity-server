@@ -30,8 +30,13 @@ public enum SubDomain {
 
     private final String name;
 
-    public static SubDomain of(String name) {
-        return hasEngMath(name) ? BASIC_ENG_MATH : findByName(name);
+    public boolean isNaturalOrEngineer() {
+        return equals(BALANCE_NATURAL) || equals(BALANCE_ENGINEER);
+    }
+
+    public static SubDomain of(String name, boolean isNewCurriculum) {
+        SubDomain subDomain = hasEngMath(name) ? BASIC_ENG_MATH : findByName(name);
+        return isNewCurriculum && subDomain.isNaturalOrEngineer() ? BALANCE_NATURAL_ENGINEER : subDomain;
     }
 
     private static SubDomain findByName(String name) {

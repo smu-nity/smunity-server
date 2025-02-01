@@ -14,7 +14,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.smunity.server.global.common.entity.enums.SubDomain.*;
+import static com.smunity.server.global.common.entity.enums.SubDomain.BALANCE_NATURAL_ENGINEER;
 
 @Entity
 @Getter
@@ -126,12 +126,16 @@ public class Member extends BaseEntity {
 
     public SubDomain getSubDomain() {
         SubDomain subDomain = department.getSubDomain();
-        return year.getValue() >= 2024 && (subDomain.equals(BALANCE_NATURAL) || subDomain.equals(BALANCE_ENGINEER)) ? BALANCE_NATURAL_ENGINEER : subDomain;
+        return isNewCurriculum() && subDomain.isNaturalOrEngineer() ? BALANCE_NATURAL_ENGINEER : subDomain;
     }
 
     public boolean checkCompleted(SubDomain subDomain) {
         return courses.stream()
                 .map(Course::getSubDomain)
                 .anyMatch(subDomain::equals);
+    }
+
+    public boolean isNewCurriculum() {
+        return year.getValue() >= 2024;
     }
 }

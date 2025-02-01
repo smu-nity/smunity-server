@@ -46,7 +46,7 @@ public record AuthCourseResponseDto(
         return !Objects.equals(domain, "*") ? domain : null;
     }
 
-    public Course toEntity() {
+    public Course toEntity(boolean isNewCurriculum) {
         return Course.builder()
                 .name(name)
                 .number(number)
@@ -55,7 +55,7 @@ public record AuthCourseResponseDto(
                 .type(type)
                 .domain(domain)
                 .category(Category.of(type))
-                .subDomain(domain != null ? SubDomain.of(domain) : null)
+                .subDomain(domain != null ? SubDomain.of(domain, isNewCurriculum) : null)
                 .credit(credit)
                 .build();
     }
