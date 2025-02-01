@@ -46,7 +46,7 @@ public class CourseCommandService {
     }
 
     private Course toCourse(AuthCourseResponseDto dto, Member member) {
-        Course course = dto.toEntity();
+        Course course = dto.toEntity(member.isNewCurriculum());
         course.setMember(member);
         return course;
     }
