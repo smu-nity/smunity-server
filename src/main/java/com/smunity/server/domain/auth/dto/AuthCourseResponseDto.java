@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.IntStream;
 
 @Builder
@@ -37,13 +36,9 @@ public record AuthCourseResponseDto(
                 .grade(obj.getString("GRD_NM"))
                 .year(obj.getString("SCH_YEAR"))
                 .semester(obj.getString("SMT_NM"))
-                .domain(getDomain(obj.getString("CULT_ARA_NM")))
+                .domain(obj.getString("CULT_ARA_NM"))
                 .credit(obj.getInt("CDT"))
                 .build();
-    }
-
-    private static String getDomain(String domain) {
-        return !Objects.equals(domain, "*") ? domain : null;
     }
 
     public Course toEntity(boolean isNewCurriculum) {
@@ -55,7 +50,7 @@ public record AuthCourseResponseDto(
                 .type(type)
                 .domain(domain)
                 .category(Category.of(type))
-                .subDomain(domain != null ? SubDomain.of(domain, isNewCurriculum) : null)
+                .subDomain(SubDomain.of(domain, isNewCurriculum))
                 .credit(credit)
                 .build();
     }
