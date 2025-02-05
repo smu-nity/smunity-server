@@ -20,6 +20,13 @@
         </format>
     </appender>
 
+    <appender name="LOKI_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="LOKI"/>
+        <queueSize>500</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <includeCallerData>false</includeCallerData>
+    </appender>
+
     <springProfile name="local">
         <root level="DEBUG">
             <appender-ref ref="CONSOLE"/>
@@ -35,7 +42,7 @@
     <springProfile name="release">
         <root level="WARN">
             <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="LOKI"/>
+            <appender-ref ref="LOKI_ASYNC"/>
         </root>
     </springProfile>
 </configuration>
