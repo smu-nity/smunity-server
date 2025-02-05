@@ -15,6 +15,10 @@
             <requestTimeoutMs>5000</requestTimeoutMs>
             <maxConnections>1</maxConnections>
         </http>
+        <buffer>
+            <maxSize>1000</maxSize>
+            <timeoutMs>10000</timeoutMs>
+        </buffer>
         <format>
             <label>
                 <pattern>app=smunity,level=%level,host=${HOSTNAME}</pattern>
