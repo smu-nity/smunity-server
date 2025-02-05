@@ -11,13 +11,27 @@
     <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
         <http>
             <url>http://3.37.189.47:3100/loki/api/v1/push</url>
+            <connectionTimeoutMs>10000</connectionTimeoutMs>
+            <requestTimeoutMs>5000</requestTimeoutMs>
+            <maxConnections>1</maxConnections>
         </http>
+        <buffer>
+            <maxSize>1000</maxSize>
+            <timeoutMs>10000</timeoutMs>
+        </buffer>
         <format>
             <label>
                 <pattern>app=smunity,level=%level,host=${HOSTNAME}</pattern>
             </label>
             <message class="com.github.loki4j.logback.JsonLayout"/>
         </format>
+    </appender>
+
+    <appender name="LOKI_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="LOKI"/>
+        <queueSize>500</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <includeCallerData>false</includeCallerData>
     </appender>
 
     <springProfile name="local">
@@ -35,7 +49,7 @@
     <springProfile name="release">
         <root level="WARN">
             <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="LOKI"/>
+            <appender-ref ref="LOKI_ASYNC"/>
         </root>
     </springProfile>
 </configuration>
