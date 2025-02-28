@@ -2,6 +2,7 @@ package com.smunity.server.domain.course.service;
 
 import com.smunity.server.domain.auth.dto.AuthCourseResponseDto;
 import com.smunity.server.domain.auth.dto.AuthRequestDto;
+import com.smunity.server.domain.auth.mapper.AuthMapper;
 import com.smunity.server.domain.auth.service.AuthService;
 import com.smunity.server.domain.course.dto.CourseResponseDto;
 import com.smunity.server.domain.course.dto.ResultResponseDto;
@@ -46,7 +47,7 @@ public class CourseCommandService {
     }
 
     private Course toCourse(AuthCourseResponseDto dto, Member member) {
-        Course course = dto.toEntity(member.isNewCurriculum());
+        Course course = AuthMapper.INSTANCE.toEntity(dto, member.isNewCurriculum());
         course.setMember(member);
         return course;
     }
