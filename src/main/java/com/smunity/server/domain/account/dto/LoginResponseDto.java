@@ -11,12 +11,4 @@ public record LoginResponseDto(
         String refreshToken
 ) {
 
-    public static LoginResponseDto of(String username, MemberRole memberRole, String accessToken, String refreshToken) {
-        return LoginResponseDto.builder()
-                .username(username)
-                .memberRole(memberRole)
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
-    }
 }
