@@ -1,6 +1,5 @@
 package com.smunity.server.domain.answer.dto;
 
-import com.smunity.server.domain.answer.entity.Answer;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
@@ -14,13 +13,4 @@ public record AnswerResponseDto(
         LocalDateTime updatedAt
 ) {
 
-    public static AnswerResponseDto from(Answer answer) {
-        return AnswerResponseDto.builder()
-                .id(answer.getId())
-                .questionId(answer.getQuestion().getId())
-                .content(answer.getContent())
-                .createdAt(answer.getCreatedAt())
-                .updatedAt(answer.getUpdatedAt())
-                .build();
-    }
 }

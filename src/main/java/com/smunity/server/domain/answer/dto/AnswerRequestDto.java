@@ -1,6 +1,5 @@
 package com.smunity.server.domain.answer.dto;
 
-import com.smunity.server.domain.answer.entity.Answer;
 import jakarta.validation.constraints.NotBlank;
 
 public record AnswerRequestDto(
@@ -8,9 +7,4 @@ public record AnswerRequestDto(
         String content
 ) {
 
-    public Answer toEntity() {
-        return Answer.builder()
-                .content(content)
-                .build();
-    }
 }
