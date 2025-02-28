@@ -1,6 +1,5 @@
 package com.smunity.server.domain.account.dto;
 
-import com.smunity.server.domain.account.entity.LoginStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -13,9 +12,4 @@ public record LoginRequestDto(
         String password
 ) {
 
-    public LoginStatus toEntity(String ipAddress) {
-        return LoginStatus.builder()
-                .ipAddress(ipAddress)
-                .build();
-    }
 }
