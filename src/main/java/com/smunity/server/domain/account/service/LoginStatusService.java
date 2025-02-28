@@ -3,7 +3,6 @@ package com.smunity.server.domain.account.service;
 import com.smunity.server.domain.account.dto.LoginRequestDto;
 import com.smunity.server.domain.account.entity.LoginStatus;
 import com.smunity.server.domain.account.repository.LoginStatusRepository;
-import com.smunity.server.domain.account.util.IpUtil;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.repository.MemberRepository;
 import com.smunity.server.global.exception.GeneralException;
@@ -25,7 +24,7 @@ public class LoginStatusService {
     public void createLoginStatus(LoginRequestDto requestDto) {
         Member member = memberRepository.findByUsername(requestDto.username())
                 .orElseThrow(() -> new GeneralException(ErrorCode.ACCOUNT_NOT_FOUND));
-        LoginStatus loginStatus = requestDto.toEntity(IpUtil.getClientIp(request));
+        LoginStatus loginStatus = requestDto.toEntity(request);
         loginStatus.setMember(member);
         loginStatusRepository.save(loginStatus);
     }
