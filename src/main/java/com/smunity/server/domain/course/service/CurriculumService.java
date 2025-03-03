@@ -3,6 +3,7 @@ package com.smunity.server.domain.course.service;
 import com.smunity.server.domain.course.dto.CultureResponseDto;
 import com.smunity.server.domain.course.entity.Curriculum;
 import com.smunity.server.domain.course.entity.enums.Domain;
+import com.smunity.server.domain.course.mapper.CurriculumMapper;
 import com.smunity.server.domain.course.repository.CurriculumRepository;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.entity.enums.Exemption;
@@ -26,7 +27,7 @@ public class CurriculumService {
 
     public List<CultureResponseDto> readCurriculums(Member member, Domain domain) {
         List<Curriculum> curriculums = curriculumRepository.findAllByYearAndDomain(member.getYear(), domain);
-        return CultureResponseDto.of(curriculums, getExemptions(member.getExemption()), member);
+        return CurriculumMapper.INSTANCE.toDto(curriculums, getExemptions(member.getExemption()), member);
     }
 
     private Set<SubDomain> getExemptions(Exemption exemption) {
