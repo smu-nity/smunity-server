@@ -2,6 +2,7 @@ package com.smunity.server.domain.culture.service;
 
 import com.smunity.server.domain.culture.dto.CultureResponseDto;
 import com.smunity.server.domain.culture.entity.Culture;
+import com.smunity.server.domain.culture.mapper.CultureMapper;
 import com.smunity.server.domain.culture.repository.CultureQueryRepository;
 import com.smunity.server.global.common.dto.ListResponseDto;
 import com.smunity.server.global.common.entity.enums.SubDomain;
@@ -20,7 +21,6 @@ public class CultureQueryService {
 
     public ListResponseDto<CultureResponseDto> readCultures(SubDomain subDomain) {
         List<Culture> cultures = cultureQueryRepository.findBySubDomain(subDomain);
-        List<CultureResponseDto> responseDtoList = CultureResponseDto.from(cultures);
-        return ListResponseDto.from(responseDtoList);
+        return CultureMapper.INSTANCE.toResponse(cultures);
     }
 }
