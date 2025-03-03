@@ -6,6 +6,7 @@ import com.smunity.server.domain.course.dto.CultureResponseDto;
 import com.smunity.server.domain.course.dto.ResultResponseDto;
 import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.domain.course.entity.enums.Domain;
+import com.smunity.server.domain.course.mapper.CourseMapper;
 import com.smunity.server.domain.course.repository.course.CourseRepository;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.entity.enums.Category;
@@ -32,17 +33,17 @@ public class CourseQueryService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Course> courses = courseRepository.findByMemberIdAndCategory(memberId, category);
-        List<CourseResponseDto> responseDtoList = CourseResponseDto.from(courses);
+        List<CourseResponseDto> responseDtoList = CourseMapper.INSTANCE.toDto(courses);
         int total = standardService.getTotal(member.getYear(), member.getDepartment(), category);
         int completed = calculateCompleted(courses);
-        return ResultResponseDto.of(total, completed, responseDtoList);
+        return CourseMapper.INSTANCE.toDto(total, completed, responseDtoList);
     }
 
     public CreditResponseDto readCoursesCredit(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         int total = standardService.getTotal(member.getYear());
-        return CreditResponseDto.from(total, member);
+        return CourseMapper.INSTANCE.toDto(total, member);
     }
 
     public ResultResponseDto<CultureResponseDto> readCultureCourses(Long memberId, Domain domain) {
@@ -51,7 +52,7 @@ public class CourseQueryService {
         List<CultureResponseDto> cultures = curriculumService.readCurriculums(member, domain);
         int total = standardService.getCultureTotal(member.getExemption(), member.getDepartment(), cultures.size(), domain);
         int completed = calculateCultureCompleted(cultures);
-        return ResultResponseDto.of(total, completed, cultures);
+        return CourseMapper.INSTANCE.toDto(total, completed, cultures);
     }
 
     private int calculateCompleted(List<Course> courses) {

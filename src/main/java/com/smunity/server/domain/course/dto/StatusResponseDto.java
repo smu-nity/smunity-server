@@ -10,20 +10,4 @@ public record StatusResponseDto(
         int completion
 ) {
 
-    public static StatusResponseDto of(int total, int completed) {
-        return StatusResponseDto.builder()
-                .total(total)
-                .completed(completed)
-                .required(calculateRequired(total, completed))
-                .completion(calculateCompletion(total, completed))
-                .build();
-    }
-
-    public static int calculateRequired(int total, int completed) {
-        return Math.max(0, total - completed);
-    }
-
-    public static int calculateCompletion(int total, int completed) {
-        return total != 0 ? Math.min(100, completed * 100 / total) : 100;
-    }
 }
