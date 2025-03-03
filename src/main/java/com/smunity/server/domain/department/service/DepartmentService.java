@@ -2,6 +2,7 @@ package com.smunity.server.domain.department.service;
 
 import com.smunity.server.domain.department.dto.DepartmentEditResponseDto;
 import com.smunity.server.domain.department.dto.DepartmentResponseDto;
+import com.smunity.server.domain.department.mapper.DepartmentMapper;
 import com.smunity.server.global.common.dto.ListResponseDto;
 import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.repository.DepartmentRepository;
@@ -20,11 +21,11 @@ public class DepartmentService {
 
     public ListResponseDto<DepartmentResponseDto> readDepartments() {
         List<Department> departments = departmentRepository.findAll();
-        return DepartmentResponseDto.from(departments);
+        return DepartmentMapper.INSTANCE.toResponse(departments);
     }
 
     public ListResponseDto<DepartmentEditResponseDto> readEditableDepartments() {
         List<Department> departments = departmentRepository.findAllByIsEditable(true);
-        return DepartmentEditResponseDto.from(departments);
+        return DepartmentMapper.INSTANCE.toEditResponse(departments);
     }
 }
