@@ -2,6 +2,7 @@ package com.smunity.server.domain.major.service;
 
 import com.smunity.server.domain.major.dto.MajorResponseDto;
 import com.smunity.server.domain.major.entity.Major;
+import com.smunity.server.domain.major.mapper.MajorMapper;
 import com.smunity.server.domain.major.repository.MajorQueryRepository;
 import com.smunity.server.global.common.dto.ListResponseDto;
 import com.smunity.server.global.common.entity.Member;
@@ -27,7 +28,6 @@ public class MajorQueryService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Major> majors = majorQueryRepository.findByDepartmentAndCategory(member.getDepartment(), category, member.getCompletedNumbers());
-        List<MajorResponseDto> responseDtoList = MajorResponseDto.from(majors);
-        return ListResponseDto.from(responseDtoList);
+        return MajorMapper.INSTANCE.toResponse(majors);
     }
 }
