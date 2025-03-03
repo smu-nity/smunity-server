@@ -3,6 +3,7 @@ package com.smunity.server.domain.member.service;
 import com.smunity.server.domain.member.dto.MemberCountDto;
 import com.smunity.server.domain.member.dto.MemberInfoResponseDto;
 import com.smunity.server.domain.member.dto.MemberResponseDto;
+import com.smunity.server.domain.member.mapper.MemberMapper;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.repository.MemberRepository;
 import com.smunity.server.global.exception.GeneralException;
@@ -22,17 +23,17 @@ public class MemberQueryService {
 
     public Page<MemberResponseDto> readMembers(Pageable pageable) {
         Page<Member> memberPage = memberRepository.findAll(pageable);
-        return MemberResponseDto.from(memberPage);
+        return MemberMapper.INSTANCE.toResponse(memberPage);
     }
 
     public MemberInfoResponseDto readMember(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        return MemberInfoResponseDto.from(member);
+        return MemberMapper.INSTANCE.toDto(member);
     }
 
     public MemberCountDto countMembers() {
         long count = memberRepository.count();
-        return MemberCountDto.of(count);
+        return MemberMapper.INSTANCE.toDto(count);
     }
 }
