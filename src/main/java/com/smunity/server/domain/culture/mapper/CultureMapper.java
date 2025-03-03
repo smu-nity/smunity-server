@@ -14,7 +14,7 @@ public interface CultureMapper {
 
     CultureMapper INSTANCE = Mappers.getMapper(CultureMapper.class);
 
-    @Mapping(source = "culture.subDomain.name", target = "type")
+    @Mapping(target = "type", source = "culture.subDomain.name")
     CultureResponseDto toDto(Culture culture);
 
     default List<CultureResponseDto> toDto(List<Culture> cultures) {

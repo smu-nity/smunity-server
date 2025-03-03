@@ -12,7 +12,7 @@ public interface AnswerMapper {
 
     AnswerMapper INSTANCE = Mappers.getMapper(AnswerMapper.class);
 
-    @Mapping(source = "question.id", target = "questionId")
+    @Mapping(target = "questionId", source = "question.id")
     AnswerResponseDto toDto(Answer answer);
 
     Answer toEntity(AnswerRequestDto requestDto);
