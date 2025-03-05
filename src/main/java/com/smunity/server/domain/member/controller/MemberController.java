@@ -1,6 +1,6 @@
 package com.smunity.server.domain.member.controller;
 
-import com.smunity.server.domain.auth.dto.AuthRequestDto;
+import com.smunity.server.domain.auth.dto.AuthRequest;
 import com.smunity.server.domain.member.dto.*;
 import com.smunity.server.domain.member.service.MemberCommandService;
 import com.smunity.server.domain.member.service.MemberQueryService;
@@ -48,7 +48,7 @@ public class MemberController {
 
     @PutMapping("/me")
     @Operation(summary = "내 정보 수정", description = "로그인한 회원의 정보를 수정합니다.")
-    public ResponseEntity<MemberInfoResponseDto> updateMember(@AuthMember Long memberId, @RequestBody @Valid AuthRequestDto requestDto) {
+    public ResponseEntity<MemberInfoResponseDto> updateMember(@AuthMember Long memberId, @RequestBody @Valid AuthRequest requestDto) {
         MemberInfoResponseDto responseDto = memberCommandService.updateMember(memberId, requestDto);
         return ResponseEntity.ok(responseDto);
     }

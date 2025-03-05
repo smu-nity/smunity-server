@@ -1,7 +1,7 @@
 package com.smunity.server.domain.auth.mapper;
 
 import com.smunity.server.domain.auth.dto.AuthCourseResponseDto;
-import com.smunity.server.domain.auth.dto.AuthInfoResponseDto;
+import com.smunity.server.domain.auth.dto.AuthResponse;
 import com.smunity.server.domain.auth.dto.AuthResponseDto;
 import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.global.common.entity.enums.Category;
@@ -29,14 +29,14 @@ public interface AuthMapper {
     @Mapping(target = "subDomain", expression = "java(of(dto.domain(), isNewCurriculum))")
     Course toEntity(AuthCourseResponseDto dto, boolean isNewCurriculum);
 
-    AuthResponseDto toDto(AuthInfoResponseDto dto, String authToken);
+    AuthResponse toResponse(AuthResponseDto dto, String authToken);
+
+    default AuthResponse toResponse(JSONObject obj, String authToken) {
+        return toResponse(AuthResponseDto.from(obj), authToken);
+    }
 
     default List<AuthCourseResponseDto> toDto(JSONArray objs) {
         return AuthCourseResponseDto.from(objs);
-    }
-
-    default AuthResponseDto toDto(JSONObject obj, String authToken) {
-        return toDto(AuthInfoResponseDto.from(obj), authToken);
     }
 
     default Category of(String name) {

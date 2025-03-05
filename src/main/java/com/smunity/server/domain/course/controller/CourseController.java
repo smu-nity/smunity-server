@@ -1,6 +1,6 @@
 package com.smunity.server.domain.course.controller;
 
-import com.smunity.server.domain.auth.dto.AuthRequestDto;
+import com.smunity.server.domain.auth.dto.AuthRequest;
 import com.smunity.server.domain.course.dto.CourseResponseDto;
 import com.smunity.server.domain.course.dto.CreditResponseDto;
 import com.smunity.server.domain.course.dto.CultureResponseDto;
@@ -50,7 +50,7 @@ public class CourseController {
 
     @PostMapping("/upload")
     @Operation(summary = "이수과목 업로드", description = "로그인한 회원의 이수과목을 업로드합니다.")
-    public ResponseEntity<ResultResponseDto<CourseResponseDto>> uploadCourses(@AuthMember Long memberId, @RequestBody @Valid AuthRequestDto requestDto) {
+    public ResponseEntity<ResultResponseDto<CourseResponseDto>> uploadCourses(@AuthMember Long memberId, @RequestBody @Valid AuthRequest requestDto) {
         ResultResponseDto<CourseResponseDto> responseDto = courseCommandService.createCourses(memberId, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }

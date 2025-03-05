@@ -1,7 +1,7 @@
 package com.smunity.server.domain.member.service;
 
-import com.smunity.server.domain.auth.dto.AuthRequestDto;
-import com.smunity.server.domain.auth.dto.AuthResponseDto;
+import com.smunity.server.domain.auth.dto.AuthRequest;
+import com.smunity.server.domain.auth.dto.AuthResponse;
 import com.smunity.server.domain.auth.service.AuthService;
 import com.smunity.server.domain.member.dto.ChangeDepartmentRequestDto;
 import com.smunity.server.domain.member.dto.ChangeExemptionRequestDto;
@@ -29,9 +29,9 @@ public class MemberCommandService {
     private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public MemberInfoResponseDto updateMember(Long memberId, AuthRequestDto requestDto) {
+    public MemberInfoResponseDto updateMember(Long memberId, AuthRequest requestDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        AuthResponseDto auth = authService.authenticate(requestDto);
+        AuthResponse auth = authService.authenticate(requestDto);
         Department department = departmentRepository.findByName(auth.department())
                 .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
         member.update(department, auth.name(), auth.email());
