@@ -3,6 +3,7 @@ package com.smunity.server.domain.auth.service;
 import com.smunity.server.domain.auth.dto.AuthCourseResponseDto;
 import com.smunity.server.domain.auth.dto.AuthRequestDto;
 import com.smunity.server.domain.auth.dto.AuthResponseDto;
+import com.smunity.server.domain.auth.mapper.AuthMapper;
 import com.smunity.server.domain.auth.util.AuthUtil;
 import com.smunity.server.global.common.repository.MemberRepository;
 import com.smunity.server.global.exception.GeneralException;
@@ -26,13 +27,13 @@ public class AuthService {
 
     public List<AuthCourseResponseDto> readCourses(AuthRequestDto requestDto) {
         JSONArray response = AuthUtil.getCourses(requestDto);
-        return AuthCourseResponseDto.from(response);
+        return AuthMapper.INSTANCE.toDto(response);
     }
 
     public AuthResponseDto authenticate(AuthRequestDto requestDto) {
         JSONObject response = AuthUtil.getInfo(requestDto);
         String authToken = jwtTokenProvider.createAuthToken(requestDto.username());
-        return AuthResponseDto.of(response, authToken);
+        return AuthMapper.INSTANCE.toDto(response, authToken);
     }
 
     public AuthResponseDto registerAuth(AuthRequestDto requestDto) {

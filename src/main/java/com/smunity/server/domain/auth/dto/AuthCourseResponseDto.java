@@ -1,8 +1,5 @@
 package com.smunity.server.domain.auth.dto;
 
-import com.smunity.server.domain.course.entity.Course;
-import com.smunity.server.global.common.entity.enums.Category;
-import com.smunity.server.global.common.entity.enums.SubDomain;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -52,20 +49,6 @@ public record AuthCourseResponseDto(
                 .semester(obj.getString("SMT_NM"))
                 .domain(obj.getString("CULT_ARA_NM"))
                 .credit(obj.getInt("CDT"))
-                .build();
-    }
-
-    public Course toEntity(boolean isNewCurriculum) {
-        return Course.builder()
-                .name(name)
-                .number(number)
-                .year(year)
-                .semester(semester)
-                .type(type)
-                .domain(domain)
-                .category(Category.of(type))
-                .subDomain(SubDomain.of(domain, isNewCurriculum))
-                .credit(credit)
                 .build();
     }
 }

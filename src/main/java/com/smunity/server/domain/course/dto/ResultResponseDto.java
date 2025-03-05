@@ -12,12 +12,4 @@ public record ResultResponseDto<T>(
         List<T> content
 ) {
 
-    public static <T> ResultResponseDto<T> of(int total, int completed, List<T> responses) {
-        return ResultResponseDto.<T>builder()
-                .completed(total <= completed)
-                .status(StatusResponseDto.of(total, completed))
-                .count(responses.size())
-                .content(responses)
-                .build();
-    }
 }

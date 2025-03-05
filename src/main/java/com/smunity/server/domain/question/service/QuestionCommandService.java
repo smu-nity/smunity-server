@@ -3,6 +3,7 @@ package com.smunity.server.domain.question.service;
 import com.smunity.server.domain.question.dto.QuestionRequestDto;
 import com.smunity.server.domain.question.dto.QuestionResponseDto;
 import com.smunity.server.domain.question.entity.Question;
+import com.smunity.server.domain.question.mapper.QuestionMapper;
 import com.smunity.server.domain.question.repository.QuestionRepository;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.repository.MemberRepository;
@@ -24,9 +25,9 @@ public class QuestionCommandService {
     public QuestionResponseDto createQuestion(Long memberId, QuestionRequestDto requestDto) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        Question question = requestDto.toEntity();
+        Question question = QuestionMapper.INSTANCE.toEntity(requestDto);
         question.setMember(member);
-        return QuestionResponseDto.from(questionRepository.save(question));
+        return QuestionMapper.INSTANCE.toDto(questionRepository.save(question));
     }
 
     public QuestionResponseDto updateQuestion(Long memberId, Boolean isAdmin, Long questionId, QuestionRequestDto requestDto) {
@@ -34,7 +35,7 @@ public class QuestionCommandService {
                 .orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
         PermissionUtil.validatePermission(memberId, isAdmin, question.getMember().getId());
         question.update(requestDto.title(), requestDto.content(), requestDto.anonymous());
-        return QuestionResponseDto.from(question);
+        return QuestionMapper.INSTANCE.toDto(question);
     }
 
     public void deleteQuestion(Long memberId, Boolean isAdmin, Long questionId) {

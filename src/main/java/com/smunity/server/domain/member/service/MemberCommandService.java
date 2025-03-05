@@ -7,6 +7,7 @@ import com.smunity.server.domain.member.dto.ChangeDepartmentRequestDto;
 import com.smunity.server.domain.member.dto.ChangeExemptionRequestDto;
 import com.smunity.server.domain.member.dto.ChangePasswordRequestDto;
 import com.smunity.server.domain.member.dto.MemberInfoResponseDto;
+import com.smunity.server.domain.member.mapper.MemberMapper;
 import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.repository.DepartmentRepository;
@@ -34,14 +35,14 @@ public class MemberCommandService {
         Department department = departmentRepository.findByName(auth.department())
                 .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
         member.update(department, auth.name(), auth.email());
-        return MemberInfoResponseDto.from(member);
+        return MemberMapper.INSTANCE.toDto(member);
     }
 
     public MemberInfoResponseDto changePassword(Long memberId, ChangePasswordRequestDto requestDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         String newEncodedPw = passwordEncoder.encode(requestDto.password());
         member.changePassword(newEncodedPw);
-        return MemberInfoResponseDto.from(member);
+        return MemberMapper.INSTANCE.toDto(member);
     }
 
     public MemberInfoResponseDto changeDepartment(Long memberId, ChangeDepartmentRequestDto requestDto) {
@@ -51,13 +52,13 @@ public class MemberCommandService {
         Department department = departmentRepository.findById(requestDto.departmentId())
                 .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
         member.changeDepartment(department);
-        return MemberInfoResponseDto.from(member);
+        return MemberMapper.INSTANCE.toDto(member);
     }
 
     public MemberInfoResponseDto changeExemption(Long memberId, ChangeExemptionRequestDto requestDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         member.changeExemption(requestDto.exemption());
-        return MemberInfoResponseDto.from(member);
+        return MemberMapper.INSTANCE.toDto(member);
     }
 
     public MemberInfoResponseDto changePasswordByAuth(String username, ChangePasswordRequestDto requestDto) {

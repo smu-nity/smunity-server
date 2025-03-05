@@ -2,6 +2,7 @@ package com.smunity.server.domain.account.service;
 
 import com.smunity.server.domain.account.dto.*;
 import com.smunity.server.domain.account.entity.RefreshToken;
+import com.smunity.server.domain.account.mapper.AccountMapper;
 import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.entity.Year;
@@ -32,14 +33,14 @@ public class AccountService {
 
     public RegisterResponseDto register(String memberName, RegisterRequestDto requestDto) {
         validateUser(memberName, requestDto.username());
-        Member member = requestDto.toEntity();
+        Member member = AccountMapper.INSTANCE.toEntity(requestDto);
         Year year = yearRepository.findByName(requestDto.username().substring(0, 4))
                 .orElseThrow(() -> new GeneralException(ErrorCode.YEAR_NOT_FOUND));
         Department department = departmentRepository.findByName(requestDto.department())
                 .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
         String encodedPw = passwordEncoder.encode(requestDto.password());
         member.setInfo(year, department, encodedPw);
-        return RegisterResponseDto.from(memberRepository.save(member));
+        return AccountMapper.INSTANCE.toDto(memberRepository.save(member));
     }
 
     public LoginResponseDto login(LoginRequestDto requestDto) {
@@ -70,7 +71,7 @@ public class AccountService {
         String accessToken = jwtTokenProvider.createAccessToken(memberId, memberRole, false);
         String refreshToken = jwtTokenProvider.createAccessToken(memberId, memberRole, true);
         refreshTokenService.saveRefreshToken(memberId, refreshToken);
-        return LoginResponseDto.of(username, memberRole, accessToken, refreshToken);
+        return AccountMapper.INSTANCE.toDto(username, memberRole, accessToken, refreshToken);
     }
 
     private void validateUser(String memberName, String username) {

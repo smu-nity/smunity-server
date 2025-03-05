@@ -3,6 +3,7 @@ package com.smunity.server.domain.answer.service;
 import com.smunity.server.domain.answer.dto.AnswerRequestDto;
 import com.smunity.server.domain.answer.dto.AnswerResponseDto;
 import com.smunity.server.domain.answer.entity.Answer;
+import com.smunity.server.domain.answer.mapper.AnswerMapper;
 import com.smunity.server.domain.answer.repository.AnswerRepository;
 import com.smunity.server.domain.question.entity.Question;
 import com.smunity.server.domain.question.repository.QuestionRepository;
@@ -28,9 +29,9 @@ public class AnswerCommandService {
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
-        Answer answer = requestDto.toEntity();
+        Answer answer = AnswerMapper.INSTANCE.toEntity(requestDto);
         answer.setData(member, question);
-        return AnswerResponseDto.from(answerRepository.save(answer));
+        return AnswerMapper.INSTANCE.toDto(answerRepository.save(answer));
     }
 
     public AnswerResponseDto updateAnswer(Long memberId, Long questionId, AnswerRequestDto requestDto) {
@@ -39,7 +40,7 @@ public class AnswerCommandService {
         Answer answer = answerRepository.findByQuestionId(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.ANSWER_NOT_FOUND));
         answer.update(member, requestDto.content());
-        return AnswerResponseDto.from(answer);
+        return AnswerMapper.INSTANCE.toDto(answer);
     }
 
     public void deleteAnswer(Long questionId) {

@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
-import java.util.Map;
 
 @Getter
 @RequiredArgsConstructor
@@ -17,12 +16,7 @@ public enum Category {
 
     private final String name;
 
-    public static Category of(String name) {
-        Map<String, Category> categoryMap = Map.of("교필", CULTURE, "교선", CULTURE, "1교직", MAJOR_OPTIONAL);
-        return categoryMap.getOrDefault(name, findByName(name));
-    }
-
-    private static Category findByName(String name) {
+    public static Category findByName(String name) {
         return Arrays.stream(Category.values())
                 .filter(category -> name.contains(category.getName()))
                 .findFirst()

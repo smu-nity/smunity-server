@@ -2,6 +2,7 @@ package com.smunity.server.domain.question.service;
 
 import com.smunity.server.domain.question.dto.QuestionReadResponseDto;
 import com.smunity.server.domain.question.entity.Question;
+import com.smunity.server.domain.question.mapper.QuestionMapper;
 import com.smunity.server.domain.question.repository.QuestionRepository;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
@@ -20,12 +21,12 @@ public class QuestionQueryService {
 
     public Page<QuestionReadResponseDto> readQuestions(Long memberId, Pageable pageable) {
         Page<Question> questions = questionRepository.findAll(pageable);
-        return QuestionReadResponseDto.of(memberId, questions);
+        return QuestionMapper.INSTANCE.toDto(questions, memberId);
     }
 
     public QuestionReadResponseDto readQuestion(Long memberId, Long questionId) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
-        return QuestionReadResponseDto.of(memberId, question);
+        return QuestionMapper.INSTANCE.toDto(question, memberId);
     }
 }

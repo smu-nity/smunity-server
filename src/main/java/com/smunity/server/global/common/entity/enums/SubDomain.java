@@ -34,19 +34,14 @@ public enum SubDomain {
         return equals(BALANCE_NATURAL) || equals(BALANCE_ENGINEER);
     }
 
-    public static SubDomain of(String name, boolean isNewCurriculum) {
-        SubDomain subDomain = hasEngMath(name) ? BASIC_ENG_MATH : findByName(name);
-        return isNewCurriculum && subDomain != null && subDomain.isNaturalOrEngineer() ? BALANCE_NATURAL_ENGINEER : subDomain;
-    }
-
-    private static SubDomain findByName(String name) {
+    public static SubDomain findByName(String name) {
         return Arrays.stream(values())
                 .filter(subDomain -> name.contains(subDomain.getName()))
                 .findFirst()
                 .orElse(null);
     }
 
-    private static boolean hasEngMath(String name) {
+    public static boolean hasEngMath(String name) {
         return Stream.of("English", "영어", "수학", "미적분학")
                 .anyMatch(name::contains);
     }

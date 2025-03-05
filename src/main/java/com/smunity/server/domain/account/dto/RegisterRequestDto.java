@@ -1,6 +1,5 @@
 package com.smunity.server.domain.account.dto;
 
-import com.smunity.server.global.common.entity.Member;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -25,11 +24,4 @@ public record RegisterRequestDto(
         String department
 ) {
 
-    public Member toEntity() {
-        return Member.builder()
-                .username(username)
-                .email(email)
-                .name(name)
-                .build();
-    }
 }

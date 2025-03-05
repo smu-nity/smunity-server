@@ -2,10 +2,12 @@ package com.smunity.server.domain.course.service;
 
 import com.smunity.server.domain.auth.dto.AuthCourseResponseDto;
 import com.smunity.server.domain.auth.dto.AuthRequestDto;
+import com.smunity.server.domain.auth.mapper.AuthMapper;
 import com.smunity.server.domain.auth.service.AuthService;
 import com.smunity.server.domain.course.dto.CourseResponseDto;
 import com.smunity.server.domain.course.dto.ResultResponseDto;
 import com.smunity.server.domain.course.entity.Course;
+import com.smunity.server.domain.course.mapper.CourseMapper;
 import com.smunity.server.domain.course.repository.course.CourseRepository;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.repository.MemberRepository;
@@ -36,9 +38,9 @@ public class CourseCommandService {
                 .map(dto -> toCourse(dto, member))
                 .toList();
         courseRepository.saveAll(courses);
-        List<CourseResponseDto> responseDtoList = CourseResponseDto.from(member.getCourses());
+        List<CourseResponseDto> responseDtoList = CourseMapper.INSTANCE.toDto(member.getCourses());
         int total = standardService.getTotal(member.getYear());
-        return ResultResponseDto.of(total, member.getCompletedCredits(), responseDtoList);
+        return CourseMapper.INSTANCE.toDto(total, member.getCompletedCredits(), responseDtoList);
     }
 
     private boolean isValidCourse(Long memberId, AuthCourseResponseDto dto) {
@@ -46,7 +48,7 @@ public class CourseCommandService {
     }
 
     private Course toCourse(AuthCourseResponseDto dto, Member member) {
-        Course course = dto.toEntity(member.isNewCurriculum());
+        Course course = AuthMapper.INSTANCE.toEntity(dto, member.isNewCurriculum());
         course.setMember(member);
         return course;
     }
