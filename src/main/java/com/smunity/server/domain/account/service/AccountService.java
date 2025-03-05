@@ -31,47 +31,47 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public RegisterResponseDto register(String memberName, RegisterRequestDto requestDto) {
-        validateUser(memberName, requestDto.username());
-        Member member = AccountMapper.INSTANCE.toEntity(requestDto);
-        Year year = yearRepository.findByName(requestDto.username().substring(0, 4))
+    public RegisterResponse register(String memberName, RegisterRequest request) {
+        validateUser(memberName, request.username());
+        Member member = AccountMapper.INSTANCE.toEntity(request);
+        Year year = yearRepository.findByName(request.username().substring(0, 4))
                 .orElseThrow(() -> new GeneralException(ErrorCode.YEAR_NOT_FOUND));
-        Department department = departmentRepository.findByName(requestDto.department())
+        Department department = departmentRepository.findByName(request.department())
                 .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
-        String encodedPw = passwordEncoder.encode(requestDto.password());
+        String encodedPw = passwordEncoder.encode(request.password());
         member.setInfo(year, department, encodedPw);
-        return AccountMapper.INSTANCE.toDto(memberRepository.save(member));
+        return AccountMapper.INSTANCE.toResponse(memberRepository.save(member));
     }
 
-    public LoginResponseDto login(LoginRequestDto requestDto) {
-        Member member = memberRepository.findByUsername(requestDto.username())
+    public LoginResponse login(LoginRequest request) {
+        Member member = memberRepository.findByUsername(request.username())
                 .orElseThrow(() -> new GeneralException(ErrorCode.ACCOUNT_NOT_FOUND));
-        checkPassword(requestDto.password(), member.getPassword());
-        loginStatusService.createLoginStatus(requestDto);
+        checkPassword(request.password(), member.getPassword());
+        loginStatusService.createLoginStatus(request);
         return generateToken(member.getUsername(), member.getId(), member.getRole());
     }
 
-    public LoginResponseDto refresh(RefreshRequestDto requestDto) {
-        jwtTokenProvider.validateToken(requestDto.refreshToken(), true);
-        RefreshToken oldRefreshToken = refreshTokenService.findRefreshToken(requestDto.refreshToken());
+    public LoginResponse refresh(RefreshRequest request) {
+        jwtTokenProvider.validateToken(request.refreshToken(), true);
+        RefreshToken oldRefreshToken = refreshTokenService.findRefreshToken(request.refreshToken());
         Member member = memberRepository.findById(oldRefreshToken.getMemberId())
                 .orElseThrow(() -> new GeneralException(ErrorCode.ACCOUNT_NOT_FOUND));
         refreshTokenService.deleteRefreshToken(oldRefreshToken.getToken());
         return generateToken(member.getUsername(), member.getId(), member.getRole());
     }
 
-    public void logout(Long memberId, RefreshRequestDto requestDto) {
-        jwtTokenProvider.validateToken(requestDto.refreshToken(), true);
-        RefreshToken oldRefreshToken = refreshTokenService.findRefreshToken(requestDto.refreshToken());
+    public void logout(Long memberId, RefreshRequest request) {
+        jwtTokenProvider.validateToken(request.refreshToken(), true);
+        RefreshToken oldRefreshToken = refreshTokenService.findRefreshToken(request.refreshToken());
         validateMember(memberId, oldRefreshToken);
         refreshTokenService.deleteRefreshToken(oldRefreshToken.getToken());
     }
 
-    private LoginResponseDto generateToken(String username, Long memberId, MemberRole memberRole) {
+    private LoginResponse generateToken(String username, Long memberId, MemberRole memberRole) {
         String accessToken = jwtTokenProvider.createAccessToken(memberId, memberRole, false);
         String refreshToken = jwtTokenProvider.createAccessToken(memberId, memberRole, true);
         refreshTokenService.saveRefreshToken(memberId, refreshToken);
-        return AccountMapper.INSTANCE.toDto(username, memberRole, accessToken, refreshToken);
+        return AccountMapper.INSTANCE.toResponse(username, memberRole, accessToken, refreshToken);
     }
 
     private void validateUser(String memberName, String username) {

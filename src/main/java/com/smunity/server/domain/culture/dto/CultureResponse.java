@@ -1,12 +1,10 @@
-package com.smunity.server.domain.major.dto;
+package com.smunity.server.domain.culture.dto;
 
 import lombok.Builder;
 
 @Builder
-public record MajorResponseDto(
+public record CultureResponse(
         Long id,
-        String grade,
-        String semester,
         String number,
         String name,
         String type,

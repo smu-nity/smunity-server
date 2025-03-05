@@ -1,6 +1,6 @@
 package com.smunity.server.domain.member.dto;
 
-public record MemberCountDto(
+public record MemberCountResponse(
         long count
 ) {
 

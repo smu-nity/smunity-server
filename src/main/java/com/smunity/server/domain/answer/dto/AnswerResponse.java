@@ -1,16 +1,14 @@
-package com.smunity.server.domain.question.dto;
+package com.smunity.server.domain.answer.dto;
 
 import lombok.Builder;
 
 import java.time.LocalDateTime;
 
 @Builder
-public record QuestionResponseDto(
+public record AnswerResponse(
         Long id,
-        String title,
+        Long questionId,
         String content,
-        String author,
-        boolean answered,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

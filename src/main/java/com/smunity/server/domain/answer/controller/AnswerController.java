@@ -1,7 +1,7 @@
 package com.smunity.server.domain.answer.controller;
 
-import com.smunity.server.domain.answer.dto.AnswerRequestDto;
-import com.smunity.server.domain.answer.dto.AnswerResponseDto;
+import com.smunity.server.domain.answer.dto.AnswerRequest;
+import com.smunity.server.domain.answer.dto.AnswerResponse;
 import com.smunity.server.domain.answer.service.AnswerCommandService;
 import com.smunity.server.domain.answer.service.AnswerQueryService;
 import com.smunity.server.global.security.annotation.AuthMember;
@@ -24,25 +24,25 @@ public class AnswerController {
 
     @GetMapping
     @Operation(summary = "답변 조회", description = "질문에 대한 답변을 조회합니다.")
-    public ResponseEntity<AnswerResponseDto> readAnswer(@PathVariable Long questionId) {
-        AnswerResponseDto responseDto = answerQueryService.readAnswer(questionId);
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<AnswerResponse> readAnswer(@PathVariable Long questionId) {
+        AnswerResponse response = answerQueryService.readAnswer(questionId);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
     @Operation(summary = "답변 생성", description = "관리자가 질문에 대한 답변을 생성합니다.")
-    public ResponseEntity<AnswerResponseDto> createAnswer(@AuthMember Long memberId, @PathVariable Long questionId,
-                                                          @RequestBody @Valid AnswerRequestDto requestDto) {
-        AnswerResponseDto responseDto = answerCommandService.createAnswer(memberId, questionId, requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    public ResponseEntity<AnswerResponse> createAnswer(@AuthMember Long memberId, @PathVariable Long questionId,
+                                                       @RequestBody @Valid AnswerRequest request) {
+        AnswerResponse response = answerCommandService.createAnswer(memberId, questionId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping
     @Operation(summary = "답변 수정", description = "관리자가 질문에 대한 답변을 수정합니다.")
-    public ResponseEntity<AnswerResponseDto> updateAnswer(@AuthMember Long memberId, @PathVariable Long questionId,
-                                                          @RequestBody @Valid AnswerRequestDto requestDto) {
-        AnswerResponseDto responseDto = answerCommandService.updateAnswer(memberId, questionId, requestDto);
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<AnswerResponse> updateAnswer(@AuthMember Long memberId, @PathVariable Long questionId,
+                                                       @RequestBody @Valid AnswerRequest request) {
+        AnswerResponse response = answerCommandService.updateAnswer(memberId, questionId, request);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping

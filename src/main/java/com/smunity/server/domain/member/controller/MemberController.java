@@ -1,6 +1,6 @@
 package com.smunity.server.domain.member.controller;
 
-import com.smunity.server.domain.auth.dto.AuthRequestDto;
+import com.smunity.server.domain.auth.dto.AuthRequest;
 import com.smunity.server.domain.member.dto.*;
 import com.smunity.server.domain.member.service.MemberCommandService;
 import com.smunity.server.domain.member.service.MemberQueryService;
@@ -27,58 +27,58 @@ public class MemberController {
 
     @GetMapping
     @Operation(summary = "회원 목록 조회", description = "회원 목록을 페이징 처리하여 조회합니다.")
-    public ResponseEntity<Page<MemberResponseDto>> readMembers(@ParameterObject Pageable pageable) {
-        Page<MemberResponseDto> responseDtoPage = memberQueryService.readMembers(pageable);
-        return ResponseEntity.ok(responseDtoPage);
+    public ResponseEntity<Page<MemberResponse>> readMembers(@ParameterObject Pageable pageable) {
+        Page<MemberResponse> responses = memberQueryService.readMembers(pageable);
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/count")
     @Operation(summary = "회원 수 조회", description = "전체 회원 수를 조회합니다.")
-    public ResponseEntity<MemberCountDto> countMembers() {
-        MemberCountDto responseDto = memberQueryService.countMembers();
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<MemberCountResponse> countMembers() {
+        MemberCountResponse response = memberQueryService.countMembers();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/me")
     @Operation(summary = "내 정보 조회", description = "로그인한 회원의 정보를 조회합니다.")
-    public ResponseEntity<MemberInfoResponseDto> readMemberInfo(@AuthMember Long memberId) {
-        MemberInfoResponseDto responseDto = memberQueryService.readMember(memberId);
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<MemberInfoResponse> readMemberInfo(@AuthMember Long memberId) {
+        MemberInfoResponse response = memberQueryService.readMember(memberId);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/me")
     @Operation(summary = "내 정보 수정", description = "로그인한 회원의 정보를 수정합니다.")
-    public ResponseEntity<MemberInfoResponseDto> updateMember(@AuthMember Long memberId, @RequestBody @Valid AuthRequestDto requestDto) {
-        MemberInfoResponseDto responseDto = memberCommandService.updateMember(memberId, requestDto);
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<MemberInfoResponse> updateMember(@AuthMember Long memberId, @RequestBody @Valid AuthRequest request) {
+        MemberInfoResponse response = memberCommandService.updateMember(memberId, request);
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/me/password")
     @Operation(summary = "비밀번호 변경", description = "로그인한 회원의 비밀번호를 변경합니다.")
-    public ResponseEntity<MemberInfoResponseDto> changePassword(@AuthMember Long memberId, @RequestBody @Valid ChangePasswordRequestDto requestDto) {
-        MemberInfoResponseDto responseDto = memberCommandService.changePassword(memberId, requestDto);
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<MemberInfoResponse> changePassword(@AuthMember Long memberId, @RequestBody @Valid ChangePasswordRequest request) {
+        MemberInfoResponse response = memberCommandService.changePassword(memberId, request);
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/me/department")
     @Operation(summary = "학과 변경", description = "로그인한 회원의 학과를 변경합니다.")
-    public ResponseEntity<MemberInfoResponseDto> changeDepartment(@AuthMember Long memberId, @RequestBody @Valid ChangeDepartmentRequestDto requestDto) {
-        MemberInfoResponseDto responseDto = memberCommandService.changeDepartment(memberId, requestDto);
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<MemberInfoResponse> changeDepartment(@AuthMember Long memberId, @RequestBody @Valid ChangeDepartmentRequest request) {
+        MemberInfoResponse response = memberCommandService.changeDepartment(memberId, request);
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/me/exemption")
     @Operation(summary = "이수 면제 설정 변경", description = "로그인한 회원의 이수 면제 설정을 변경합니다.")
-    public ResponseEntity<MemberInfoResponseDto> changeExemption(@AuthMember Long memberId, @RequestBody @Valid ChangeExemptionRequestDto requestDto) {
-        MemberInfoResponseDto responseDto = memberCommandService.changeExemption(memberId, requestDto);
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<MemberInfoResponse> changeExemption(@AuthMember Long memberId, @RequestBody @Valid ChangeExemptionRequest request) {
+        MemberInfoResponse response = memberCommandService.changeExemption(memberId, request);
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/password/reset")
     @Operation(summary = "비밀번호 재설정", description = "인증 토큰 검증 후 비밀번호를 변경합니다.")
-    public ResponseEntity<MemberInfoResponseDto> changePasswordByAuth(@AuthVerified String memberName, @RequestBody @Valid ChangePasswordRequestDto requestDto) {
-        MemberInfoResponseDto responseDto = memberCommandService.changePasswordByAuth(memberName, requestDto);
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<MemberInfoResponse> changePasswordByAuth(@AuthVerified String memberName, @RequestBody @Valid ChangePasswordRequest request) {
+        MemberInfoResponse response = memberCommandService.changePasswordByAuth(memberName, request);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/me")

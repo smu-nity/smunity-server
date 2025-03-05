@@ -1,8 +1,8 @@
 package com.smunity.server.domain.question.controller;
 
-import com.smunity.server.domain.question.dto.QuestionReadResponseDto;
-import com.smunity.server.domain.question.dto.QuestionRequestDto;
-import com.smunity.server.domain.question.dto.QuestionResponseDto;
+import com.smunity.server.domain.question.dto.QuestionReadResponse;
+import com.smunity.server.domain.question.dto.QuestionRequest;
+import com.smunity.server.domain.question.dto.QuestionResponse;
 import com.smunity.server.domain.question.service.QuestionCommandService;
 import com.smunity.server.domain.question.service.QuestionQueryService;
 import com.smunity.server.global.security.annotation.AuthAdmin;
@@ -31,34 +31,34 @@ public class QuestionController {
 
     @GetMapping
     @Operation(summary = "질문 목록 조회", description = "질문 목록을 페이징 처리하여 조회합니다.")
-    public ResponseEntity<Page<QuestionReadResponseDto>> readQuestions(
+    public ResponseEntity<Page<QuestionReadResponse>> readQuestions(
             @AuthMember Long memberId,
             @ParameterObject @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<QuestionReadResponseDto> responseDtoPage = questionQueryService.readQuestions(memberId, pageable);
-        return ResponseEntity.ok(responseDtoPage);
+        Page<QuestionReadResponse> responses = questionQueryService.readQuestions(memberId, pageable);
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/{questionId}")
     @Operation(summary = "질문 조회", description = "질문을 조회합니다.")
-    public ResponseEntity<QuestionReadResponseDto> readQuestion(@AuthMember Long memberId, @PathVariable Long questionId) {
-        QuestionReadResponseDto responseDto = questionQueryService.readQuestion(memberId, questionId);
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<QuestionReadResponse> readQuestion(@AuthMember Long memberId, @PathVariable Long questionId) {
+        QuestionReadResponse response = questionQueryService.readQuestion(memberId, questionId);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
     @Operation(summary = "질문 생성", description = "로그인한 회원으로 질문을 생성합니다.")
-    public ResponseEntity<QuestionResponseDto> createQuestion(@AuthMember Long memberId, @RequestBody @Valid QuestionRequestDto requestDto) {
-        QuestionResponseDto responseDto = questionCommandService.createQuestion(memberId, requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    public ResponseEntity<QuestionResponse> createQuestion(@AuthMember Long memberId, @RequestBody @Valid QuestionRequest request) {
+        QuestionResponse response = questionCommandService.createQuestion(memberId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{questionId}")
     @Operation(summary = "질문 수정", description = "로그인한 회원이 본인이 작성한 질문을 수정합니다.")
-    public ResponseEntity<QuestionResponseDto> updateQuestion(
+    public ResponseEntity<QuestionResponse> updateQuestion(
             @AuthMember Long memberId, @AuthAdmin Boolean isAdmin,
-            @PathVariable Long questionId, @RequestBody @Valid QuestionRequestDto requestDto) {
-        QuestionResponseDto responseDto = questionCommandService.updateQuestion(memberId, isAdmin, questionId, requestDto);
-        return ResponseEntity.ok(responseDto);
+            @PathVariable Long questionId, @RequestBody @Valid QuestionRequest request) {
+        QuestionResponse response = questionCommandService.updateQuestion(memberId, isAdmin, questionId, request);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{questionId}")

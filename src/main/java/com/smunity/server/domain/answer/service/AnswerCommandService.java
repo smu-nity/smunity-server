@@ -1,7 +1,7 @@
 package com.smunity.server.domain.answer.service;
 
-import com.smunity.server.domain.answer.dto.AnswerRequestDto;
-import com.smunity.server.domain.answer.dto.AnswerResponseDto;
+import com.smunity.server.domain.answer.dto.AnswerRequest;
+import com.smunity.server.domain.answer.dto.AnswerResponse;
 import com.smunity.server.domain.answer.entity.Answer;
 import com.smunity.server.domain.answer.mapper.AnswerMapper;
 import com.smunity.server.domain.answer.repository.AnswerRepository;
@@ -24,23 +24,23 @@ public class AnswerCommandService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
 
-    public AnswerResponseDto createAnswer(Long memberId, Long questionId, AnswerRequestDto requestDto) {
+    public AnswerResponse createAnswer(Long memberId, Long questionId, AnswerRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
-        Answer answer = AnswerMapper.INSTANCE.toEntity(requestDto);
+        Answer answer = AnswerMapper.INSTANCE.toEntity(request);
         answer.setData(member, question);
-        return AnswerMapper.INSTANCE.toDto(answerRepository.save(answer));
+        return AnswerMapper.INSTANCE.toResponse(answerRepository.save(answer));
     }
 
-    public AnswerResponseDto updateAnswer(Long memberId, Long questionId, AnswerRequestDto requestDto) {
+    public AnswerResponse updateAnswer(Long memberId, Long questionId, AnswerRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         Answer answer = answerRepository.findByQuestionId(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.ANSWER_NOT_FOUND));
-        answer.update(member, requestDto.content());
-        return AnswerMapper.INSTANCE.toDto(answer);
+        answer.update(member, request.content());
+        return AnswerMapper.INSTANCE.toResponse(answer);
     }
 
     public void deleteAnswer(Long questionId) {

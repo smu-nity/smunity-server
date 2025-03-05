@@ -1,8 +1,8 @@
 package com.smunity.server.domain.culture.controller;
 
-import com.smunity.server.domain.culture.dto.CultureResponseDto;
+import com.smunity.server.domain.culture.dto.CultureResponse;
 import com.smunity.server.domain.culture.service.CultureQueryService;
-import com.smunity.server.global.common.dto.ListResponseDto;
+import com.smunity.server.global.common.dto.ListResponse;
 import com.smunity.server.global.common.entity.enums.SubDomain;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,8 +23,8 @@ public class CultureController {
 
     @GetMapping
     @Operation(summary = "교양과목 목록 조회", description = "교양 영역을 기준으로 교양과목 목록을 조회합니다.")
-    public ResponseEntity<ListResponseDto<CultureResponseDto>> readCultures(@RequestParam(required = false) SubDomain subDomain) {
-        ListResponseDto<CultureResponseDto> responseDto = cultureQueryService.readCultures(subDomain);
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<ListResponse<CultureResponse>> readCultures(@RequestParam(required = false) SubDomain subDomain) {
+        ListResponse<CultureResponse> response = cultureQueryService.readCultures(subDomain);
+        return ResponseEntity.ok(response);
     }
 }

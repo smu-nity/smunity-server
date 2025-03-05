@@ -1,6 +1,6 @@
 package com.smunity.server.domain.account.service;
 
-import com.smunity.server.domain.account.dto.LoginRequestDto;
+import com.smunity.server.domain.account.dto.LoginRequest;
 import com.smunity.server.domain.account.entity.LoginStatus;
 import com.smunity.server.domain.account.mapper.AccountMapper;
 import com.smunity.server.domain.account.repository.LoginStatusRepository;
@@ -20,12 +20,12 @@ public class LoginStatusService {
 
     private final MemberRepository memberRepository;
     private final LoginStatusRepository loginStatusRepository;
-    private final HttpServletRequest request;
+    private final HttpServletRequest servletRequest;
 
-    public void createLoginStatus(LoginRequestDto requestDto) {
-        Member member = memberRepository.findByUsername(requestDto.username())
+    public void createLoginStatus(LoginRequest request) {
+        Member member = memberRepository.findByUsername(request.username())
                 .orElseThrow(() -> new GeneralException(ErrorCode.ACCOUNT_NOT_FOUND));
-        LoginStatus loginStatus = AccountMapper.INSTANCE.toEntity(request);
+        LoginStatus loginStatus = AccountMapper.INSTANCE.toEntity(servletRequest);
         loginStatus.setMember(member);
         loginStatusRepository.save(loginStatus);
     }

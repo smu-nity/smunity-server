@@ -1,6 +1,6 @@
 package com.smunity.server.domain.answer.service;
 
-import com.smunity.server.domain.answer.dto.AnswerResponseDto;
+import com.smunity.server.domain.answer.dto.AnswerResponse;
 import com.smunity.server.domain.answer.entity.Answer;
 import com.smunity.server.domain.answer.mapper.AnswerMapper;
 import com.smunity.server.domain.answer.repository.AnswerRepository;
@@ -17,9 +17,9 @@ public class AnswerQueryService {
 
     private final AnswerRepository answerRepository;
 
-    public AnswerResponseDto readAnswer(Long questionId) {
+    public AnswerResponse readAnswer(Long questionId) {
         Answer answer = answerRepository.findByQuestionId(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.ANSWER_NOT_FOUND));
-        return AnswerMapper.INSTANCE.toDto(answer);
+        return AnswerMapper.INSTANCE.toResponse(answer);
     }
 }

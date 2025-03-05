@@ -3,7 +3,7 @@ package com.smunity.server.domain.course.dto;
 import lombok.Builder;
 
 @Builder
-public record StatusResponseDto(
+public record StatusResponse(
         int total,
         int completed,
         int required,

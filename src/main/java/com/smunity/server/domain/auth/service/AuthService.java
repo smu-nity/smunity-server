@@ -1,8 +1,8 @@
 package com.smunity.server.domain.auth.service;
 
 import com.smunity.server.domain.auth.dto.AuthCourseResponseDto;
-import com.smunity.server.domain.auth.dto.AuthRequestDto;
-import com.smunity.server.domain.auth.dto.AuthResponseDto;
+import com.smunity.server.domain.auth.dto.AuthRequest;
+import com.smunity.server.domain.auth.dto.AuthResponse;
 import com.smunity.server.domain.auth.mapper.AuthMapper;
 import com.smunity.server.domain.auth.util.AuthUtil;
 import com.smunity.server.global.common.repository.MemberRepository;
@@ -25,25 +25,25 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public List<AuthCourseResponseDto> readCourses(AuthRequestDto requestDto) {
-        JSONArray response = AuthUtil.getCourses(requestDto);
+    public List<AuthCourseResponseDto> readCourses(AuthRequest request) {
+        JSONArray response = AuthUtil.getCourses(AuthMapper.INSTANCE.toDto(request));
         return AuthMapper.INSTANCE.toDto(response);
     }
 
-    public AuthResponseDto authenticate(AuthRequestDto requestDto) {
-        JSONObject response = AuthUtil.getInfo(requestDto);
-        String authToken = jwtTokenProvider.createAuthToken(requestDto.username());
-        return AuthMapper.INSTANCE.toDto(response, authToken);
+    public AuthResponse authenticate(AuthRequest request) {
+        JSONObject response = AuthUtil.getInfo(AuthMapper.INSTANCE.toDto(request));
+        String authToken = jwtTokenProvider.createAuthToken(request.username());
+        return AuthMapper.INSTANCE.toResponse(response, authToken);
     }
 
-    public AuthResponseDto registerAuth(AuthRequestDto requestDto) {
-        validateUsername(requestDto.username());
-        return authenticate(requestDto);
+    public AuthResponse registerAuth(AuthRequest request) {
+        validateUsername(request.username());
+        return authenticate(request);
     }
 
-    public AuthResponseDto resetPassword(AuthRequestDto requestDto) {
-        validateExistingUsername(requestDto.username());
-        return authenticate(requestDto);
+    public AuthResponse resetPassword(AuthRequest request) {
+        validateExistingUsername(request.username());
+        return authenticate(request);
     }
 
     private void validateUsername(String username) {

@@ -1,7 +1,7 @@
 package com.smunity.server.domain.question.service;
 
-import com.smunity.server.domain.question.dto.QuestionRequestDto;
-import com.smunity.server.domain.question.dto.QuestionResponseDto;
+import com.smunity.server.domain.question.dto.QuestionRequest;
+import com.smunity.server.domain.question.dto.QuestionResponse;
 import com.smunity.server.domain.question.entity.Question;
 import com.smunity.server.domain.question.mapper.QuestionMapper;
 import com.smunity.server.domain.question.repository.QuestionRepository;
@@ -22,20 +22,20 @@ public class QuestionCommandService {
     private final MemberRepository memberRepository;
     private final QuestionRepository questionRepository;
 
-    public QuestionResponseDto createQuestion(Long memberId, QuestionRequestDto requestDto) {
+    public QuestionResponse createQuestion(Long memberId, QuestionRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        Question question = QuestionMapper.INSTANCE.toEntity(requestDto);
+        Question question = QuestionMapper.INSTANCE.toEntity(request);
         question.setMember(member);
-        return QuestionMapper.INSTANCE.toDto(questionRepository.save(question));
+        return QuestionMapper.INSTANCE.toResponse(questionRepository.save(question));
     }
 
-    public QuestionResponseDto updateQuestion(Long memberId, Boolean isAdmin, Long questionId, QuestionRequestDto requestDto) {
+    public QuestionResponse updateQuestion(Long memberId, Boolean isAdmin, Long questionId, QuestionRequest request) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
         PermissionUtil.validatePermission(memberId, isAdmin, question.getMember().getId());
-        question.update(requestDto.title(), requestDto.content(), requestDto.anonymous());
-        return QuestionMapper.INSTANCE.toDto(question);
+        question.update(request.title(), request.content(), request.anonymous());
+        return QuestionMapper.INSTANCE.toResponse(question);
     }
 
     public void deleteQuestion(Long memberId, Boolean isAdmin, Long questionId) {

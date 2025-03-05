@@ -1,9 +1,9 @@
 package com.smunity.server.domain.department.controller;
 
-import com.smunity.server.domain.department.dto.DepartmentEditResponseDto;
-import com.smunity.server.domain.department.dto.DepartmentResponseDto;
+import com.smunity.server.domain.department.dto.DepartmentEditResponse;
+import com.smunity.server.domain.department.dto.DepartmentResponse;
 import com.smunity.server.domain.department.service.DepartmentService;
-import com.smunity.server.global.common.dto.ListResponseDto;
+import com.smunity.server.global.common.dto.ListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -22,15 +22,15 @@ public class DepartmentController {
 
     @GetMapping
     @Operation(summary = "학과 조회", description = "전체 학과 목록을 조회합니다.")
-    public ResponseEntity<ListResponseDto<DepartmentResponseDto>> readDepartments() {
-        ListResponseDto<DepartmentResponseDto> responseDto = departmentService.readDepartments();
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<ListResponse<DepartmentResponse>> readDepartments() {
+        ListResponse<DepartmentResponse> response = departmentService.readDepartments();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/editable")
     @Operation(summary = "수정 가능한 학과 조회", description = "수정 가능한 학과 목록을 조회합니다.")
-    public ResponseEntity<ListResponseDto<DepartmentEditResponseDto>> readEditableDepartments() {
-        ListResponseDto<DepartmentEditResponseDto> responseDto = departmentService.readEditableDepartments();
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<ListResponse<DepartmentEditResponse>> readEditableDepartments() {
+        ListResponse<DepartmentEditResponse> response = departmentService.readEditableDepartments();
+        return ResponseEntity.ok(response);
     }
 }

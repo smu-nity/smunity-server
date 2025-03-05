@@ -25,29 +25,29 @@ public class AccountController {
 
     @PostMapping("/register")
     @Operation(summary = "회원가입", description = "회원 정보를 바탕으로 회원을 등록합니다.")
-    public ResponseEntity<RegisterResponseDto> register(@AuthVerified String memberName, @RequestBody @Valid RegisterRequestDto requestDto) {
-        RegisterResponseDto responseDto = accountService.register(memberName, requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    public ResponseEntity<RegisterResponse> register(@AuthVerified String memberName, @RequestBody @Valid RegisterRequest request) {
+        RegisterResponse response = accountService.register(memberName, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")
     @Operation(summary = "로그인", description = "사용자의 로그인 정보를 검증하고 액세스 토큰과 리프레시 토큰을 반환합니다.")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto requestDto) {
-        LoginResponseDto responseDto = accountService.login(requestDto);
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
+        LoginResponse response = accountService.login(request);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/refresh")
     @Operation(summary = "토큰 갱신", description = "리프레시 토큰을 통해 액세스 토큰과 리프레시 토큰을 재발급합니다.")
-    public ResponseEntity<LoginResponseDto> refresh(@RequestBody @Valid RefreshRequestDto requestDto) {
-        LoginResponseDto responseDto = accountService.refresh(requestDto);
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<LoginResponse> refresh(@RequestBody @Valid RefreshRequest request) {
+        LoginResponse response = accountService.refresh(request);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/logout")
     @Operation(summary = "로그아웃", description = "동일 사용자 검증 후 리프레시 토큰을 무효화합니다.")
-    public ResponseEntity<Void> logout(@AuthMember Long memberId, @RequestBody @Valid RefreshRequestDto requestDto) {
-        accountService.logout(memberId, requestDto);
+    public ResponseEntity<Void> logout(@AuthMember Long memberId, @RequestBody @Valid RefreshRequest request) {
+        accountService.logout(memberId, request);
         return ResponseEntity.noContent().build();
     }
 }
