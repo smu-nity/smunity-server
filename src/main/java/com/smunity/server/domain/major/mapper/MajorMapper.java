@@ -1,6 +1,6 @@
 package com.smunity.server.domain.major.mapper;
 
-import com.smunity.server.domain.major.dto.MajorResponseDto;
+import com.smunity.server.domain.major.dto.MajorResponse;
 import com.smunity.server.domain.major.entity.Major;
 import com.smunity.server.global.common.dto.ListResponse;
 import org.mapstruct.Mapper;
@@ -16,15 +16,15 @@ public interface MajorMapper {
 
     @Mapping(target = "grade", source = "major.grade.name")
     @Mapping(target = "semester", source = "major.semester.name")
-    MajorResponseDto toDto(Major major);
+    MajorResponse toResponse(Major major);
 
-    default ListResponse<MajorResponseDto> toResponse(List<Major> majors) {
-        return ListResponse.from(toDto(majors));
+    default ListResponse<MajorResponse> toResponse(List<Major> majors) {
+        return ListResponse.from(toListResponse(majors));
     }
 
-    default List<MajorResponseDto> toDto(List<Major> majors) {
+    default List<MajorResponse> toListResponse(List<Major> majors) {
         return majors.stream()
-                .map(this::toDto)
+                .map(this::toResponse)
                 .toList();
     }
 }

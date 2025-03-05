@@ -1,6 +1,6 @@
 package com.smunity.server.domain.major.controller;
 
-import com.smunity.server.domain.major.dto.MajorResponseDto;
+import com.smunity.server.domain.major.dto.MajorResponse;
 import com.smunity.server.domain.major.service.MajorQueryService;
 import com.smunity.server.global.common.dto.ListResponse;
 import com.smunity.server.global.common.entity.enums.Category;
@@ -24,8 +24,8 @@ public class MajorController {
 
     @GetMapping
     @Operation(summary = "전공과목 목록 조회", description = "이수구분을 기준으로 로그인한 회원이 이수하지 않은 전공과목 목록을 조회합니다.")
-    public ResponseEntity<ListResponse<MajorResponseDto>> readMajors(@AuthMember Long memberId, @RequestParam(required = false) Category category) {
-        ListResponse<MajorResponseDto> responseDto = majorQueryService.readMajors(memberId, category);
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<ListResponse<MajorResponse>> readMajors(@AuthMember Long memberId, @RequestParam(required = false) Category category) {
+        ListResponse<MajorResponse> response = majorQueryService.readMajors(memberId, category);
+        return ResponseEntity.ok(response);
     }
 }

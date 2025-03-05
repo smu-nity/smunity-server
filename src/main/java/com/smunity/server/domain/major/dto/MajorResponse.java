@@ -3,7 +3,7 @@ package com.smunity.server.domain.major.dto;
 import lombok.Builder;
 
 @Builder
-public record MajorResponseDto(
+public record MajorResponse(
         Long id,
         String grade,
         String semester,
