@@ -2,10 +2,13 @@ package com.smunity.server.domain.auth.dto;
 
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Builder
@@ -20,7 +23,14 @@ public record AuthCourseResponseDto(
         int credit
 ) {
 
-    public static Optional<AuthCourseResponseDto> from(JSONObject obj) {
+    public static List<AuthCourseResponseDto> from(JSONArray objs) {
+        return IntStream.range(0, objs.length())
+                .mapToObj(i -> from(objs.getJSONObject(i)))
+                .flatMap(Optional::stream)
+                .toList();
+    }
+
+    private static Optional<AuthCourseResponseDto> from(JSONObject obj) {
         try {
             return Optional.of(of(obj));
         } catch (JSONException e) {

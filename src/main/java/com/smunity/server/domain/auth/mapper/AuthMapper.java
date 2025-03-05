@@ -1,6 +1,7 @@
 package com.smunity.server.domain.auth.mapper;
 
 import com.smunity.server.domain.auth.dto.AuthCourseResponseDto;
+import com.smunity.server.domain.auth.dto.AuthInfoResponseDto;
 import com.smunity.server.domain.auth.dto.AuthResponseDto;
 import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.global.common.entity.enums.Category;
@@ -13,8 +14,6 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.IntStream;
 
 import static com.smunity.server.global.common.entity.enums.Category.CULTURE;
 import static com.smunity.server.global.common.entity.enums.Category.MAJOR_OPTIONAL;
@@ -30,21 +29,14 @@ public interface AuthMapper {
     @Mapping(target = "subDomain", expression = "java(of(dto.domain(), isNewCurriculum))")
     Course toEntity(AuthCourseResponseDto dto, boolean isNewCurriculum);
 
-    default List<AuthCourseResponseDto> from(JSONArray objs) {
-        return IntStream.range(0, objs.length())
-                .mapToObj(i -> AuthCourseResponseDto.from(objs.getJSONObject(i)))
-                .flatMap(Optional::stream)
-                .toList();
+    AuthResponseDto toDto(AuthInfoResponseDto dto, String authToken);
+
+    default List<AuthCourseResponseDto> toDto(JSONArray objs) {
+        return AuthCourseResponseDto.from(objs);
     }
 
-    default AuthResponseDto of(JSONObject obj, String authToken) {
-        return AuthResponseDto.builder()
-                .username(obj.getString("STDNO"))
-                .name(obj.getString("NM_KOR"))
-                .department(AuthResponseDto.getDepartment(obj.getString("TMP_DEPT_MJR_NM")))
-                .email(obj.getString("EMAIL"))
-                .authToken(authToken)
-                .build();
+    default AuthResponseDto toDto(JSONObject obj, String authToken) {
+        return toDto(AuthInfoResponseDto.from(obj), authToken);
     }
 
     default Category of(String name) {

@@ -27,13 +27,13 @@ public class AuthService {
 
     public List<AuthCourseResponseDto> readCourses(AuthRequestDto requestDto) {
         JSONArray response = AuthUtil.getCourses(requestDto);
-        return AuthMapper.INSTANCE.from(response);
+        return AuthMapper.INSTANCE.toDto(response);
     }
 
     public AuthResponseDto authenticate(AuthRequestDto requestDto) {
         JSONObject response = AuthUtil.getInfo(requestDto);
         String authToken = jwtTokenProvider.createAuthToken(requestDto.username());
-        return AuthMapper.INSTANCE.of(response, authToken);
+        return AuthMapper.INSTANCE.toDto(response, authToken);
     }
 
     public AuthResponseDto registerAuth(AuthRequestDto requestDto) {
