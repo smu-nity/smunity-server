@@ -1,6 +1,6 @@
 package com.smunity.server.domain.term.controller;
 
-import com.smunity.server.domain.term.dto.TermResponseDto;
+import com.smunity.server.domain.term.dto.TermResponse;
 import com.smunity.server.domain.term.service.TermService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,8 +20,8 @@ public class TermController {
 
     @GetMapping("/current")
     @Operation(summary = "현재 학기 조회", description = "현재 학기를 조회합니다.")
-    public ResponseEntity<TermResponseDto> readCurrentTerm() {
-        TermResponseDto responseDto = termService.readCurrentTerm();
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<TermResponse> readCurrentTerm() {
+        TermResponse response = termService.readCurrentTerm();
+        return ResponseEntity.ok(response);
     }
 }

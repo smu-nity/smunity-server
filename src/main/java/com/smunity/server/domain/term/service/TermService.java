@@ -1,6 +1,6 @@
 package com.smunity.server.domain.term.service;
 
-import com.smunity.server.domain.term.dto.TermResponseDto;
+import com.smunity.server.domain.term.dto.TermResponse;
 import com.smunity.server.domain.term.mapper.TermMapper;
 import com.smunity.server.global.common.entity.Term;
 import com.smunity.server.global.common.repository.TermRepository;
@@ -17,9 +17,9 @@ public class TermService {
 
     private final TermRepository termRepository;
 
-    public TermResponseDto readCurrentTerm() {
+    public TermResponse readCurrentTerm() {
         Term term = termRepository.findFirstByOrderByIdDesc()
                 .orElseThrow(() -> new GeneralException(ErrorCode.TERM_NOT_FOUND));
-        return TermMapper.INSTANCE.toDto(term);
+        return TermMapper.INSTANCE.toResponse(term);
     }
 }
