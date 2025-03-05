@@ -4,7 +4,7 @@ import com.smunity.server.global.common.entity.enums.Exemption;
 import lombok.Builder;
 
 @Builder
-public record MemberInfoResponseDto(
+public record MemberInfoResponse(
         String username,
         String name,
         String department,
