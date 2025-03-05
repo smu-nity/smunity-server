@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record AnswerResponseDto(
+public record AnswerResponse(
         Long id,
         Long questionId,
         String content,
