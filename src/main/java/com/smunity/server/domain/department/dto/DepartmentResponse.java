@@ -3,7 +3,7 @@ package com.smunity.server.domain.department.dto;
 import lombok.Builder;
 
 @Builder
-public record DepartmentResponseDto(
+public record DepartmentResponse(
         String college,
         String name,
         String code,

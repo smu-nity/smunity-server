@@ -1,7 +1,7 @@
 package com.smunity.server.domain.department.mapper;
 
-import com.smunity.server.domain.department.dto.DepartmentEditResponseDto;
-import com.smunity.server.domain.department.dto.DepartmentResponseDto;
+import com.smunity.server.domain.department.dto.DepartmentEditResponse;
+import com.smunity.server.domain.department.dto.DepartmentResponse;
 import com.smunity.server.global.common.dto.ListResponse;
 import com.smunity.server.global.common.entity.Department;
 import org.mapstruct.Mapper;
@@ -16,27 +16,27 @@ public interface DepartmentMapper {
     DepartmentMapper INSTANCE = Mappers.getMapper(DepartmentMapper.class);
 
     @Mapping(target = "count", source = "memberCount")
-    DepartmentResponseDto toDto(Department department);
+    DepartmentResponse toResponse(Department department);
 
-    DepartmentEditResponseDto toEditDto(Department department);
+    DepartmentEditResponse toEditResponse(Department department);
 
-    default ListResponse<DepartmentResponseDto> toResponse(List<Department> departments) {
-        return ListResponse.from(toDto(departments));
+    default ListResponse<DepartmentResponse> toResponse(List<Department> departments) {
+        return ListResponse.from(toListResponse(departments));
     }
 
-    default ListResponse<DepartmentEditResponseDto> toEditResponse(List<Department> departments) {
-        return ListResponse.from(toEditDto(departments));
+    default ListResponse<DepartmentEditResponse> toEditResponse(List<Department> departments) {
+        return ListResponse.from(toEditListResponse(departments));
     }
 
-    default List<DepartmentResponseDto> toDto(List<Department> departments) {
+    default List<DepartmentResponse> toListResponse(List<Department> departments) {
         return departments.stream()
-                .map(this::toDto)
+                .map(this::toResponse)
                 .toList();
     }
 
-    default List<DepartmentEditResponseDto> toEditDto(List<Department> departments) {
+    default List<DepartmentEditResponse> toEditListResponse(List<Department> departments) {
         return departments.stream()
-                .map(this::toEditDto)
+                .map(this::toEditResponse)
                 .toList();
     }
 }
