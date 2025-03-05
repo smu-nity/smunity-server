@@ -3,7 +3,7 @@ package com.smunity.server.domain.culture.dto;
 import lombok.Builder;
 
 @Builder
-public record CultureResponseDto(
+public record CultureResponse(
         Long id,
         String number,
         String name,

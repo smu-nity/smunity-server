@@ -2,7 +2,7 @@ package com.smunity.server.domain.major.mapper;
 
 import com.smunity.server.domain.major.dto.MajorResponseDto;
 import com.smunity.server.domain.major.entity.Major;
-import com.smunity.server.global.common.dto.ListResponseDto;
+import com.smunity.server.global.common.dto.ListResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -18,8 +18,8 @@ public interface MajorMapper {
     @Mapping(target = "semester", source = "major.semester.name")
     MajorResponseDto toDto(Major major);
 
-    default ListResponseDto<MajorResponseDto> toResponse(List<Major> majors) {
-        return ListResponseDto.from(toDto(majors));
+    default ListResponse<MajorResponseDto> toResponse(List<Major> majors) {
+        return ListResponse.from(toDto(majors));
     }
 
     default List<MajorResponseDto> toDto(List<Major> majors) {

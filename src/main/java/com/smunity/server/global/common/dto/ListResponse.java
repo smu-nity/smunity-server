@@ -5,13 +5,13 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record ListResponseDto<T>(
+public record ListResponse<T>(
         int count,
         List<T> content
 ) {
 
-    public static <T> ListResponseDto<T> from(List<T> responses) {
-        return ListResponseDto.<T>builder()
+    public static <T> ListResponse<T> from(List<T> responses) {
+        return ListResponse.<T>builder()
                 .count(responses.size())
                 .content(responses)
                 .build();
