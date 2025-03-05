@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record RegisterRequestDto(
+public record RegisterRequest(
         @NotBlank(message = "학번 입력은 필수 입니다.")
         @Pattern(regexp = "^\\d{9}$", message = "학번은 9자리 숫자 이어야 합니다.")
         String username,

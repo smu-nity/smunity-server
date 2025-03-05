@@ -1,8 +1,8 @@
 package com.smunity.server.domain.account.mapper;
 
-import com.smunity.server.domain.account.dto.LoginResponseDto;
-import com.smunity.server.domain.account.dto.RegisterRequestDto;
-import com.smunity.server.domain.account.dto.RegisterResponseDto;
+import com.smunity.server.domain.account.dto.LoginResponse;
+import com.smunity.server.domain.account.dto.RegisterRequest;
+import com.smunity.server.domain.account.dto.RegisterResponse;
 import com.smunity.server.domain.account.entity.LoginStatus;
 import com.smunity.server.domain.account.util.IpUtil;
 import com.smunity.server.global.common.entity.Member;
@@ -17,18 +17,18 @@ public interface AccountMapper {
 
     AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
 
-    RegisterResponseDto toDto(Member member);
+    RegisterResponse toResponse(Member member);
 
     @Mapping(target = "department", ignore = true)
-    Member toEntity(RegisterRequestDto requestDto);
+    Member toEntity(RegisterRequest request);
 
-    default LoginResponseDto toDto(String username, MemberRole memberRole, String accessToken, String refreshToken) {
-        return new LoginResponseDto(username, memberRole, accessToken, refreshToken);
+    default LoginResponse toResponse(String username, MemberRole memberRole, String accessToken, String refreshToken) {
+        return new LoginResponse(username, memberRole, accessToken, refreshToken);
     }
 
-    default LoginStatus toEntity(HttpServletRequest request) {
+    default LoginStatus toEntity(HttpServletRequest servletRequest) {
         return LoginStatus.builder()
-                .ipAddress(IpUtil.getClientIp(request))
+                .ipAddress(IpUtil.getClientIp(servletRequest))
                 .build();
     }
 }
