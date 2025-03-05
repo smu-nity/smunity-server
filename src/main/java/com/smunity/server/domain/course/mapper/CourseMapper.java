@@ -1,9 +1,9 @@
 package com.smunity.server.domain.course.mapper;
 
-import com.smunity.server.domain.course.dto.CourseResponseDto;
-import com.smunity.server.domain.course.dto.CreditResponseDto;
-import com.smunity.server.domain.course.dto.ResultResponseDto;
-import com.smunity.server.domain.course.dto.StatusResponseDto;
+import com.smunity.server.domain.course.dto.CourseResponse;
+import com.smunity.server.domain.course.dto.CreditResponse;
+import com.smunity.server.domain.course.dto.ResultResponse;
+import com.smunity.server.domain.course.dto.StatusResponse;
 import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.global.common.entity.Member;
 import org.mapstruct.Mapper;
@@ -18,19 +18,19 @@ public interface CourseMapper {
 
     CourseMapper INSTANCE = Mappers.getMapper(CourseMapper.class);
 
-    CourseResponseDto toDto(Course course);
+    CourseResponse toResponse(Course course);
 
-    default List<CourseResponseDto> toDto(List<Course> courses) {
+    default List<CourseResponse> toResponse(List<Course> courses) {
         return courses.stream()
-                .map(this::toDto)
+                .map(this::toResponse)
                 .toList();
     }
 
-    default CreditResponseDto toDto(int total, Member member) {
+    default CreditResponse toResponse(int total, Member member) {
         int completed = member.getCompletedCredits();
         int major = member.getCompletedCredits(MAJOR_ADVANCED) + member.getCompletedCredits(MAJOR_OPTIONAL);
         int culture = member.getCompletedCredits(CULTURE);
-        return CreditResponseDto.builder()
+        return CreditResponse.builder()
                 .username(member.getUsername())
                 .name(member.getName())
                 .total(total)
@@ -43,17 +43,17 @@ public interface CourseMapper {
                 .build();
     }
 
-    default <T> ResultResponseDto<T> toDto(int total, int completed, List<T> responses) {
-        return ResultResponseDto.<T>builder()
+    default <T> ResultResponse<T> toResponse(int total, int completed, List<T> responses) {
+        return ResultResponse.<T>builder()
                 .completed(total <= completed)
-                .status(toDto(total, completed))
+                .status(toResponse(total, completed))
                 .count(responses.size())
                 .content(responses)
                 .build();
     }
 
-    default StatusResponseDto toDto(int total, int completed) {
-        return StatusResponseDto.builder()
+    default StatusResponse toResponse(int total, int completed) {
+        return StatusResponse.builder()
                 .total(total)
                 .completed(completed)
                 .required(calculateRequired(total, completed))

@@ -3,7 +3,7 @@ package com.smunity.server.domain.course.dto;
 import lombok.Builder;
 
 @Builder
-public record CreditResponseDto(
+public record CreditResponse(
         String username,
         String name,
         int total,

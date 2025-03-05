@@ -5,9 +5,9 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record ResultResponseDto<T>(
+public record ResultResponse<T>(
         boolean completed,
-        StatusResponseDto status,
+        StatusResponse status,
         int count,
         List<T> content
 ) {

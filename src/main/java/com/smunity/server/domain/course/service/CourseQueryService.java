@@ -1,9 +1,9 @@
 package com.smunity.server.domain.course.service;
 
-import com.smunity.server.domain.course.dto.CourseResponseDto;
-import com.smunity.server.domain.course.dto.CreditResponseDto;
-import com.smunity.server.domain.course.dto.CultureResponseDto;
-import com.smunity.server.domain.course.dto.ResultResponseDto;
+import com.smunity.server.domain.course.dto.CourseResponse;
+import com.smunity.server.domain.course.dto.CreditResponse;
+import com.smunity.server.domain.course.dto.CultureResponse;
+import com.smunity.server.domain.course.dto.ResultResponse;
 import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.domain.course.entity.enums.Domain;
 import com.smunity.server.domain.course.mapper.CourseMapper;
@@ -29,30 +29,30 @@ public class CourseQueryService {
     private final MemberRepository memberRepository;
     private final CourseRepository courseRepository;
 
-    public ResultResponseDto<CourseResponseDto> readCourses(Long memberId, Category category) {
+    public ResultResponse<CourseResponse> readCourses(Long memberId, Category category) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Course> courses = courseRepository.findByMemberIdAndCategory(memberId, category);
-        List<CourseResponseDto> responseDtoList = CourseMapper.INSTANCE.toDto(courses);
+        List<CourseResponse> responseDtoList = CourseMapper.INSTANCE.toResponse(courses);
         int total = standardService.getTotal(member.getYear(), member.getDepartment(), category);
         int completed = calculateCompleted(courses);
-        return CourseMapper.INSTANCE.toDto(total, completed, responseDtoList);
+        return CourseMapper.INSTANCE.toResponse(total, completed, responseDtoList);
     }
 
-    public CreditResponseDto readCoursesCredit(Long memberId) {
+    public CreditResponse readCoursesCredit(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         int total = standardService.getTotal(member.getYear());
-        return CourseMapper.INSTANCE.toDto(total, member);
+        return CourseMapper.INSTANCE.toResponse(total, member);
     }
 
-    public ResultResponseDto<CultureResponseDto> readCultureCourses(Long memberId, Domain domain) {
+    public ResultResponse<CultureResponse> readCultureCourses(Long memberId, Domain domain) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        List<CultureResponseDto> cultures = curriculumService.readCurriculums(member, domain);
+        List<CultureResponse> cultures = curriculumService.readCurriculums(member, domain);
         int total = standardService.getCultureTotal(member.getExemption(), member.getDepartment(), cultures.size(), domain);
         int completed = calculateCultureCompleted(cultures);
-        return CourseMapper.INSTANCE.toDto(total, completed, cultures);
+        return CourseMapper.INSTANCE.toResponse(total, completed, cultures);
     }
 
     private int calculateCompleted(List<Course> courses) {
@@ -61,9 +61,9 @@ public class CourseQueryService {
                 .sum();
     }
 
-    private int calculateCultureCompleted(List<CultureResponseDto> cultures) {
+    private int calculateCultureCompleted(List<CultureResponse> cultures) {
         return cultures.stream()
-                .filter(CultureResponseDto::completed)
+                .filter(CultureResponse::completed)
                 .toList()
                 .size();
     }

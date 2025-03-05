@@ -5,7 +5,7 @@ import com.smunity.server.global.common.entity.enums.SubDomain;
 import lombok.Builder;
 
 @Builder
-public record CourseResponseDto(
+public record CourseResponse(
         Long id,
         String year,
         String semester,
