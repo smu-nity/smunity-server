@@ -30,24 +30,24 @@ public class CourseCommandService {
     private final CourseRepository courseRepository;
 
     public ResultResponse<CourseResponse> createCourses(Long memberId, AuthRequest request) {
-        List<AuthCourseResponseDto> requestDtoList = authService.readCourses(request);
+        List<AuthCourseResponseDto> responseDtos = authService.readCourses(request);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        List<Course> courses = requestDtoList.stream()
+        List<Course> courses = responseDtos.stream()
                 .filter(dto -> isValidCourse(memberId, dto))
-                .map(dto -> toCourse(dto, member))
+                .map(dto -> toEntity(dto, member))
                 .toList();
         courseRepository.saveAll(courses);
-        List<CourseResponse> responseDtoList = CourseMapper.INSTANCE.toResponse(member.getCourses());
+        List<CourseResponse> responses = CourseMapper.INSTANCE.toResponse(member.getCourses());
         int total = standardService.getTotal(member.getYear());
-        return CourseMapper.INSTANCE.toResponse(total, member.getCompletedCredits(), responseDtoList);
+        return CourseMapper.INSTANCE.toResponse(total, member.getCompletedCredits(), responses);
     }
 
     private boolean isValidCourse(Long memberId, AuthCourseResponseDto dto) {
         return !dto.grade().equals("F") && !courseRepository.existsByMemberIdAndNumber(memberId, dto.number());
     }
 
-    private Course toCourse(AuthCourseResponseDto dto, Member member) {
+    private Course toEntity(AuthCourseResponseDto dto, Member member) {
         Course course = AuthMapper.INSTANCE.toEntity(dto, member.isNewCurriculum());
         course.setMember(member);
         return course;

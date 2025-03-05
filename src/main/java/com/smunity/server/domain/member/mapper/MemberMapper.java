@@ -23,8 +23,8 @@ public interface MemberMapper {
     @Mapping(target = "memberRole", source = "member.role")
     MemberResponse toMemberResponse(Member member);
 
-    default Page<MemberResponse> toResponse(Page<Member> memberPage) {
-        return memberPage.map(this::toMemberResponse);
+    default Page<MemberResponse> toResponse(Page<Member> members) {
+        return members.map(this::toMemberResponse);
     }
 
     default MemberCountResponse toResponse(long count) {

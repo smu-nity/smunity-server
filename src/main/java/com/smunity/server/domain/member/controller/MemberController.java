@@ -28,8 +28,8 @@ public class MemberController {
     @GetMapping
     @Operation(summary = "회원 목록 조회", description = "회원 목록을 페이징 처리하여 조회합니다.")
     public ResponseEntity<Page<MemberResponse>> readMembers(@ParameterObject Pageable pageable) {
-        Page<MemberResponse> response = memberQueryService.readMembers(pageable);
-        return ResponseEntity.ok(response);
+        Page<MemberResponse> responses = memberQueryService.readMembers(pageable);
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/count")

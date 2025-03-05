@@ -33,10 +33,10 @@ public class CourseQueryService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Course> courses = courseRepository.findByMemberIdAndCategory(memberId, category);
-        List<CourseResponse> responseDtoList = CourseMapper.INSTANCE.toResponse(courses);
+        List<CourseResponse> responses = CourseMapper.INSTANCE.toResponse(courses);
         int total = standardService.getTotal(member.getYear(), member.getDepartment(), category);
         int completed = calculateCompleted(courses);
-        return CourseMapper.INSTANCE.toResponse(total, completed, responseDtoList);
+        return CourseMapper.INSTANCE.toResponse(total, completed, responses);
     }
 
     public CreditResponse readCoursesCredit(Long memberId) {

@@ -26,12 +26,12 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     public List<AuthCourseResponseDto> readCourses(AuthRequest request) {
-        JSONArray response = AuthUtil.getCourses(request);
+        JSONArray response = AuthUtil.getCourses(AuthMapper.INSTANCE.toDto(request));
         return AuthMapper.INSTANCE.toDto(response);
     }
 
     public AuthResponse authenticate(AuthRequest request) {
-        JSONObject response = AuthUtil.getInfo(request);
+        JSONObject response = AuthUtil.getInfo(AuthMapper.INSTANCE.toDto(request));
         String authToken = jwtTokenProvider.createAuthToken(request.username());
         return AuthMapper.INSTANCE.toResponse(response, authToken);
     }

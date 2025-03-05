@@ -34,31 +34,31 @@ public class QuestionController {
     public ResponseEntity<Page<QuestionReadResponse>> readQuestions(
             @AuthMember Long memberId,
             @ParameterObject @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<QuestionReadResponse> responseDtoPage = questionQueryService.readQuestions(memberId, pageable);
-        return ResponseEntity.ok(responseDtoPage);
+        Page<QuestionReadResponse> responses = questionQueryService.readQuestions(memberId, pageable);
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/{questionId}")
     @Operation(summary = "질문 조회", description = "질문을 조회합니다.")
     public ResponseEntity<QuestionReadResponse> readQuestion(@AuthMember Long memberId, @PathVariable Long questionId) {
-        QuestionReadResponse responseDto = questionQueryService.readQuestion(memberId, questionId);
-        return ResponseEntity.ok(responseDto);
+        QuestionReadResponse response = questionQueryService.readQuestion(memberId, questionId);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
     @Operation(summary = "질문 생성", description = "로그인한 회원으로 질문을 생성합니다.")
-    public ResponseEntity<QuestionResponse> createQuestion(@AuthMember Long memberId, @RequestBody @Valid QuestionRequest requestDto) {
-        QuestionResponse responseDto = questionCommandService.createQuestion(memberId, requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    public ResponseEntity<QuestionResponse> createQuestion(@AuthMember Long memberId, @RequestBody @Valid QuestionRequest request) {
+        QuestionResponse response = questionCommandService.createQuestion(memberId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{questionId}")
     @Operation(summary = "질문 수정", description = "로그인한 회원이 본인이 작성한 질문을 수정합니다.")
     public ResponseEntity<QuestionResponse> updateQuestion(
             @AuthMember Long memberId, @AuthAdmin Boolean isAdmin,
-            @PathVariable Long questionId, @RequestBody @Valid QuestionRequest requestDto) {
-        QuestionResponse responseDto = questionCommandService.updateQuestion(memberId, isAdmin, questionId, requestDto);
-        return ResponseEntity.ok(responseDto);
+            @PathVariable Long questionId, @RequestBody @Valid QuestionRequest request) {
+        QuestionResponse response = questionCommandService.updateQuestion(memberId, isAdmin, questionId, request);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{questionId}")

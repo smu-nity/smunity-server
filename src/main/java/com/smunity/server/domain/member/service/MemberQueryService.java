@@ -22,8 +22,8 @@ public class MemberQueryService {
     private final MemberRepository memberRepository;
 
     public Page<MemberResponse> readMembers(Pageable pageable) {
-        Page<Member> memberPage = memberRepository.findAll(pageable);
-        return MemberMapper.INSTANCE.toResponse(memberPage);
+        Page<Member> members = memberRepository.findAll(pageable);
+        return MemberMapper.INSTANCE.toResponse(members);
     }
 
     public MemberInfoResponse readMember(Long memberId) {

@@ -19,7 +19,7 @@ public interface QuestionMapper {
     @Mapping(target = "isAuthor", expression = "java(question.getIsAuthor(memberId))")
     QuestionReadResponse toResponse(Question question, Long memberId);
 
-    Question toEntity(QuestionRequest requestDto);
+    Question toEntity(QuestionRequest request);
 
     default Page<QuestionReadResponse> toResponse(Page<Question> questions, Long memberId) {
         return questions.map(question -> toResponse(question, memberId));

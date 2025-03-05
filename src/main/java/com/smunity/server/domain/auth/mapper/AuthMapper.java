@@ -1,8 +1,6 @@
 package com.smunity.server.domain.auth.mapper;
 
-import com.smunity.server.domain.auth.dto.AuthCourseResponseDto;
-import com.smunity.server.domain.auth.dto.AuthResponse;
-import com.smunity.server.domain.auth.dto.AuthResponseDto;
+import com.smunity.server.domain.auth.dto.*;
 import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.global.common.entity.enums.Category;
 import com.smunity.server.global.common.entity.enums.SubDomain;
@@ -30,6 +28,8 @@ public interface AuthMapper {
     Course toEntity(AuthCourseResponseDto dto, boolean isNewCurriculum);
 
     AuthResponse toResponse(AuthResponseDto dto, String authToken);
+
+    AuthRequestDto toDto(AuthRequest request);
 
     default AuthResponse toResponse(JSONObject obj, String authToken) {
         return toResponse(AuthResponseDto.from(obj), authToken);

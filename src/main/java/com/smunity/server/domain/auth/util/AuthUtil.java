@@ -1,6 +1,6 @@
 package com.smunity.server.domain.auth.util;
 
-import com.smunity.server.domain.auth.dto.AuthRequest;
+import com.smunity.server.domain.auth.dto.AuthRequestDto;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
@@ -23,16 +23,16 @@ public class AuthUtil {
     private static final String LOGIN_URL = "https://smsso.smu.ac.kr/Login.do";
     private static final String BASE_URL = "https://smul.smu.ac.kr/";
 
-    public static JSONArray getCourses(AuthRequest requestDto) {
+    public static JSONArray getCourses(AuthRequestDto requestDto) {
         return getData(requestDto, "UsrRecMatt/list.do", "dsRecMattList");
     }
 
-    public static JSONObject getInfo(AuthRequest requestDto) {
+    public static JSONObject getInfo(AuthRequestDto requestDto) {
         JSONArray response = getData(requestDto, "UsrSchMng/selectStdInfo.do", "dsStdInfoList");
         return response.getJSONObject(0);
     }
 
-    private static JSONArray getData(AuthRequest requestDto, String url, String key) {
+    private static JSONArray getData(AuthRequestDto requestDto, String url, String key) {
         JSONObject response = getData(requestDto, url);
         try {
             return response.getJSONArray(key);
@@ -42,7 +42,7 @@ public class AuthUtil {
         }
     }
 
-    private static JSONObject getData(AuthRequest requestDto, String url) {
+    private static JSONObject getData(AuthRequestDto requestDto, String url) {
         Map<String, String> session = login(requestDto);
         try {
             HttpURLConnection connection = createConnection(BASE_URL + url, session);
@@ -54,7 +54,7 @@ public class AuthUtil {
         }
     }
 
-    private static Map<String, String> login(AuthRequest requestDto) {
+    private static Map<String, String> login(AuthRequestDto requestDto) {
         try {
             Connection.Response loginResponse = executeLogin(requestDto);
             return getSessionCookies(loginResponse);
@@ -64,7 +64,7 @@ public class AuthUtil {
         }
     }
 
-    private static Connection.Response executeLogin(AuthRequest requestDto) throws IOException {
+    private static Connection.Response executeLogin(AuthRequestDto requestDto) throws IOException {
         Connection.Response response = Jsoup.connect(LOGIN_URL)
                 .data("user_id", requestDto.username())
                 .data("user_password", requestDto.password())
@@ -93,7 +93,7 @@ public class AuthUtil {
         return connection;
     }
 
-    private static byte[] createRequestData(AuthRequest requestDto) {
+    private static byte[] createRequestData(AuthRequestDto requestDto) {
         return "@d#=@d1#&@d1#tp=dm&_AUTH_MENU_KEY=usrCPsnlInfoUpd-STD&@d1#strStdNo=".concat(requestDto.username()).getBytes();
     }
 
