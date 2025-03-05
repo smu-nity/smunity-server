@@ -2,7 +2,7 @@ package com.smunity.server.domain.question.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record QuestionRequestDto(
+public record QuestionRequest(
         @NotBlank(message = "제목 입력은 필수 입니다.")
         String title,
 
