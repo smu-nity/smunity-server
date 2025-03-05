@@ -5,6 +5,7 @@ import com.smunity.server.domain.department.dto.DepartmentResponseDto;
 import com.smunity.server.global.common.dto.ListResponseDto;
 import com.smunity.server.global.common.entity.Department;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public interface DepartmentMapper {
 
     DepartmentMapper INSTANCE = Mappers.getMapper(DepartmentMapper.class);
 
+    @Mapping(target = "count", source = "memberCount")
     DepartmentResponseDto toDto(Department department);
 
     DepartmentEditResponseDto toEditDto(Department department);
