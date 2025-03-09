@@ -53,9 +53,8 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
 
-    // HTML Parsing and JSON Processing
-    implementation 'org.jsoup:jsoup:1.17.2'
-    implementation 'org.json:json:20240303'
+    // Sangmyung University Authentication
+    implementation 'kr.co.smunity:sangmyung-univ-auth:1.0.0'
 
     // QueryDSL
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'

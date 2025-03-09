@@ -32,21 +32,10 @@ public enum ErrorCode {
     DEPARTMENT_NOT_FOUND(404, "ACCOUNT010", "해당 학과를 찾을 수 없습니다."),
     UNVERIFIED_USER(401, "ACCOUNT011", "인증되지 않은 사용자입니다."),
 
-    // Auth Errors
-    AUTH_UNAUTHORIZED(401, "AUTH001", "아이디 및 비밀번호가 일치하지 않습니다."),
-    AUTH_LOGIN_FAIL(401, "AUTH002", "샘물포털 로그인에 실패했습니다."),
-    AUTH_FETCH_FAILURE(401, "AUTH003", "인증 서버 에러, 관리자에게 문의 바랍니다."),
-    AUTH_INVALID_FORMAT(401, "AUTH004", "응답 형식 오류, 관리자에게 문의 바랍니다."),
-    AUTH_EXCEEDED_LOGIN_ATTEMPTS(401, "AUTH005", "로그인 실패 5회 초과, 샘물 포탈을 통해 비밀번호 초기화를 진행해주시기 바랍니다."),
-
     // Member Errors
     MEMBER_FORBIDDEN(403, "MEMBER001", "사용자 권한이 없습니다."),
     MEMBER_NOT_FOUND(404, "MEMBER002", "해당 사용자가 없습니다."),
     MEMBER_NOT_EDITABLE(400, "MEMBER003", "수정할 수 없는 학과 입니다."),
-
-    // Redis Errors
-    REDIS_CONNECTION_FAILURE(500, "REDIS001", "Redis 서버에 연결할 수 없습니다."),
-    REDIS_SYSTEM_EXCEPTION(500, "REDIS002", "Redis 시스템 예외가 발생했습니다."),
 
     // Question Errors
     QUESTION_NOT_FOUND(404, "QUESTION001", "해당 질문을 찾을 수 없습니다."),
