@@ -10,13 +10,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import java.util.Map;
-
-import static com.smunity.server.global.common.entity.enums.Category.CULTURE;
-import static com.smunity.server.global.common.entity.enums.Category.MAJOR_OPTIONAL;
-import static com.smunity.server.global.common.entity.enums.SubDomain.BALANCE_NATURAL_ENGINEER;
-import static com.smunity.server.global.common.entity.enums.SubDomain.BASIC_ENG_MATH;
-
 @Mapper
 public interface AuthMapper {
 
@@ -29,12 +22,10 @@ public interface AuthMapper {
     AuthResponse toResponse(AuthResponseDto dto, String authToken);
 
     default Category of(String name) {
-        Map<String, Category> categoryMap = Map.of("교필", CULTURE, "교선", CULTURE, "1교직", MAJOR_OPTIONAL);
-        return categoryMap.getOrDefault(name, Category.findByName(name));
+        return Category.of(name);
     }
 
     default SubDomain of(String name, boolean isNewCurriculum) {
-        SubDomain subDomain = SubDomain.hasEngMath(name) ? BASIC_ENG_MATH : SubDomain.findByName(name);
-        return isNewCurriculum && subDomain != null && subDomain.isNaturalOrEngineer() ? BALANCE_NATURAL_ENGINEER : subDomain;
+        return SubDomain.of(name, isNewCurriculum);
     }
 }
