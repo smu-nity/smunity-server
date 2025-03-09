@@ -1,8 +1,8 @@
 package com.smunity.server.domain.member.service;
 
-import com.smunity.AuthManager;
 import com.smunity.dto.AuthResponseDto;
 import com.smunity.server.domain.auth.dto.AuthRequest;
+import com.smunity.server.domain.auth.service.AuthService;
 import com.smunity.server.domain.member.dto.ChangeDepartmentRequest;
 import com.smunity.server.domain.member.dto.ChangeExemptionRequest;
 import com.smunity.server.domain.member.dto.ChangePasswordRequest;
@@ -24,13 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberCommandService {
 
+    private final AuthService authService;
     private final MemberRepository memberRepository;
     private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
 
     public MemberInfoResponse updateMember(Long memberId, AuthRequest request) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        AuthResponseDto auth = AuthManager.authenticate(request.username(), request.password());
+        AuthResponseDto auth = authService.authenticate(request);
         Department department = departmentRepository.findByName(auth.department())
                 .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
         member.update(department, auth.name(), auth.email());
