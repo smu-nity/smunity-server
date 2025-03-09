@@ -1,6 +1,7 @@
 package com.smunity.server.domain.auth.service;
 
 import com.smunity.AuthManager;
+import com.smunity.dto.AuthCourseResponseDto;
 import com.smunity.dto.AuthResponseDto;
 import com.smunity.server.domain.auth.dto.AuthRequest;
 import com.smunity.server.domain.auth.dto.AuthResponse;
@@ -13,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -21,20 +24,28 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthResponse authenticate(AuthRequest request) {
-        AuthResponseDto responseDto = AuthManager.authenticate(request.username(), request.password());
-        String authToken = jwtTokenProvider.createAuthToken(request.username());
-        return AuthMapper.INSTANCE.toResponse(responseDto, authToken);
+    public AuthResponseDto authenticate(AuthRequest request) {
+        return AuthManager.authenticate(request.username(), request.password());
+    }
+
+    public List<AuthCourseResponseDto> readCourses(AuthRequest request) {
+        return AuthManager.readCourses(request.username(), request.password());
     }
 
     public AuthResponse registerAuth(AuthRequest request) {
         validateUsername(request.username());
-        return authenticate(request);
+        return auth(request);
     }
 
     public AuthResponse resetPassword(AuthRequest request) {
         validateExistingUsername(request.username());
-        return authenticate(request);
+        return auth(request);
+    }
+
+    private AuthResponse auth(AuthRequest request) {
+        AuthResponseDto responseDto = authenticate(request);
+        String authToken = jwtTokenProvider.createAuthToken(request.username());
+        return AuthMapper.INSTANCE.toResponse(responseDto, authToken);
     }
 
     private void validateUsername(String username) {

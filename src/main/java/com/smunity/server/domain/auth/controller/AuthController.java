@@ -1,5 +1,6 @@
 package com.smunity.server.domain.auth.controller;
 
+import com.smunity.dto.AuthResponseDto;
 import com.smunity.server.domain.auth.dto.AuthRequest;
 import com.smunity.server.domain.auth.dto.AuthResponse;
 import com.smunity.server.domain.auth.service.AuthService;
@@ -23,7 +24,7 @@ public class AuthController {
 
     @PostMapping
     @Operation(summary = "사용자 인증", description = "사용자 인증 요청을 검증하고 인증 토큰을 반환합니다.")
-    public ResponseEntity<AuthResponse> authenticate(@RequestBody @Valid AuthRequest request) {
+    public ResponseEntity<AuthResponseDto> authenticate(@RequestBody @Valid AuthRequest request) {
         return ResponseEntity.ok(authService.authenticate(request));
     }
 
