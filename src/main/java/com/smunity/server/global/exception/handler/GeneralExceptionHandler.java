@@ -1,5 +1,6 @@
 package com.smunity.server.global.exception.handler;
 
+import com.smunity.exception.AuthException;
 import com.smunity.server.global.common.dto.ErrorResponse;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
@@ -24,6 +25,13 @@ public class GeneralExceptionHandler {
     // 사용자 정의 예외(GeneralException) 처리 메서드
     @ExceptionHandler(GeneralException.class)
     protected ResponseEntity<ErrorResponse<Void>> handleGeneralException(GeneralException ex) {
+        log.warn("[WARNING] {} : {}", ex.getClass(), ex.getMessage());
+        return ErrorResponse.handle(ex.getErrorCode());
+    }
+
+    // 학생 인증 예외(AuthException) 처리 메서드
+    @ExceptionHandler(AuthException.class)
+    protected ResponseEntity<ErrorResponse<Void>> handleAuthException(AuthException ex) {
         log.warn("[WARNING] {} : {}", ex.getClass(), ex.getMessage());
         return ErrorResponse.handle(ex.getErrorCode());
     }
