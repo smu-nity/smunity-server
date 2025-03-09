@@ -1,16 +1,15 @@
 package com.smunity.server.domain.auth.mapper;
 
-import com.smunity.server.domain.auth.dto.*;
+import com.smunity.dto.AuthCourseResponseDto;
+import com.smunity.dto.AuthResponseDto;
+import com.smunity.server.domain.auth.dto.AuthResponse;
 import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.global.common.entity.enums.Category;
 import com.smunity.server.global.common.entity.enums.SubDomain;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
 import java.util.Map;
 
 import static com.smunity.server.global.common.entity.enums.Category.CULTURE;
@@ -28,16 +27,6 @@ public interface AuthMapper {
     Course toEntity(AuthCourseResponseDto dto, boolean isNewCurriculum);
 
     AuthResponse toResponse(AuthResponseDto dto, String authToken);
-
-    AuthRequestDto toDto(AuthRequest request);
-
-    default AuthResponse toResponse(JSONObject obj, String authToken) {
-        return toResponse(AuthResponseDto.from(obj), authToken);
-    }
-
-    default List<AuthCourseResponseDto> toDto(JSONArray objs) {
-        return AuthCourseResponseDto.from(objs);
-    }
 
     default Category of(String name) {
         Map<String, Category> categoryMap = Map.of("교필", CULTURE, "교선", CULTURE, "1교직", MAJOR_OPTIONAL);
