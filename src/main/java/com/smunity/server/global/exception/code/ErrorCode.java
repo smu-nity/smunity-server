@@ -44,10 +44,7 @@ public enum ErrorCode {
     ANSWER_NOT_FOUND(404, "ANSWER001", "해당 답변을 찾을 수 없습니다."),
 
     // Term Errors
-    TERM_NOT_FOUND(404, "TERM001", "해당 학기를 찾을 수 없습니다."),
-
-    // JSON Parsing Errors
-    JSON_INVALID_FORMAT(401, "JSON001", "응답 형식 오류, 관리자에게 문의 바랍니다.");
+    TERM_NOT_FOUND(404, "TERM001", "해당 학기를 찾을 수 없습니다.");
 
     private final int value;
     private final String code;
