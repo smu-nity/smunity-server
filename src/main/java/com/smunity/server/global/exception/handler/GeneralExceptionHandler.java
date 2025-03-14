@@ -31,6 +31,7 @@ public class GeneralExceptionHandler {
     @ExceptionHandler(GeneralException.class)
     protected ResponseEntity<ErrorResponse<Void>> handleGeneralException(GeneralException ex) {
         log.warn("[WARNING] {} : {}", ex.getClass(), ex.getMessage());
+        slackUtil.sendMessage(ex);
         return ErrorResponse.handle(ex.getErrorCode());
     }
 
