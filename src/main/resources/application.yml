@@ -27,6 +27,10 @@ swagger:
   username: ${SWAGGER_USERNAME}
   password: ${SWAGGER_PASSWORD}
 
+slack:
+  webhook:
+    url: ${SLACK_WEBHOOK_URL}
+
 management:
   endpoints:
     web:

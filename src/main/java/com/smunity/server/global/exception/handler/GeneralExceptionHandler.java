@@ -4,6 +4,8 @@ import com.smunity.exception.AuthException;
 import com.smunity.server.global.common.dto.ErrorResponse;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
+import com.smunity.server.global.exception.util.SlackUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,7 +22,10 @@ import java.util.Objects;
 
 @Slf4j
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class GeneralExceptionHandler {
+
+    private final SlackUtil slackUtil;
 
     // 사용자 정의 예외(GeneralException) 처리 메서드
     @ExceptionHandler(GeneralException.class)
@@ -75,6 +80,7 @@ public class GeneralExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse<Void>> handleException(Exception ex) {
         log.error("[ERROR] {} : {}", ex.getClass(), ex.getMessage(), ex);
+        slackUtil.sendMessage(ex);
         return ErrorResponse.handle(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 
