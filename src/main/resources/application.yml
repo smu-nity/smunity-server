@@ -29,7 +29,7 @@ swagger:
 
 slack:
   webhook:
-    url: ${SLACK_WEBHOOK_URL}
+    url: ${SLACK_WEBHOOK_URL:url}
 
 management:
   endpoints:
