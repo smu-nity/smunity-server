@@ -39,7 +39,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-    // Swagger/OpenAPI
+    // Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
     // Prometheus
@@ -51,10 +51,10 @@ dependencies {
     // Slack
     implementation 'com.slack.api:slack-api-client:1.30.0'
 
-    // Sangmyung University Authentication
+    // Auth
     implementation 'kr.co.smunity:sangmyung-univ-auth:1.0.0'
 
-    // JSON Web Token
+    // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
