@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:smunity
+    url: jdbc:h2:file:~/db/smunity
     username: sa
     password:
     driver-class-name: org.h2.Driver
