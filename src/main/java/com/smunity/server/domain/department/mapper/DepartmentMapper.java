@@ -18,6 +18,7 @@ public interface DepartmentMapper {
     @Mapping(target = "count", source = "memberCount")
     DepartmentResponse toResponse(Department department);
 
+    @Mapping(target = "isEditable", ignore = true)
     DepartmentEditResponse toEditResponse(Department department);
 
     default ListResponse<DepartmentResponse> toResponse(List<Department> departments) {

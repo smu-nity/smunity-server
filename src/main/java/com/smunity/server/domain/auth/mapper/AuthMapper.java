@@ -15,6 +15,8 @@ public interface AuthMapper {
 
     AuthMapper INSTANCE = Mappers.getMapper(AuthMapper.class);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "member", ignore = true)
     @Mapping(target = "category", expression = "java(of(dto.type()))")
     @Mapping(target = "subDomain", expression = "java(of(dto.domain(), isNewCurriculum))")
     Course toEntity(AuthCourseResponseDto dto, boolean isNewCurriculum);

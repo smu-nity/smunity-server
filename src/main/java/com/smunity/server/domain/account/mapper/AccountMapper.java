@@ -19,6 +19,10 @@ public interface AccountMapper {
 
     RegisterResponse toResponse(Member member);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "role", ignore = true)
+    @Mapping(target = "year", ignore = true)
+    @Mapping(target = "exemption", ignore = true)
     @Mapping(target = "department", ignore = true)
     Member toEntity(RegisterRequest request);
 
