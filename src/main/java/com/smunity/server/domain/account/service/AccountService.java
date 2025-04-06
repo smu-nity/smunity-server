@@ -9,7 +9,7 @@ import com.smunity.server.global.common.entity.Year;
 import com.smunity.server.global.common.entity.enums.MemberRole;
 import com.smunity.server.global.common.repository.DepartmentRepository;
 import com.smunity.server.global.common.repository.MemberRepository;
-import com.smunity.server.global.common.repository.YearRepository;
+import com.smunity.server.global.common.service.YearService;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import com.smunity.server.global.security.provider.JwtTokenProvider;
@@ -24,8 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountService {
 
     private final MemberRepository memberRepository;
-    private final YearRepository yearRepository;
     private final DepartmentRepository departmentRepository;
+    private final YearService yearService;
     private final LoginStatusService loginStatusService;
     private final RefreshTokenService refreshTokenService;
     private final PasswordEncoder passwordEncoder;
@@ -34,8 +34,7 @@ public class AccountService {
     public RegisterResponse register(String memberName, RegisterRequest request) {
         validateUser(memberName, request.username());
         Member member = AccountMapper.INSTANCE.toEntity(request);
-        Year year = yearRepository.findByName(request.username().substring(0, 4))
-                .orElseThrow(() -> new GeneralException(ErrorCode.YEAR_NOT_FOUND));
+        Year year = yearService.findByUsername(request.username());
         Department department = departmentRepository.findByName(request.department())
                 .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
         String encodedPw = passwordEncoder.encode(request.password());
