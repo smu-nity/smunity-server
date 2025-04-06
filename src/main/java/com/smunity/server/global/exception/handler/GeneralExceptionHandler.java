@@ -2,7 +2,7 @@ package com.smunity.server.global.exception.handler;
 
 import com.smunity.exception.AuthException;
 import com.smunity.server.global.common.dto.ErrorResponse;
-import com.smunity.server.global.common.exception.DepartmentNotFoundException;
+import com.smunity.server.global.exception.DepartmentNotFoundException;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import com.smunity.server.global.exception.util.SlackUtil;

@@ -1,4 +1,4 @@
-package com.smunity.server.global.common.exception;
+package com.smunity.server.global.exception;
 
 public class DepartmentNotFoundException extends RuntimeException {
 
