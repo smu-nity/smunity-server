@@ -2,6 +2,7 @@ package com.smunity.server.global.exception.handler;
 
 import com.smunity.exception.AuthException;
 import com.smunity.server.global.common.dto.ErrorResponse;
+import com.smunity.server.global.common.exception.DepartmentNotFoundException;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import com.smunity.server.global.exception.util.SlackUtil;
@@ -74,6 +75,14 @@ public class GeneralExceptionHandler {
     protected ResponseEntity<ErrorResponse<Void>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
         log.warn("[WARNING] {} : {}", ex.getClass(), ex.getMessage());
         return ErrorResponse.handle(ErrorCode.INVALID_ENUM_VALUE);
+    }
+
+    // 학과명 도메인 불일치(DepartmentNotFoundException) 처리 메서드
+    @ExceptionHandler(DepartmentNotFoundException.class)
+    protected ResponseEntity<ErrorResponse<Void>> handleDepartmentNotFoundException(DepartmentNotFoundException ex) {
+        log.error("[ERROR] {} : {}", ex.getClass(), ex.getMessage(), ex);
+        slackUtil.sendMessage(ex);
+        return ErrorResponse.handle(ErrorCode.DEPARTMENT_SERVER_ERROR);
     }
 
     // 기타 모든 예외(Exception) 처리 메서드
