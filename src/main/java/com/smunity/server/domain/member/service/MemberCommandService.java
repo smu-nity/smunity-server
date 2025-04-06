@@ -10,6 +10,7 @@ import com.smunity.server.domain.member.dto.MemberInfoResponse;
 import com.smunity.server.domain.member.mapper.MemberMapper;
 import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.entity.Member;
+import com.smunity.server.global.common.exception.DepartmentNotFoundException;
 import com.smunity.server.global.common.repository.DepartmentRepository;
 import com.smunity.server.global.common.repository.MemberRepository;
 import com.smunity.server.global.exception.GeneralException;
@@ -33,7 +34,7 @@ public class MemberCommandService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         AuthResponseDto auth = authService.authenticate(request);
         Department department = departmentRepository.findByName(auth.department())
-                .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
+                .orElseThrow(() -> new DepartmentNotFoundException(auth.department()));
         member.update(department, auth.name(), auth.email());
         return MemberMapper.INSTANCE.toResponse(member);
     }

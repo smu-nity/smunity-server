@@ -7,6 +7,7 @@ import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.entity.Year;
 import com.smunity.server.global.common.entity.enums.MemberRole;
+import com.smunity.server.global.common.exception.DepartmentNotFoundException;
 import com.smunity.server.global.common.repository.DepartmentRepository;
 import com.smunity.server.global.common.repository.MemberRepository;
 import com.smunity.server.global.common.service.YearService;
@@ -36,7 +37,7 @@ public class AccountService {
         Member member = AccountMapper.INSTANCE.toEntity(request);
         Year year = yearService.findByUsername(request.username());
         Department department = departmentRepository.findByName(request.department())
-                .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
+                .orElseThrow(() -> new DepartmentNotFoundException(request.department()));
         String encodedPw = passwordEncoder.encode(request.password());
         member.setInfo(year, department, encodedPw);
         return AccountMapper.INSTANCE.toResponse(memberRepository.save(member));
