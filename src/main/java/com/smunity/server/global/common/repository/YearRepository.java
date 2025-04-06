@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface YearRepository extends JpaRepository<Year, Long> {
 
-    Optional<Year> findByName(String name);
+    Optional<Year> findByValue(Integer value);
 }
