@@ -8,6 +8,20 @@
 
 - #### https://smunity.co.kr
 
+## 🐳 Quick Start with Docker
+
+1. #### Set Environment Variables
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. #### Start the Containers
+
+   ```bash
+   docker compose up -d
+   ```
+   
 ## 🖥️ Github Repository
 
 - #### [SMUNITY Server](https://github.com/smu-nity/smunity-server)
