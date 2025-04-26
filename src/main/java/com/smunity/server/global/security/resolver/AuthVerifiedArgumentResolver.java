@@ -38,7 +38,6 @@ public class AuthVerifiedArgumentResolver implements HandlerMethodArgumentResolv
     public String resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        String jwt = jwtTokenProvider.resolveToken(request);
-        return jwtTokenProvider.getUsername(jwt);
+        return jwtTokenProvider.getUsername(request);
     }
 }
