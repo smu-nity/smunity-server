@@ -10,8 +10,8 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import java.io.IOException;
 
 /**
- * JWT 인증 실패 시 오류 응답을 보내는 EntryPoint 클래스
- * JWT 인증 시 인증 정보가 없거나 잘못된 경우
+ * 인증(Authentication) 예외를 처리하는 EntryPoint
+ * 인증이 필요한 요청에 인증 정보가 없거나 유효하지 않을 때 호출
  */
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
 

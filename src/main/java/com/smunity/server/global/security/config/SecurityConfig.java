@@ -20,7 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
- * Spring Security 설정을 구성하는 클래스
+ * Spring Security 설정을 구성
  * HTTP 보안 설정, 인증 필터 추가 등 보안 관련 설정을 정의
  */
 @Configuration
@@ -39,20 +39,20 @@ public class SecurityConfig {
     }
 
     /**
-     * Spring Security 의 formLogin 필터 체인 설정 구성
+     * Spring Security 의 formLogin 필터 체인 설정
      */
     @Bean
     public SecurityFilterChain formLoginFilterChain(HttpSecurity http) throws Exception {
-        // Swagger UI 및 API 문서 경로, 로그인 페이지에 대한 보안 설정
+        // Swagger UI 및 로그인 페이지에 대한 보안 설정
         http.securityMatcher("/swagger-ui/**", "/v3/api-docs/**", "/login");
 
-        // 로그인 성공 시 Swagger UI 로 이동
+        // 로그인 성공 시 Swagger UI로 리다이렉트
         http.formLogin(authorize -> authorize
                 .defaultSuccessUrl("/swagger-ui/index.html")
                 .permitAll()
         );
 
-        // 경로별 인가 작업
+        // 요청 경로별 접근 권한 설정
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").authenticated()
                 .anyRequest().permitAll()
@@ -62,46 +62,46 @@ public class SecurityConfig {
     }
 
     /**
-     * Spring Security 의 JWT 필터 체인 설정 구성
+     * Spring Security 필터 체인 설정
      */
     @Bean
     public SecurityFilterChain jwtFilterChain(HttpSecurity http) throws Exception {
         // CSRF 보호 비활성화
         http.csrf(AbstractHttpConfigurer::disable);
 
-        // 세션 사용 안함
+        // 세션을 사용하지 않도록 설정 (JWT 기반 인증 사용)
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        // HTTP 응답 헤더 설정
+        // H2 콘솔 접근을 위해 동일 출처로 Frame-Options 설정
         http.headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
-        // JWT 기반 인증을 처리하기 위해 JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 이전에 추가
+        // JWT 인증 필터를 UsernamePasswordAuthenticationFilter 앞에 추가
         http.addFilterBefore(new AuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
-        // JWT 인증 예외 핸들링 필터 추가
+        // 인증 실패 예외를 처리하는 필터를 AuthenticationFilter 앞에 추가
         http.addFilterBefore(new AuthenticationExceptionFilter(), AuthenticationFilter.class);
 
-        // 인증 및 인가 오류 핸들러 추가
+        // 인증 및 인가 실패 시 처리할 핸들러 설정
         http.exceptionHandling(exceptionHandling -> exceptionHandling
                 .authenticationEntryPoint(new AuthenticationEntryPointImpl())
                 .accessDeniedHandler(new AccessDeniedHandlerImpl())
         );
 
-        // 경로별 인가 작업
+        // 요청 경로별 접근 권한 설정
         http.authorizeHttpRequests(authorize -> authorize
-                // 모든 사용자
+                // 모든 사용자 접근 허용
                 .requestMatchers("/h2-console/**", "/actuator/prometheus").permitAll()
                 .requestMatchers("/api/v1/accounts/login", "/api/v1/accounts/refresh", "/api/v1/auth/**").permitAll()
                 .requestMatchers("/api/v1/terms/**", "/api/v1/departments", "/api/v1/members/count").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/questions/**").permitAll()
 
-                // 재학생 인증을 완료한 사용자 (ROLE_VERIFIED)
+                // 재학생 인증 완료 사용자만 접근 허용 (ROLE_VERIFIED)
                 .requestMatchers("/api/v1/accounts/register").hasRole("VERIFIED")
 
-                // 관리자 권한을 가진 사용자 (ROLE_ADMIN)
+                // 관리자 권한 사용자만 접근 허용 (ROLE_ADMIN)
                 .requestMatchers("/api/v1/members", "/api/v1/questions/{questionId}/answer").hasRole("ADMIN")
 
-                // 인증된 사용자 (ROLE_USER, ROLE_ADMIN)
+                // 그 외 요청은 인증된 사용자만 접근 허용 (ROLE_USER, ROLE_ADMIN)
                 .anyRequest().authenticated()
         );
 
