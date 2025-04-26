@@ -24,8 +24,8 @@ springdoc:
     operations-sorter: alpha
 
 swagger:
-  username: ${SWAGGER_USERNAME}
-  password: ${SWAGGER_PASSWORD}
+  username: ${SWAGGER_USERNAME:username}
+  password: ${SWAGGER_PASSWORD:password}
 
 slack:
   webhook:
