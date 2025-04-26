@@ -27,13 +27,21 @@ import java.util.List;
  */
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProvider {
+public class JwtTokenProvider implements AuthProvider {
 
     private static final String CLAIM_IS_ACCESS_TOKEN = "isAccessToken";
     private static final String CLAIM_MEMBER_ROLE = "memberRole";
 
     private final JwtProperties jwtProperties;
 
+    /**
+     * 요청의 유효성을 검증한 후 인증 정보를 담은 Authentication 객체 반환
+     */
+    public Authentication getAuthentication(HttpServletRequest request) {
+        String jwt = resolveToken(request);
+        return validateToken(jwt, false) ? getAuthentication(jwt) : null;
+    }
+    
     /**
      * JWT access 토큰 생성
      */
@@ -46,14 +54,6 @@ public class JwtTokenProvider {
      */
     public String createAuthToken(String username) {
         return createToken(username, false, MemberRole.ROLE_VERIFIED, false);
-    }
-
-    /**
-     * 요청의 유효성을 검증한 후 인증 정보를 담은 Authentication 객체 반환
-     */
-    public Authentication getAuthentication(HttpServletRequest request) {
-        String jwt = resolveToken(request);
-        return validateToken(jwt, false) ? getAuthentication(jwt) : null;
     }
 
     /**

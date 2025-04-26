@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * JWT 인증 예외를 핸들링하는 필터 클래스
  */
-public class JwtAuthenticationExceptionFilter extends OncePerRequestFilter {
+public class AuthenticationExceptionFilter extends OncePerRequestFilter {
 
     /**
      * 요청을 필터링하고, JWT 인증 예외가 발생하면 오류 응답 설정

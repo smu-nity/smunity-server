@@ -1,6 +1,6 @@
 package com.smunity.server.global.security.filter;
 
-import com.smunity.server.global.security.provider.JwtTokenProvider;
+import com.smunity.server.global.security.provider.AuthProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,9 +17,9 @@ import java.io.IOException;
  * JWT 기반의 인증을 처리하는 필터 클래스
  */
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class AuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final AuthProvider authProvider;
 
     /**
      * 요청을 필터링하여 JWT 토큰을 검증 후 인증 정보를 설정
@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         // 요청에서 JWT 토큰이 유효한지 검증 후 인증 정보를 설정
-        Authentication authentication = jwtTokenProvider.getAuthentication(request);
+        Authentication authentication = authProvider.getAuthentication(request);
 
         // 인증 정보를 SecurityContext에 설정
         SecurityContextHolder.getContext().setAuthentication(authentication);

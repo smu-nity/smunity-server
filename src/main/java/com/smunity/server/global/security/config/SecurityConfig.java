@@ -1,8 +1,8 @@
 package com.smunity.server.global.security.config;
 
 import com.smunity.server.global.security.config.encoder.Pbkdf2PasswordEncoder;
-import com.smunity.server.global.security.filter.JwtAuthenticationExceptionFilter;
-import com.smunity.server.global.security.filter.JwtAuthenticationFilter;
+import com.smunity.server.global.security.filter.AuthenticationExceptionFilter;
+import com.smunity.server.global.security.filter.AuthenticationFilter;
 import com.smunity.server.global.security.handler.JwtAccessDeniedHandler;
 import com.smunity.server.global.security.handler.JwtAuthenticationEntryPoint;
 import com.smunity.server.global.security.provider.JwtTokenProvider;
@@ -76,10 +76,10 @@ public class SecurityConfig {
         http.headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
         // JWT 기반 인증을 처리하기 위해 JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 이전에 추가
-        http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new AuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         // JWT 인증 예외 핸들링 필터 추가
-        http.addFilterBefore(new JwtAuthenticationExceptionFilter(), JwtAuthenticationFilter.class);
+        http.addFilterBefore(new AuthenticationExceptionFilter(), AuthenticationFilter.class);
 
         // 인증 및 인가 오류 핸들러 추가
         http.exceptionHandling(exceptionHandling -> exceptionHandling
