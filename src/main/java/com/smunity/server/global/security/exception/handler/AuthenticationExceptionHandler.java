@@ -12,7 +12,7 @@ import java.io.IOException;
  * JWT 인증·인가 관련 예외를 처리하는 핸들러 클래스
  */
 @Slf4j
-public class JwtAuthenticationExceptionHandler {
+public class AuthenticationExceptionHandler {
 
     // JWT 인증·인가 관련 예외 발생 시 오류 응답 설정
     public static void handleException(HttpServletResponse response, RuntimeException ex,

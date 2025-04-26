@@ -3,8 +3,8 @@ package com.smunity.server.global.security.config;
 import com.smunity.server.global.security.config.encoder.Pbkdf2PasswordEncoder;
 import com.smunity.server.global.security.filter.AuthenticationExceptionFilter;
 import com.smunity.server.global.security.filter.AuthenticationFilter;
-import com.smunity.server.global.security.handler.JwtAccessDeniedHandler;
-import com.smunity.server.global.security.handler.JwtAuthenticationEntryPoint;
+import com.smunity.server.global.security.handler.AccessDeniedHandlerImpl;
+import com.smunity.server.global.security.handler.AuthenticationEntryPointImpl;
 import com.smunity.server.global.security.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -83,8 +83,8 @@ public class SecurityConfig {
 
         // 인증 및 인가 오류 핸들러 추가
         http.exceptionHandling(exceptionHandling -> exceptionHandling
-                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
-                .accessDeniedHandler(new JwtAccessDeniedHandler())
+                .authenticationEntryPoint(new AuthenticationEntryPointImpl())
+                .accessDeniedHandler(new AccessDeniedHandlerImpl())
         );
 
         // 경로별 인가 작업

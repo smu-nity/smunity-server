@@ -1,7 +1,7 @@
 package com.smunity.server.global.security.filter;
 
 import com.smunity.server.global.security.exception.JwtAuthenticationException;
-import com.smunity.server.global.security.exception.handler.JwtAuthenticationExceptionHandler;
+import com.smunity.server.global.security.exception.handler.AuthenticationExceptionHandler;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +28,7 @@ public class AuthenticationExceptionFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (JwtAuthenticationException ex) {
             // 예외 발생 시 오류 응답 설정
-            JwtAuthenticationExceptionHandler.handleException(response, ex, ex.getErrorCode());
+            AuthenticationExceptionHandler.handleException(response, ex, ex.getErrorCode());
         }
     }
 }
