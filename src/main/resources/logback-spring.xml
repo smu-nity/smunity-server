@@ -46,7 +46,7 @@
         </root>
     </springProfile>
 
-    <springProfile name="release">
+    <springProfile name="prod">
         <root level="WARN">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="LOKI_ASYNC"/>
