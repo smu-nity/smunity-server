@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -38,8 +39,7 @@ public class AuthMemberArgumentResolver implements HandlerMethodArgumentResolver
     public Long resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer,
                                 @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        String jwt = jwtTokenProvider.resolveToken(request);
-        return jwtTokenProvider.validateToken(jwt, false) ?
-                Long.valueOf(jwtTokenProvider.getAuthentication(jwt).getName()) : null;
+        Authentication authentication = jwtTokenProvider.getAuthentication(request);
+        return authentication != null ? Long.valueOf(authentication.getName()) : null;
     }
 }

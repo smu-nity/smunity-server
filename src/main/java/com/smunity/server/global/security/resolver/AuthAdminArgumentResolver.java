@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -39,8 +40,7 @@ public class AuthAdminArgumentResolver implements HandlerMethodArgumentResolver 
     public Boolean resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer,
                                    @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        String jwt = jwtTokenProvider.resolveToken(request);
-        return jwtTokenProvider.validateToken(jwt, false) ?
-                PermissionUtil.isAdmin(jwtTokenProvider.getAuthentication(jwt).getAuthorities()) : null;
+        Authentication authentication = jwtTokenProvider.getAuthentication(request);
+        return authentication != null ? PermissionUtil.isAdmin(authentication.getAuthorities()) : null;
     }
 }

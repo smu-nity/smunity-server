@@ -48,13 +48,18 @@ public class JwtTokenProvider {
         return createToken(username, false, MemberRole.ROLE_VERIFIED, false);
     }
 
+    public Authentication getAuthentication(HttpServletRequest request) {
+        String jwt = resolveToken(request);
+        return validateToken(jwt, false) ? getAuthentication(jwt) : null;
+    }
+
     /**
-     * 요청 헤더에서 JWT 토큰 추출
+     * JWT auth 토큰의 사용자 이름 추출 (재학생 인증)
      */
-    public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        return StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ") ?
-                bearerToken.substring(7) : null;
+    public String getUsername(HttpServletRequest request) {
+        String token = resolveToken(request);
+        Claims claims = getClaims(token);
+        return !claims.get(CLAIM_IS_ACCESS_TOKEN, Boolean.class) ? claims.getSubject() : null;
     }
 
     /**
@@ -75,22 +80,23 @@ public class JwtTokenProvider {
     }
 
     /**
+     * 요청 헤더에서 JWT 토큰 추출
+     */
+    private String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        return StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ") ?
+                bearerToken.substring(7) : null;
+    }
+
+    /**
      * JWT 토큰을 기반으로 Authentication 객체 생성
      */
-    public Authentication getAuthentication(String token) {
+    private Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
         String memberRole = claims.get(CLAIM_MEMBER_ROLE, String.class);
         Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(memberRole));
         User principal = new User(claims.getSubject(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
-    }
-
-    /**
-     * JWT auth 토큰의 사용자 이름 추출 (재학생 인증)
-     */
-    public String getUsername(String token) {
-        Claims claims = getClaims(token);
-        return !claims.get(CLAIM_IS_ACCESS_TOKEN, Boolean.class) ? claims.getSubject() : null;
     }
 
     // JWT 토큰 생성
