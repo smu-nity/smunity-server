@@ -48,6 +48,9 @@ public class JwtTokenProvider {
         return createToken(username, false, MemberRole.ROLE_VERIFIED, false);
     }
 
+    /**
+     * 요청의 유효성을 검증한 후 인증 정보를 담은 Authentication 객체 반환
+     */
     public Authentication getAuthentication(HttpServletRequest request) {
         String jwt = resolveToken(request);
         return validateToken(jwt, false) ? getAuthentication(jwt) : null;
@@ -79,18 +82,14 @@ public class JwtTokenProvider {
         }
     }
 
-    /**
-     * 요청 헤더에서 JWT 토큰 추출
-     */
+    // 요청 헤더에서 JWT 토큰 추출
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         return StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ") ?
                 bearerToken.substring(7) : null;
     }
 
-    /**
-     * JWT 토큰을 기반으로 Authentication 객체 생성
-     */
+    // JWT 토큰을 기반으로 Authentication 객체 생성
     private Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
         String memberRole = claims.get(CLAIM_MEMBER_ROLE, String.class);
