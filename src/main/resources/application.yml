@@ -13,7 +13,7 @@ spring:
         default_batch_fetch_size: 1000
 
 jwt:
-  secret: ${JWT_SECRET:secret}
+  secret: ${JWT_SECRET:your-strong-random-secret-key-here}
   token:
     access-expiration-time: 1800 # 30 minutes
     refresh-expiration-time: 1209600 # 14 days
@@ -24,8 +24,8 @@ springdoc:
     operations-sorter: alpha
 
 swagger:
-  username: ${SWAGGER_USERNAME}
-  password: ${SWAGGER_PASSWORD}
+  username: ${SWAGGER_USERNAME:username}
+  password: ${SWAGGER_PASSWORD:password}
 
 slack:
   webhook:
