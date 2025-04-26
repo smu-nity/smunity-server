@@ -24,15 +24,24 @@ import java.util.List;
 
 /**
  * JWT 토큰을 생성하고 검증하는 클래스
+ * JWT 토큰을 생성, 검증하며, 토큰에서 인증 정보를 추출하여 인증 처리에 사용
  */
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProvider {
+public class JwtTokenProvider implements AuthProvider {
 
     private static final String CLAIM_IS_ACCESS_TOKEN = "isAccessToken";
     private static final String CLAIM_MEMBER_ROLE = "memberRole";
 
     private final JwtProperties jwtProperties;
+
+    /**
+     * HTTP 요청에서 JWT 토큰을 추출하고, 유효성 검증 후 인증 정보를 담은 Authentication 객체를 반환
+     */
+    public Authentication getAuthentication(HttpServletRequest request) {
+        String jwt = resolveToken(request);
+        return validateToken(jwt, false) ? getAuthentication(jwt) : null;
+    }
 
     /**
      * JWT access 토큰 생성
@@ -49,15 +58,7 @@ public class JwtTokenProvider {
     }
 
     /**
-     * 요청의 유효성을 검증한 후 인증 정보를 담은 Authentication 객체 반환
-     */
-    public Authentication getAuthentication(HttpServletRequest request) {
-        String jwt = resolveToken(request);
-        return validateToken(jwt, false) ? getAuthentication(jwt) : null;
-    }
-
-    /**
-     * JWT auth 토큰의 사용자 이름 추출 (재학생 인증)
+     * HTTP 요청에서 사용자 이름을 추출 (재학생 인증)
      */
     public String getUsername(HttpServletRequest request) {
         String token = resolveToken(request);
@@ -82,7 +83,7 @@ public class JwtTokenProvider {
         }
     }
 
-    // 요청 헤더에서 JWT 토큰 추출
+    // HTTP 요청에서 JWT 토큰을 추출
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         return StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ") ?
@@ -116,7 +117,7 @@ public class JwtTokenProvider {
         return new Date(now.getTime() + expirationTime);
     }
 
-    // JWT 토큰에서 클레임을 추출
+    // JWT 토큰에서 클레임 정보를 추출
     private Claims getClaims(String token) {
         return Jwts.parser().verifyWith(jwtProperties.getSecretKey()).build().parseSignedClaims(token).getPayload();
     }
