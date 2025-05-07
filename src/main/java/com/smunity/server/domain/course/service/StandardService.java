@@ -25,7 +25,7 @@ public class StandardService {
             case MAJOR_ADVANCED -> isHasAdvanced ? 15 : 0;
             case MAJOR_OPTIONAL -> isHasAdvanced && !isNewCurriculum ? 45 : 60;
             case CULTURE -> 33;
-            case ETC -> 0;
+            default -> 0;
         };
     }
 
