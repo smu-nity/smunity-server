@@ -19,13 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.smunity.server.domain.course.service.StandardService.TOTAL_CREDITS;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class CourseCommandService {
 
     private final AuthService authService;
-    private final StandardService standardService;
     private final MemberRepository memberRepository;
     private final CourseRepository courseRepository;
 
@@ -39,8 +40,7 @@ public class CourseCommandService {
                 .toList();
         courseRepository.saveAll(courses);
         List<CourseResponse> responses = CourseMapper.INSTANCE.toResponse(member.getCourses());
-        int total = standardService.getTotal(member.getYear());
-        return CourseMapper.INSTANCE.toResponse(total, member.getCompletedCredits(), responses);
+        return CourseMapper.INSTANCE.toResponse(TOTAL_CREDITS, member.getCompletedCredits(), responses);
     }
 
     private boolean isValidCourse(Long memberId, AuthCourseResponseDto dto) {

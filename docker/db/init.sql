@@ -89,17 +89,6 @@ create table core_curriculum
         foreign key (year_id) references common_year (year_id)
 );
 
-create table core_standard
-(
-    standard_id bigint auto_increment
-        primary key,
-    category    enum ('CULTURE', 'ETC', 'MAJOR_ADVANCED', 'MAJOR_OPTIONAL') null,
-    total       int                                                         not null,
-    year_id     bigint                                                      null,
-    constraint FK86m3qbv3u8r3ii5us4jrk92kf
-        foreign key (year_id) references common_year (year_id)
-);
-
 create table qna_question
 (
     question_id bigint auto_increment
@@ -346,44 +335,6 @@ VALUES (2, 'BASIC', 'BASIC_ACCIDENT'),
        (10, 'BALANCE', 'BALANCE_NATURAL_ENGINEER'),
        (10, 'BALANCE', 'BALANCE_ART'),
        (10, 'BALANCE', 'BALANCE_BRIDGE');
-
-INSERT INTO core_standard (year_id, category, total)
-VALUES (2, null, 130),
-       (2, 'MAJOR_ADVANCED', 15),
-       (2, 'MAJOR_OPTIONAL', 45),
-       (2, 'CULTURE', 36),
-       (3, null, 130),
-       (3, 'MAJOR_ADVANCED', 15),
-       (3, 'MAJOR_OPTIONAL', 45),
-       (3, 'CULTURE', 33),
-       (4, null, 130),
-       (4, 'MAJOR_ADVANCED', 15),
-       (4, 'MAJOR_OPTIONAL', 45),
-       (4, 'CULTURE', 33),
-       (5, null, 130),
-       (5, 'MAJOR_ADVANCED', 15),
-       (5, 'MAJOR_OPTIONAL', 45),
-       (5, 'CULTURE', 33),
-       (6, null, 130),
-       (6, 'MAJOR_ADVANCED', 15),
-       (6, 'MAJOR_OPTIONAL', 45),
-       (6, 'CULTURE', 33),
-       (7, null, 130),
-       (7, 'MAJOR_ADVANCED', 15),
-       (7, 'MAJOR_OPTIONAL', 45),
-       (7, 'CULTURE', 33),
-       (8, null, 130),
-       (8, 'MAJOR_ADVANCED', 15),
-       (8, 'MAJOR_OPTIONAL', 60),
-       (8, 'CULTURE', 33),
-       (9, null, 130),
-       (9, 'MAJOR_ADVANCED', 15),
-       (9, 'MAJOR_OPTIONAL', 60),
-       (9, 'CULTURE', 33),
-       (10, null, 130),
-       (10, 'MAJOR_ADVANCED', 15),
-       (10, 'MAJOR_OPTIONAL', 60),
-       (10, 'CULTURE', 33);
 
 INSERT INTO subject_culture (sub_domain, credit, name, number)
 VALUES ('BALANCE_ENGINEER', 3, '창의적프로그래밍입문', 'HALF9319'),

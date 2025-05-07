@@ -18,4 +18,8 @@ public class Year {
 
     @Column(name = "year_value")
     private Integer value;
+
+    public boolean isNewCurriculum() {
+        return value != null && value >= 2023;
+    }
 }
