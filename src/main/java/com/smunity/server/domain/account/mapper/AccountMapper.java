@@ -24,6 +24,7 @@ public interface AccountMapper {
     @Mapping(target = "year", ignore = true)
     @Mapping(target = "exemption", ignore = true)
     @Mapping(target = "department", ignore = true)
+    @Mapping(target = "secondDepartment", ignore = true)
     Member toEntity(RegisterRequest request);
 
     default LoginResponse toResponse(String username, MemberRole memberRole, String accessToken, String refreshToken) {

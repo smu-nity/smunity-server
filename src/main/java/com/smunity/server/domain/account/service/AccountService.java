@@ -37,8 +37,9 @@ public class AccountService {
         Member member = AccountMapper.INSTANCE.toEntity(request);
         Year year = findYearByUsername(request.username());
         Department department = findDepartmentByName(request.department());
+        Department secondDepartment = findDepartmentByName(request.secondDepartment());
         String encodedPw = passwordEncoder.encode(request.password());
-        member.setInfo(year, department, encodedPw);
+        member.setInfo(year, department, secondDepartment, encodedPw);
         return AccountMapper.INSTANCE.toResponse(memberRepository.save(member));
     }
 
@@ -73,8 +74,8 @@ public class AccountService {
     }
 
     private Department findDepartmentByName(String departmentName) {
-        return departmentRepository.findByName(departmentName)
-                .orElseThrow(() -> new DepartmentNotFoundException(departmentName));
+        return departmentName != null ? departmentRepository.findByName(departmentName)
+                .orElseThrow(() -> new DepartmentNotFoundException(departmentName)) : null;
     }
 
     private LoginResponse generateToken(String username, Long memberId, MemberRole memberRole) {
