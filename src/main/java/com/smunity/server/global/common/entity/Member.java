@@ -53,6 +53,10 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "department_id")
     private Department department;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "second_department_id")
+    private Department secondDepartment;
+
     @Enumerated(EnumType.STRING)
     private Exemption exemption;
 
@@ -74,9 +78,10 @@ public class Member extends BaseEntity {
         department.updateMemberCount();
     }
 
-    public void setInfo(Year year, Department department, String encodePw) {
+    public void setInfo(Year year, Department department, Department secondDepartment, String encodePw) {
         this.year = year;
         setDepartment(department);
+        this.secondDepartment = secondDepartment;
         password = encodePw;
     }
 
