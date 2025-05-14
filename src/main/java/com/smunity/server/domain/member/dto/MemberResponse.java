@@ -11,6 +11,7 @@ public record MemberResponse(
         String username,
         String name,
         String department,
+        String secondDepartment,
         String email,
         MemberRole memberRole,
         LocalDateTime createdAt,

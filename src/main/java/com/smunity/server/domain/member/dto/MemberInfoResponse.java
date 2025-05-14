@@ -10,6 +10,7 @@ public record MemberInfoResponse(
         String department,
         String deptCode,
         boolean deptEditable,
+        String secondDepartment,
         Long yearId,
         Exemption exemption
 ) {
