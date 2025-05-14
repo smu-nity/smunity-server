@@ -22,6 +22,7 @@ public interface MemberMapper {
     MemberInfoResponse toResponse(Member member);
 
     @Mapping(target = "department", source = "member.department.name")
+    @Mapping(target = "secondDepartment", source = "member.secondDepartment.name")
     @Mapping(target = "memberRole", source = "member.role")
     MemberResponse toMemberResponse(Member member);
 
