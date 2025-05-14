@@ -3,6 +3,7 @@ package com.smunity.server.domain.member.service;
 import com.smunity.dto.AuthResponseDto;
 import com.smunity.server.domain.auth.dto.AuthRequest;
 import com.smunity.server.domain.auth.service.AuthService;
+import com.smunity.server.domain.department.service.DepartmentService;
 import com.smunity.server.domain.member.dto.ChangeDepartmentRequest;
 import com.smunity.server.domain.member.dto.ChangeExemptionRequest;
 import com.smunity.server.domain.member.dto.ChangePasswordRequest;
@@ -10,9 +11,7 @@ import com.smunity.server.domain.member.dto.MemberInfoResponse;
 import com.smunity.server.domain.member.mapper.MemberMapper;
 import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.entity.Member;
-import com.smunity.server.global.common.repository.DepartmentRepository;
 import com.smunity.server.global.common.repository.MemberRepository;
-import com.smunity.server.global.exception.DepartmentNotFoundException;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -26,16 +25,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberCommandService {
 
     private final AuthService authService;
+    private final DepartmentService departmentService;
     private final MemberRepository memberRepository;
-    private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
 
     public MemberInfoResponse updateMember(Long memberId, AuthRequest request) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         AuthResponseDto auth = authService.authenticate(request);
-        Department department = departmentRepository.findByName(auth.department())
-                .orElseThrow(() -> new DepartmentNotFoundException(auth.department()));
-        member.update(department, auth.name(), auth.email());
+        Department department = departmentService.findDepartmentByName(auth.department());
+        Department secondDepartment = departmentService.findDepartmentByName(auth.secondDepartment());
+        member.update(department, secondDepartment, auth.name(), auth.email());
         return MemberMapper.INSTANCE.toResponse(member);
     }
 
@@ -50,8 +49,7 @@ public class MemberCommandService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         if (!member.getDepartment().isEditable())
             throw new GeneralException(ErrorCode.MEMBER_NOT_EDITABLE);
-        Department department = departmentRepository.findById(request.departmentId())
-                .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
+        Department department = departmentService.findDepartmentById(request.departmentId());
         member.changeDepartment(department);
         return MemberMapper.INSTANCE.toResponse(member);
     }
