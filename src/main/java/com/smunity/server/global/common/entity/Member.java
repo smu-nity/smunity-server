@@ -90,6 +90,7 @@ public class Member extends BaseEntity {
         this.secondDepartment = secondDepartment;
         this.name = name;
         this.email = email;
+        courses.clear();
     }
 
     public void delete() {
