@@ -7,6 +7,8 @@ import com.smunity.server.global.common.dto.ListResponse;
 import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.repository.DepartmentRepository;
 import com.smunity.server.global.exception.DepartmentNotFoundException;
+import com.smunity.server.global.exception.GeneralException;
+import com.smunity.server.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,5 +35,10 @@ public class DepartmentService {
     public Department findDepartmentByName(String departmentName) {
         return departmentName != null ? departmentRepository.findByName(departmentName)
                 .orElseThrow(() -> new DepartmentNotFoundException(departmentName)) : null;
+    }
+
+    public Department findDepartmentById(Long departmentId) {
+        return departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
     }
 }
