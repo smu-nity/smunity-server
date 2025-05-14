@@ -3,14 +3,13 @@ package com.smunity.server.domain.account.service;
 import com.smunity.server.domain.account.dto.*;
 import com.smunity.server.domain.account.entity.RefreshToken;
 import com.smunity.server.domain.account.mapper.AccountMapper;
+import com.smunity.server.domain.department.service.DepartmentService;
 import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.entity.Year;
 import com.smunity.server.global.common.entity.enums.MemberRole;
-import com.smunity.server.global.common.repository.DepartmentRepository;
 import com.smunity.server.global.common.repository.MemberRepository;
 import com.smunity.server.global.common.repository.YearRepository;
-import com.smunity.server.global.exception.DepartmentNotFoundException;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import com.smunity.server.global.security.provider.JwtTokenProvider;
@@ -26,7 +25,7 @@ public class AccountService {
 
     private final MemberRepository memberRepository;
     private final YearRepository yearRepository;
-    private final DepartmentRepository departmentRepository;
+    private final DepartmentService departmentService;
     private final LoginStatusService loginStatusService;
     private final RefreshTokenService refreshTokenService;
     private final PasswordEncoder passwordEncoder;
@@ -36,8 +35,8 @@ public class AccountService {
         validateUser(memberName, request.username());
         Member member = AccountMapper.INSTANCE.toEntity(request);
         Year year = findYearByUsername(request.username());
-        Department department = findDepartmentByName(request.department());
-        Department secondDepartment = findDepartmentByName(request.secondDepartment());
+        Department department = departmentService.findDepartmentByName(request.department());
+        Department secondDepartment = departmentService.findDepartmentByName(request.secondDepartment());
         String encodedPw = passwordEncoder.encode(request.password());
         member.setInfo(year, department, secondDepartment, encodedPw);
         return AccountMapper.INSTANCE.toResponse(memberRepository.save(member));
@@ -71,11 +70,6 @@ public class AccountService {
         int year = Integer.parseInt(username.substring(0, 4));
         return (year >= 2017 ? yearRepository.findByValue(year) : yearRepository.findById(1L))
                 .orElseThrow(() -> new GeneralException(ErrorCode.YEAR_NOT_FOUND));
-    }
-
-    private Department findDepartmentByName(String departmentName) {
-        return departmentName != null ? departmentRepository.findByName(departmentName)
-                .orElseThrow(() -> new DepartmentNotFoundException(departmentName)) : null;
     }
 
     private LoginResponse generateToken(String username, Long memberId, MemberRole memberRole) {

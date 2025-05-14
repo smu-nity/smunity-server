@@ -6,6 +6,7 @@ import com.smunity.server.domain.department.mapper.DepartmentMapper;
 import com.smunity.server.global.common.dto.ListResponse;
 import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.repository.DepartmentRepository;
+import com.smunity.server.global.exception.DepartmentNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,5 +28,10 @@ public class DepartmentService {
     public ListResponse<DepartmentEditResponse> readEditableDepartments() {
         List<Department> departments = departmentRepository.findAllByIsEditable(true);
         return DepartmentMapper.INSTANCE.toEditResponse(departments);
+    }
+
+    public Department findDepartmentByName(String departmentName) {
+        return departmentName != null ? departmentRepository.findByName(departmentName)
+                .orElseThrow(() -> new DepartmentNotFoundException(departmentName)) : null;
     }
 }
