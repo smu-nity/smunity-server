@@ -21,7 +21,9 @@ public record RegisterRequest(
         String name,
 
         @NotBlank(message = "학과 입력은 필수 입니다.")
-        String department
+        String department,
+
+        String secondDepartment
 ) {
 
 }
