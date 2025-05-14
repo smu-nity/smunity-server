@@ -33,7 +33,8 @@ public class MemberCommandService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         AuthResponseDto auth = authService.authenticate(request);
         Department department = departmentService.findDepartmentByName(auth.department());
-        member.update(department, auth.name(), auth.email());
+        Department secondDepartment = departmentService.findDepartmentByName(auth.secondDepartment());
+        member.update(department, secondDepartment, auth.name(), auth.email());
         return MemberMapper.INSTANCE.toResponse(member);
     }
 

@@ -85,8 +85,9 @@ public class Member extends BaseEntity {
         password = encodePw;
     }
 
-    public void update(Department department, String name, String email) {
+    public void update(Department department, Department secondDepartment, String name, String email) {
         this.department = department;
+        this.secondDepartment = secondDepartment;
         this.name = name;
         this.email = email;
     }
