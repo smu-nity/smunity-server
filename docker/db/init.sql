@@ -21,24 +21,27 @@ create table common_department
 
 create table common_member
 (
-    member_id     bigint auto_increment
+    member_id            bigint auto_increment
         primary key,
-    created_at    datetime(6)                                       null,
-    updated_at    datetime(6)                                       null,
-    email         varchar(255)                                      not null,
-    name          varchar(255)                                      not null,
-    password      varchar(255)                                      not null,
-    role          enum ('ROLE_ADMIN', 'ROLE_USER', 'ROLE_VERIFIED') null,
-    username      varchar(255)                                      not null,
-    department_id bigint                                            null,
-    year_id       bigint                                            null,
-    exemption     enum ('FOREIGN', 'DISABLED', 'TRANSFER')          null,
+    created_at           datetime(6)                                       null,
+    updated_at           datetime(6)                                       null,
+    email                varchar(255)                                      not null,
+    name                 varchar(255)                                      not null,
+    password             varchar(255)                                      not null,
+    role                 enum ('ROLE_ADMIN', 'ROLE_USER', 'ROLE_VERIFIED') null,
+    username             varchar(255)                                      not null,
+    department_id        bigint                                            null,
+    second_department_id bigint                                            null,
+    year_id              bigint                                            null,
+    exemption            enum ('FOREIGN', 'DISABLED', 'TRANSFER')          null,
     constraint UKnukl4wikhup994cvb6stc4o37
         unique (username),
     constraint FK8hk760o00jjiko78mr1ge6vs9
         foreign key (year_id) references common_year (year_id),
     constraint FKq0jyek3fap9mfymxujtk4rlsx
-        foreign key (department_id) references common_department (department_id)
+        foreign key (department_id) references common_department (department_id),
+    constraint FKb9djw82lqk4jdke3vmxk20n17
+        foreign key (second_department_id) references common_department (department_id)
 );
 
 create table account_login_status
