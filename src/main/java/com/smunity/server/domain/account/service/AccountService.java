@@ -36,8 +36,7 @@ public class AccountService {
         validateUser(memberName, request.username());
         Member member = AccountMapper.INSTANCE.toEntity(request);
         Year year = findYearByUsername(request.username());
-        Department department = departmentRepository.findByName(request.department())
-                .orElseThrow(() -> new DepartmentNotFoundException(request.department()));
+        Department department = findDepartmentByName(request.department());
         String encodedPw = passwordEncoder.encode(request.password());
         member.setInfo(year, department, encodedPw);
         return AccountMapper.INSTANCE.toResponse(memberRepository.save(member));
@@ -71,6 +70,11 @@ public class AccountService {
         int year = Integer.parseInt(username.substring(0, 4));
         return (year >= 2017 ? yearRepository.findByValue(year) : yearRepository.findById(1L))
                 .orElseThrow(() -> new GeneralException(ErrorCode.YEAR_NOT_FOUND));
+    }
+
+    private Department findDepartmentByName(String departmentName) {
+        return departmentRepository.findByName(departmentName)
+                .orElseThrow(() -> new DepartmentNotFoundException(departmentName));
     }
 
     private LoginResponse generateToken(String username, Long memberId, MemberRole memberRole) {
