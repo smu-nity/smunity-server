@@ -45,7 +45,7 @@ public class CourseCommandService {
     }
 
     private Course toEntity(AuthCourseResponseDto dto, Member member) {
-        Course course = AuthMapper.INSTANCE.toEntity(dto, member.isNewCurriculum());
+        Course course = AuthMapper.INSTANCE.toEntity(dto, member.isDoubleMajor(), member.isNewCurriculum());
         course.setMember(member);
         return course;
     }

@@ -17,17 +17,17 @@ public interface AuthMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "member", ignore = true)
-    @Mapping(target = "category", expression = "java(of(dto.type()))")
-    @Mapping(target = "subDomain", expression = "java(of(dto.domain(), isNewCurriculum))")
-    Course toEntity(AuthCourseResponseDto dto, boolean isNewCurriculum);
+    @Mapping(target = "category", expression = "java(category(dto.type(), isDoubleMajor))")
+    @Mapping(target = "subDomain", expression = "java(subDomain(dto.domain(), isNewCurriculum))")
+    Course toEntity(AuthCourseResponseDto dto, boolean isDoubleMajor, boolean isNewCurriculum);
 
     AuthResponse toResponse(AuthResponseDto dto, String authToken);
 
-    default Category of(String name) {
-        return Category.of(name);
+    default Category category(String name, boolean isDoubleMajor) {
+        return Category.of(name, isDoubleMajor);
     }
 
-    default SubDomain of(String name, boolean isNewCurriculum) {
+    default SubDomain subDomain(String name, boolean isNewCurriculum) {
         return SubDomain.of(name, isNewCurriculum);
     }
 }
