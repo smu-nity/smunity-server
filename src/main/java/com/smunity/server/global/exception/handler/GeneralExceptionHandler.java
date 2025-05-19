@@ -9,7 +9,6 @@ import com.smunity.server.global.exception.util.SlackUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSourceResolvable;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -47,13 +46,6 @@ public class GeneralExceptionHandler {
     protected ResponseEntity<ErrorResponse<Map<String, String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         log.warn("[WARNING] {} : {}", ex.getClass(), ex.getMessage());
         return ErrorResponse.handle(ErrorCode.VALIDATION_FAILED, ex.getFieldErrors());
-    }
-
-    // 데이터 무결성 위반(DataIntegrityViolationException) 처리 메서드
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    protected ResponseEntity<ErrorResponse<Void>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        log.warn("[WARNING] {} : {}", ex.getClass(), ex.getMessage());
-        return ErrorResponse.handle(ErrorCode.VALIDATION_FAILED);
     }
 
     // 컨트롤러 메서드 파라미터의 유효성 검증 실패(HandlerMethodValidationException) 처리 메서드 - @PermissionCheckValidator
