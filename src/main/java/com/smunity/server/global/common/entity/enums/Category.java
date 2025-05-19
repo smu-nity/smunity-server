@@ -26,6 +26,10 @@ public enum Category {
         return CULTURE_MAP.getOrDefault(name, getMajorCategory(name, isDoubleMajor));
     }
 
+    public static Category getMajorCategory(Category category) {
+        return (category == FIRST_MAJOR || category == SECOND_MAJOR) ? null : category;
+    }
+
     private static Category getMajorCategory(String name, boolean isDoubleMajor) {
         return (isDoubleMajor ? DOUBLE_MAJOR_MAP : SINGLE_MAJOR_MAP).getOrDefault(name, ETC);
     }
