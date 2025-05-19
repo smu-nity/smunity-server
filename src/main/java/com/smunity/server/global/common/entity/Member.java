@@ -145,6 +145,10 @@ public class Member extends BaseEntity {
         return isNewCurriculum() && subDomain.isNaturalOrEngineer() ? BALANCE_NATURAL_ENGINEER : subDomain;
     }
 
+    public Department getDepartment(Category category) {
+        return category == SECOND_MAJOR && isDoubleMajor() ? secondDepartment : department;
+    }
+
     public boolean checkCompleted(SubDomain subDomain) {
         return courses.stream()
                 .map(Course::getSubDomain)

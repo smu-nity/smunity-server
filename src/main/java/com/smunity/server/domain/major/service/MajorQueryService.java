@@ -27,7 +27,7 @@ public class MajorQueryService {
     public ListResponse<MajorResponse> readMajors(Long memberId, Category category) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        List<Major> majors = majorQueryRepository.findByDepartmentAndCategory(member.getDepartment(), category, member.getCompletedNumbers());
+        List<Major> majors = majorQueryRepository.findByMemberAndCategory(member, category);
         return MajorMapper.INSTANCE.toResponse(majors);
     }
 }
