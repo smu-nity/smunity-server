@@ -14,6 +14,8 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.smunity.server.global.common.entity.enums.Category.MAJOR_ADVANCED;
+import static com.smunity.server.global.common.entity.enums.Category.MAJOR_OPTIONAL;
 import static com.smunity.server.global.common.entity.enums.SubDomain.BALANCE_NATURAL_ENGINEER;
 
 @Entity
@@ -123,6 +125,10 @@ public class Member extends BaseEntity {
                 .filter(course -> course.getCategory().equals(category))
                 .mapToInt(Course::getCredit)
                 .sum();
+    }
+
+    public int getCompletedMajorCredits() {
+        return getCompletedCredits(MAJOR_ADVANCED) + getCompletedCredits(MAJOR_OPTIONAL);
     }
 
     public List<String> getCompletedNumbers() {
