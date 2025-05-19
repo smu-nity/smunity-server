@@ -34,10 +34,7 @@ public class CourseCommandService {
         List<AuthCourseResponseDto> responseDtos = authService.readCourses(request);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        List<Course> courses = responseDtos.stream()
-                .filter(dto -> isValidCourse(memberId, dto))
-                .map(dto -> toEntity(dto, member))
-                .toList();
+        List<Course> courses = toEntity(responseDtos, member);
         courseRepository.saveAll(courses);
         List<CourseResponse> responses = CourseMapper.INSTANCE.toResponse(member.getCourses());
         return CourseMapper.INSTANCE.toResponse(TOTAL_CREDITS, member.getCompletedCredits(), responses);
@@ -51,5 +48,12 @@ public class CourseCommandService {
         Course course = AuthMapper.INSTANCE.toEntity(dto, member.isNewCurriculum());
         course.setMember(member);
         return course;
+    }
+
+    private List<Course> toEntity(List<AuthCourseResponseDto> dtos, Member member) {
+        return dtos.stream()
+                .filter(dto -> isValidCourse(member.getId(), dto))
+                .map(dto -> toEntity(dto, member))
+                .toList();
     }
 }
