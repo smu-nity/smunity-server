@@ -35,6 +35,7 @@ public interface CourseMapper {
                 .total(total)
                 .completed(completed)
                 .major(member.getCompletedMajorCredits())
+                .secondMajor(member.getCompletedSecondMajorCredits())
                 .culture(member.getCompletedCredits(CULTURE))
                 .etc(member.getCompletedCredits(ETC))
                 .required(calculateRequired(total, completed))

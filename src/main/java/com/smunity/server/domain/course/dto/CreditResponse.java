@@ -9,6 +9,7 @@ public record CreditResponse(
         int total,
         int completed,
         int major,
+        Integer secondMajor,
         int culture,
         int etc,
         int required,
