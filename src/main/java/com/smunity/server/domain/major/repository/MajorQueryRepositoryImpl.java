@@ -12,8 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.smunity.server.domain.major.entity.QMajor.major;
-import static com.smunity.server.global.common.entity.enums.Category.FIRST_MAJOR;
-import static com.smunity.server.global.common.entity.enums.Category.SECOND_MAJOR;
+import static com.smunity.server.global.common.entity.enums.Category.getMajorCategory;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,20 +22,7 @@ public class MajorQueryRepositoryImpl implements MajorQueryRepository {
 
     @Override
     public List<Major> findByMemberAndCategory(Member member, Category category) {
-        Department department = member.getDepartment(category);
-        List<String> completedNumbers = member.getCompletedNumbers();
-        return category == FIRST_MAJOR || category == SECOND_MAJOR
-                ? findByDepartment(department, completedNumbers)
-                : findByDepartmentAndCategory(department, category, completedNumbers);
-    }
-
-    private List<Major> findByDepartment(Department department, List<String> completedNumbers) {
-        return query.selectFrom(major)
-                .where(
-                        departmentEq(department),
-                        numberNotIn(completedNumbers)
-                )
-                .fetch();
+        return findByDepartmentAndCategory(member.getDepartment(category), getMajorCategory(category), member.getCompletedNumbers());
     }
 
     private List<Major> findByDepartmentAndCategory(Department department, Category category, List<String> completedNumbers) {
