@@ -11,7 +11,8 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-import static com.smunity.server.global.common.entity.enums.Category.*;
+import static com.smunity.server.global.common.entity.enums.Category.CULTURE;
+import static com.smunity.server.global.common.entity.enums.Category.ETC;
 
 @Mapper
 public interface CourseMapper {
@@ -28,16 +29,15 @@ public interface CourseMapper {
 
     default CreditResponse toResponse(int total, Member member) {
         int completed = member.getCompletedCredits();
-        int major = member.getCompletedCredits(MAJOR_ADVANCED) + member.getCompletedCredits(MAJOR_OPTIONAL);
-        int culture = member.getCompletedCredits(CULTURE);
         return CreditResponse.builder()
                 .username(member.getUsername())
                 .name(member.getName())
                 .total(total)
                 .completed(completed)
-                .major(major)
-                .culture(culture)
-                .etc(completed - major - culture)
+                .major(member.getCompletedMajorCredits())
+                .secondMajor(member.getCompletedSecondMajorCredits())
+                .culture(member.getCompletedCredits(CULTURE))
+                .etc(member.getCompletedCredits(ETC))
                 .required(calculateRequired(total, completed))
                 .completion(calculateCompletion(total, completed))
                 .build();
