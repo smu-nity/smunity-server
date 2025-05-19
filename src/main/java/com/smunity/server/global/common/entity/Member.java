@@ -145,4 +145,8 @@ public class Member extends BaseEntity {
     public boolean isNewCurriculum() {
         return year.getValue() >= 2024;
     }
+
+    public boolean isDoubleMajor() {
+        return secondDepartment != null;
+    }
 }
