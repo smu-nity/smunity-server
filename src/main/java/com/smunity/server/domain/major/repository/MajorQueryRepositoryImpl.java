@@ -4,7 +4,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.smunity.server.domain.major.entity.Major;
 import com.smunity.server.global.common.entity.Department;
-import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.entity.enums.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.smunity.server.domain.major.entity.QMajor.major;
-import static com.smunity.server.global.common.entity.enums.Category.getMajorCategory;
 
 @Repository
 @RequiredArgsConstructor
@@ -21,11 +19,7 @@ public class MajorQueryRepositoryImpl implements MajorQueryRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public List<Major> findByMemberAndCategory(Member member, Category category) {
-        return findByDepartmentAndCategory(member.getDepartment(category), getMajorCategory(category), member.getCompletedNumbers());
-    }
-
-    private List<Major> findByDepartmentAndCategory(Department department, Category category, List<String> completedNumbers) {
+    public List<Major> findByDepartmentAndCategory(Department department, Category category, List<String> completedNumbers) {
         return query.selectFrom(major)
                 .where(
                         departmentEq(department),

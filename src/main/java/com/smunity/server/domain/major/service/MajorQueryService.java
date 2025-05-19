@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.smunity.server.global.common.entity.enums.Category.getMajorCategory;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class MajorQueryService {
     public ListResponse<MajorResponse> readMajors(Long memberId, Category category) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        List<Major> majors = majorQueryRepository.findByMemberAndCategory(member, category);
+        List<Major> majors = majorQueryRepository.findByDepartmentAndCategory(member.getDepartment(category), getMajorCategory(category), member.getCompletedNumbers());
         return MajorMapper.INSTANCE.toResponse(majors);
     }
 }
