@@ -12,6 +12,8 @@ public enum Category {
 
     MAJOR_ADVANCED("1전심"),
     MAJOR_OPTIONAL("1전선"),
+    FIRST_MAJOR("1전공"),
+    SECOND_MAJOR("2전공"),
     CULTURE("교양"),
     ETC("기타");
 
