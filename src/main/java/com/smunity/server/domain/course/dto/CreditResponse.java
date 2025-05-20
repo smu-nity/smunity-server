@@ -13,7 +13,8 @@ public record CreditResponse(
         int culture,
         int etc,
         int required,
-        int completion
+        int completion,
+        boolean isDoubleMajor
 ) {
 
 }
