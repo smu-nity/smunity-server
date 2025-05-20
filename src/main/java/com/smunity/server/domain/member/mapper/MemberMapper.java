@@ -18,6 +18,7 @@ public interface MemberMapper {
     @Mapping(target = "deptCode", source = "member.department.code")
     @Mapping(target = "deptEditable", source = "member.department.editable")
     @Mapping(target = "secondDepartment", source = "member.secondDepartment.name")
+    @Mapping(target = "secondDeptCode", source = "member.secondDepartment.code")
     @Mapping(target = "yearId", source = "member.year.id")
     MemberInfoResponse toResponse(Member member);
 
