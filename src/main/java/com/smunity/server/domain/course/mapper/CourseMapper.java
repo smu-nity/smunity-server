@@ -40,6 +40,7 @@ public interface CourseMapper {
                 .etc(member.getCompletedCredits(ETC))
                 .required(calculateRequired(total, completed))
                 .completion(calculateCompletion(total, completed))
+                .isDoubleMajor(member.isDoubleMajor())
                 .build();
     }
 
