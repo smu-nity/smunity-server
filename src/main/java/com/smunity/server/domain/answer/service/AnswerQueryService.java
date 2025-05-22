@@ -16,10 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class AnswerQueryService {
 
     private final AnswerRepository answerRepository;
+    private final AnswerMapper answerMapper;
 
     public AnswerResponse readAnswer(Long questionId) {
         Answer answer = answerRepository.findByQuestionId(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.ANSWER_NOT_FOUND));
-        return AnswerMapper.INSTANCE.toResponse(answer);
+        return answerMapper.toResponse(answer);
     }
 }
