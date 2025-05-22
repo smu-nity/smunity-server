@@ -23,10 +23,6 @@ springdoc:
     tags-sorter: alpha
     operations-sorter: alpha
 
-swagger:
-  username: ${SWAGGER_USERNAME:username}
-  password: ${SWAGGER_PASSWORD:password}
-
 slack:
   webhook:
     url: ${SLACK_WEBHOOK_URL:https://hooks.slack.com}
