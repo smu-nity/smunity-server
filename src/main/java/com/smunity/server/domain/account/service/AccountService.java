@@ -30,16 +30,17 @@ public class AccountService {
     private final RefreshTokenService refreshTokenService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final AccountMapper accountMapper;
 
     public RegisterResponse register(String memberName, RegisterRequest request) {
         validateUser(memberName, request.username());
-        Member member = AccountMapper.INSTANCE.toEntity(request);
+        Member member = accountMapper.toEntity(request);
         Year year = findYearByUsername(request.username());
         Department department = departmentService.findDepartmentByName(request.department());
         Department secondDepartment = departmentService.findDepartmentByName(request.secondDepartment());
         String encodedPw = passwordEncoder.encode(request.password());
         member.setInfo(year, department, secondDepartment, encodedPw);
-        return AccountMapper.INSTANCE.toResponse(memberRepository.save(member));
+        return accountMapper.toResponse(memberRepository.save(member));
     }
 
     public LoginResponse login(LoginRequest request) {
@@ -76,7 +77,7 @@ public class AccountService {
         String accessToken = jwtTokenProvider.createAccessToken(memberId, memberRole, false);
         String refreshToken = jwtTokenProvider.createAccessToken(memberId, memberRole, true);
         refreshTokenService.saveRefreshToken(memberId, refreshToken);
-        return AccountMapper.INSTANCE.toResponse(username, memberRole, accessToken, refreshToken);
+        return accountMapper.toResponse(username, memberRole, accessToken, refreshToken);
     }
 
     private void validateUser(String memberName, String username) {
