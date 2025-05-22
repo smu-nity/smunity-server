@@ -16,10 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class TermService {
 
     private final TermRepository termRepository;
+    private final TermMapper termMapper;
 
     public TermResponse readCurrentTerm() {
         Term term = termRepository.findFirstByOrderByIdDesc()
                 .orElseThrow(() -> new GeneralException(ErrorCode.TERM_NOT_FOUND));
-        return TermMapper.INSTANCE.toResponse(term);
+        return termMapper.toResponse(term);
     }
 }
