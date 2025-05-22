@@ -21,13 +21,14 @@ public class QuestionCommandService {
 
     private final MemberRepository memberRepository;
     private final QuestionRepository questionRepository;
+    private final QuestionMapper questionMapper;
 
     public QuestionResponse createQuestion(Long memberId, QuestionRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        Question question = QuestionMapper.INSTANCE.toEntity(request);
+        Question question = questionMapper.toEntity(request);
         question.setMember(member);
-        return QuestionMapper.INSTANCE.toResponse(questionRepository.save(question));
+        return questionMapper.toResponse(questionRepository.save(question));
     }
 
     public QuestionResponse updateQuestion(Long memberId, Boolean isAdmin, Long questionId, QuestionRequest request) {
@@ -35,7 +36,7 @@ public class QuestionCommandService {
                 .orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
         PermissionUtil.validatePermission(memberId, isAdmin, question.getMember().getId());
         question.update(request.title(), request.content(), request.anonymous());
-        return QuestionMapper.INSTANCE.toResponse(question);
+        return questionMapper.toResponse(question);
     }
 
     public void deleteQuestion(Long memberId, Boolean isAdmin, Long questionId) {

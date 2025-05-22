@@ -18,15 +18,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class QuestionQueryService {
 
     private final QuestionRepository questionRepository;
+    private final QuestionMapper questionMapper;
 
     public Page<QuestionReadResponse> readQuestions(Long memberId, Pageable pageable) {
         Page<Question> questions = questionRepository.findAll(pageable);
-        return QuestionMapper.INSTANCE.toResponse(questions, memberId);
+        return questionMapper.toResponse(questions, memberId);
     }
 
     public QuestionReadResponse readQuestion(Long memberId, Long questionId) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
-        return QuestionMapper.INSTANCE.toResponse(question, memberId);
+        return questionMapper.toResponse(question, memberId);
     }
 }
