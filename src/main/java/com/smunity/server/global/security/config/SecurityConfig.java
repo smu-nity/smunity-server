@@ -54,7 +54,7 @@ public class SecurityConfig {
 
         // 요청 경로별 접근 권한 설정
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").authenticated()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
         );
 
