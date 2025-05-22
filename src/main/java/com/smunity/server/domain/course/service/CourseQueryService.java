@@ -37,7 +37,7 @@ public class CourseQueryService {
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Course> courses = courseRepository.findByMemberIdAndCategory(memberId, category);
         List<CourseResponse> responses = courseMapper.toResponse(courses);
-        int total = standardService.getTotal(member.getYear(), member.getDepartment(), category);
+        int total = standardService.getTotal(member.getYear(), member.getDepartment(), member.getSecondDepartment(), category);
         int completed = calculateCompleted(courses);
         return courseMapper.toResponse(total, completed, responses);
     }

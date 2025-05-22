@@ -44,4 +44,8 @@ public class Department {
     public void updateMemberCount() {
         this.memberCount = members.size();
     }
+
+    public boolean isComputerScience() {
+        return id == 1L;
+    }
 }
