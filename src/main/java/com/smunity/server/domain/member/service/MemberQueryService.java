@@ -20,20 +20,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberQueryService {
 
     private final MemberRepository memberRepository;
+    private final MemberMapper memberMapper;
 
     public Page<MemberResponse> readMembers(Pageable pageable) {
         Page<Member> members = memberRepository.findAll(pageable);
-        return MemberMapper.INSTANCE.toResponse(members);
+        return memberMapper.toResponse(members);
     }
 
     public MemberInfoResponse readMember(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        return MemberMapper.INSTANCE.toResponse(member);
+        return memberMapper.toResponse(member);
     }
 
     public MemberCountResponse countMembers() {
         long count = memberRepository.count();
-        return MemberMapper.INSTANCE.toResponse(count);
+        return memberMapper.toResponse(count);
     }
 }
