@@ -18,9 +18,10 @@ import java.util.List;
 public class CultureQueryService {
 
     private final CultureQueryRepository cultureQueryRepository;
+    private final CultureMapper cultureMapper;
 
     public ListResponse<CultureResponse> readCultures(SubDomain subDomain) {
         List<Culture> cultures = cultureQueryRepository.findBySubDomain(subDomain);
-        return CultureMapper.INSTANCE.toResponse(cultures);
+        return cultureMapper.toResponse(cultures);
     }
 }
