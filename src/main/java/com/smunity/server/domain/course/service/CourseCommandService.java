@@ -29,6 +29,7 @@ public class CourseCommandService {
     private final AuthService authService;
     private final MemberRepository memberRepository;
     private final CourseRepository courseRepository;
+    private final AuthMapper authMapper;
 
     public ResultResponse<CourseResponse> createCourses(Long memberId, AuthRequest request) {
         List<AuthCourseResponseDto> responseDtos = authService.readCourses(request);
@@ -45,7 +46,7 @@ public class CourseCommandService {
     }
 
     private Course toEntity(AuthCourseResponseDto dto, Member member) {
-        Course course = AuthMapper.INSTANCE.toEntity(dto, member.isDoubleMajor(), member.isNewCurriculum());
+        Course course = authMapper.toEntity(dto, member.isDoubleMajor(), member.isNewCurriculum());
         course.setMember(member);
         return course;
     }
