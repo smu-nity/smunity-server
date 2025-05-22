@@ -12,20 +12,20 @@ public class StandardService {
 
     public static final int TOTAL_CREDITS = 130;
 
-    public int getTotal(Year year, Department department, Category category) {
-        return category != null ? getTotal(year.isNewCurriculum(), department.isHasAdvanced(), category) : TOTAL_CREDITS;
+    public int getTotal(Year year, Department department, Department secondDepartment, Category category) {
+        return category != null ? getTotal(year.isNewCurriculum(), department.isHasAdvanced(), secondDepartment.isComputerScience(), category) : TOTAL_CREDITS;
     }
 
     public int getCultureTotal(Exemption exemption, Department department, int size, Domain domain) {
         return exemption != Exemption.TRANSFER ? getCultureTotal(department, size, domain) : 0;
     }
 
-    private int getTotal(boolean isNewCurriculum, boolean isHasAdvanced, Category category) {
+    private int getTotal(boolean isNewCurriculum, boolean isHasAdvanced, boolean isComputerScience, Category category) {
         return switch (category) {
             case MAJOR_ADVANCED -> isHasAdvanced ? 15 : 0;
             case MAJOR_OPTIONAL -> isHasAdvanced && !isNewCurriculum ? 45 : 60;
-            case FIRST_MAJOR -> 45;
-            case SECOND_MAJOR -> 36;
+            case FIRST_MAJOR -> isNewCurriculum ? 45 : 36;
+            case SECOND_MAJOR -> isComputerScience ? 45 : 36;
             case CULTURE -> 33;
             default -> 0;
         };
