@@ -6,14 +6,11 @@ import com.smunity.server.global.common.dto.ListResponse;
 import com.smunity.server.global.common.entity.Department;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface DepartmentMapper {
-
-    DepartmentMapper INSTANCE = Mappers.getMapper(DepartmentMapper.class);
 
     @Mapping(target = "count", source = "memberCount")
     DepartmentResponse toResponse(Department department);

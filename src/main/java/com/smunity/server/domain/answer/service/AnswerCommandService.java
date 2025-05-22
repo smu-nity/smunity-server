@@ -23,15 +23,16 @@ public class AnswerCommandService {
     private final MemberRepository memberRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
+    private final AnswerMapper answerMapper;
 
     public AnswerResponse createAnswer(Long memberId, Long questionId, AnswerRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
-        Answer answer = AnswerMapper.INSTANCE.toEntity(request);
+        Answer answer = answerMapper.toEntity(request);
         answer.setData(member, question);
-        return AnswerMapper.INSTANCE.toResponse(answerRepository.save(answer));
+        return answerMapper.toResponse(answerRepository.save(answer));
     }
 
     public AnswerResponse updateAnswer(Long memberId, Long questionId, AnswerRequest request) {
@@ -40,7 +41,7 @@ public class AnswerCommandService {
         Answer answer = answerRepository.findByQuestionId(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.ANSWER_NOT_FOUND));
         answer.update(member, request.content());
-        return AnswerMapper.INSTANCE.toResponse(answer);
+        return answerMapper.toResponse(answer);
     }
 
     public void deleteAnswer(Long questionId) {

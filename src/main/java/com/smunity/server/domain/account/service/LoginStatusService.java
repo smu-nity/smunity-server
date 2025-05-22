@@ -21,11 +21,12 @@ public class LoginStatusService {
     private final MemberRepository memberRepository;
     private final LoginStatusRepository loginStatusRepository;
     private final HttpServletRequest servletRequest;
+    private final AccountMapper accountMapper;
 
     public void createLoginStatus(LoginRequest request) {
         Member member = memberRepository.findByUsername(request.username())
                 .orElseThrow(() -> new GeneralException(ErrorCode.ACCOUNT_NOT_FOUND));
-        LoginStatus loginStatus = AccountMapper.INSTANCE.toEntity(servletRequest);
+        LoginStatus loginStatus = accountMapper.toEntity(servletRequest);
         loginStatus.setMember(member);
         loginStatusRepository.save(loginStatus);
     }

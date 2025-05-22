@@ -5,14 +5,11 @@ import com.smunity.server.domain.culture.entity.Culture;
 import com.smunity.server.global.common.dto.ListResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface CultureMapper {
-
-    CultureMapper INSTANCE = Mappers.getMapper(CultureMapper.class);
 
     @Mapping(target = "type", source = "culture.subDomain.name")
     CultureResponse toResponse(Culture culture);

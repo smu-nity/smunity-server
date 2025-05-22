@@ -28,6 +28,7 @@ public class MemberCommandService {
     private final DepartmentService departmentService;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MemberMapper memberMapper;
 
     public MemberInfoResponse updateMember(Long memberId, AuthRequest request) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
@@ -35,14 +36,14 @@ public class MemberCommandService {
         Department department = departmentService.findDepartmentByName(auth.department());
         Department secondDepartment = departmentService.findDepartmentByName(auth.secondDepartment());
         member.update(department, secondDepartment, auth.name(), auth.email());
-        return MemberMapper.INSTANCE.toResponse(member);
+        return memberMapper.toResponse(member);
     }
 
     public MemberInfoResponse changePassword(Long memberId, ChangePasswordRequest request) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         String newEncodedPw = passwordEncoder.encode(request.password());
         member.changePassword(newEncodedPw);
-        return MemberMapper.INSTANCE.toResponse(member);
+        return memberMapper.toResponse(member);
     }
 
     public MemberInfoResponse changeDepartment(Long memberId, ChangeDepartmentRequest request) {
@@ -51,13 +52,13 @@ public class MemberCommandService {
             throw new GeneralException(ErrorCode.MEMBER_NOT_EDITABLE);
         Department department = departmentService.findDepartmentById(request.departmentId());
         member.changeDepartment(department);
-        return MemberMapper.INSTANCE.toResponse(member);
+        return memberMapper.toResponse(member);
     }
 
     public MemberInfoResponse changeExemption(Long memberId, ChangeExemptionRequest request) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         member.changeExemption(request.exemption());
-        return MemberMapper.INSTANCE.toResponse(member);
+        return memberMapper.toResponse(member);
     }
 
     public MemberInfoResponse changePasswordByAuth(String username, ChangePasswordRequest request) {

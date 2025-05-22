@@ -25,11 +25,12 @@ public class MajorQueryService {
 
     private final MemberRepository memberRepository;
     private final MajorQueryRepository majorQueryRepository;
+    private final MajorMapper majorMapper;
 
     public ListResponse<MajorResponse> readMajors(Long memberId, Category category) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Major> majors = majorQueryRepository.findByDepartmentAndCategory(member.getDepartment(category), getMajorCategory(category), member.getCompletedNumbers());
-        return MajorMapper.INSTANCE.toResponse(majors);
+        return majorMapper.toResponse(majors);
     }
 }

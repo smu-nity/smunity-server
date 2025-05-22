@@ -23,6 +23,7 @@ public class AuthService {
 
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final AuthMapper authMapper;
 
     public AuthResponseDto authenticate(AuthRequest request) {
         return AuthManager.authenticate(request.username(), request.password());
@@ -45,7 +46,7 @@ public class AuthService {
     private AuthResponse auth(AuthRequest request) {
         AuthResponseDto responseDto = authenticate(request);
         String authToken = jwtTokenProvider.createAuthToken(request.username());
-        return AuthMapper.INSTANCE.toResponse(responseDto, authToken);
+        return authMapper.toResponse(responseDto, authToken);
     }
 
     private void validateUsername(String username) {

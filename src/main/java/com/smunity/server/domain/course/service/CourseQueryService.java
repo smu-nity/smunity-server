@@ -30,21 +30,22 @@ public class CourseQueryService {
     private final CurriculumService curriculumService;
     private final MemberRepository memberRepository;
     private final CourseRepository courseRepository;
+    private final CourseMapper courseMapper;
 
     public ResultResponse<CourseResponse> readCourses(Long memberId, Category category) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<Course> courses = courseRepository.findByMemberIdAndCategory(memberId, category);
-        List<CourseResponse> responses = CourseMapper.INSTANCE.toResponse(courses);
+        List<CourseResponse> responses = courseMapper.toResponse(courses);
         int total = standardService.getTotal(member.getYear(), member.getDepartment(), category);
         int completed = calculateCompleted(courses);
-        return CourseMapper.INSTANCE.toResponse(total, completed, responses);
+        return courseMapper.toResponse(total, completed, responses);
     }
 
     public CreditResponse readCoursesCredit(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        return CourseMapper.INSTANCE.toResponse(TOTAL_CREDITS, member);
+        return courseMapper.toResponse(TOTAL_CREDITS, member);
     }
 
     public ResultResponse<CultureResponse> readCultureCourses(Long memberId, Domain domain) {
@@ -53,7 +54,7 @@ public class CourseQueryService {
         List<CultureResponse> cultures = curriculumService.readCurriculums(member, domain);
         int total = standardService.getCultureTotal(member.getExemption(), member.getDepartment(), cultures.size(), domain);
         int completed = calculateCultureCompleted(cultures);
-        return CourseMapper.INSTANCE.toResponse(total, completed, cultures);
+        return courseMapper.toResponse(total, completed, cultures);
     }
 
     private int calculateCompleted(List<Course> courses) {

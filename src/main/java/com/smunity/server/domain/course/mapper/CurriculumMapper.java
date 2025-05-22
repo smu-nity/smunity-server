@@ -5,15 +5,12 @@ import com.smunity.server.domain.course.entity.Curriculum;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.entity.enums.SubDomain;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.Set;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface CurriculumMapper {
-
-    CurriculumMapper INSTANCE = Mappers.getMapper(CurriculumMapper.class);
 
     default List<CultureResponse> toResponse(List<Curriculum> curriculums, Set<SubDomain> exemptions, Member member) {
         return curriculums.stream()

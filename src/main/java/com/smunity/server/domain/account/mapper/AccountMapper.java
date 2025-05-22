@@ -10,12 +10,9 @@ import com.smunity.server.global.common.entity.enums.MemberRole;
 import jakarta.servlet.http.HttpServletRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface AccountMapper {
-
-    AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
 
     RegisterResponse toResponse(Member member);
 

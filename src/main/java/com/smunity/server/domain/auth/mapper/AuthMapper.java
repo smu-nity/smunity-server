@@ -8,12 +8,9 @@ import com.smunity.server.global.common.entity.enums.Category;
 import com.smunity.server.global.common.entity.enums.SubDomain;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface AuthMapper {
-
-    AuthMapper INSTANCE = Mappers.getMapper(AuthMapper.class);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "member", ignore = true)

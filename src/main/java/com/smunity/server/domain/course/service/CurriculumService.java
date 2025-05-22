@@ -24,10 +24,11 @@ import static com.smunity.server.global.common.entity.enums.SubDomain.*;
 public class CurriculumService {
 
     private final CurriculumRepository curriculumRepository;
+    private final CurriculumMapper curriculumMapper;
 
     public List<CultureResponse> readCurriculums(Member member, Domain domain) {
         List<Curriculum> curriculums = curriculumRepository.findAllByYearAndDomain(member.getYear(), domain);
-        return CurriculumMapper.INSTANCE.toResponse(curriculums, getExemptions(member.getExemption()), member);
+        return curriculumMapper.toResponse(curriculums, getExemptions(member.getExemption()), member);
     }
 
     private Set<SubDomain> getExemptions(Exemption exemption) {

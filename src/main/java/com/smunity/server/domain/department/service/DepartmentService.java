@@ -21,15 +21,16 @@ import java.util.List;
 public class DepartmentService {
 
     private final DepartmentRepository departmentRepository;
+    private final DepartmentMapper departmentMapper;
 
     public ListResponse<DepartmentResponse> readDepartments() {
         List<Department> departments = departmentRepository.findAll();
-        return DepartmentMapper.INSTANCE.toResponse(departments);
+        return departmentMapper.toResponse(departments);
     }
 
     public ListResponse<DepartmentEditResponse> readEditableDepartments() {
         List<Department> departments = departmentRepository.findAllByIsEditable(true);
-        return DepartmentMapper.INSTANCE.toEditResponse(departments);
+        return departmentMapper.toEditResponse(departments);
     }
 
     public Department findDepartmentByName(String departmentName) {
