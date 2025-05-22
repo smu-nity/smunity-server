@@ -24,7 +24,7 @@ public class StandardService {
         return switch (category) {
             case MAJOR_ADVANCED -> isHasAdvanced ? 15 : 0;
             case MAJOR_OPTIONAL -> isHasAdvanced && !isNewCurriculum ? 45 : 60;
-            case FIRST_MAJOR -> 45;
+            case FIRST_MAJOR -> isNewCurriculum ? 45 : 36;
             case SECOND_MAJOR -> 36;
             case CULTURE -> 33;
             default -> 0;
