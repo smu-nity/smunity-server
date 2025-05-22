@@ -6,13 +6,10 @@ import com.smunity.server.domain.member.dto.MemberResponse;
 import com.smunity.server.global.common.entity.Member;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
-
-    MemberMapper INSTANCE = Mappers.getMapper(MemberMapper.class);
 
     @Mapping(target = "department", source = "member.department.name")
     @Mapping(target = "deptCode", source = "member.department.code")

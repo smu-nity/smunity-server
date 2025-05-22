@@ -6,13 +6,10 @@ import com.smunity.server.domain.question.dto.QuestionResponse;
 import com.smunity.server.domain.question.entity.Question;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
-
-    QuestionMapper INSTANCE = Mappers.getMapper(QuestionMapper.class);
 
     QuestionResponse toResponse(Question question);
 
