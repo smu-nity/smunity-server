@@ -7,17 +7,14 @@ import com.smunity.server.domain.course.dto.StatusResponse;
 import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.global.common.entity.Member;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
 import static com.smunity.server.global.common.entity.enums.Category.CULTURE;
 import static com.smunity.server.global.common.entity.enums.Category.ETC;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface CourseMapper {
-
-    CourseMapper INSTANCE = Mappers.getMapper(CourseMapper.class);
 
     CourseResponse toResponse(Course course);
 
