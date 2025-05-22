@@ -3,6 +3,8 @@ package com.smunity.server.global.security.auth;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,6 +25,14 @@ public class PrincipalDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Member Not Found: %s".formatted(username)));
-        return new PrincipalDetails(member);
+        return createUserDetails(member);
+    }
+
+    private UserDetails createUserDetails(Member member) {
+        return User.builder()
+                .username(member.getUsername())
+                .password(member.getPassword())
+                .authorities(new SimpleGrantedAuthority(member.getRole().name()))
+                .build();
     }
 }
