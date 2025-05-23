@@ -162,4 +162,8 @@ public class Member extends BaseEntity {
     public boolean isDoubleMajor() {
         return secondDepartment != null;
     }
+
+    public boolean isSecondDeptComputerScience() {
+        return isDoubleMajor() && secondDepartment.isComputerScience();
+    }
 }

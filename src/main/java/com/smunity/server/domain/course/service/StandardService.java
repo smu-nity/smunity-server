@@ -2,7 +2,7 @@ package com.smunity.server.domain.course.service;
 
 import com.smunity.server.domain.course.entity.enums.Domain;
 import com.smunity.server.global.common.entity.Department;
-import com.smunity.server.global.common.entity.Year;
+import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.entity.enums.Category;
 import com.smunity.server.global.common.entity.enums.Exemption;
 import org.springframework.stereotype.Service;
@@ -12,8 +12,8 @@ public class StandardService {
 
     public static final int TOTAL_CREDITS = 130;
 
-    public int getTotal(Year year, Department department, Department secondDepartment, Category category) {
-        return category != null ? getTotal(year.isNewCurriculum(), department.isHasAdvanced(), secondDepartment.isComputerScience(), category) : TOTAL_CREDITS;
+    public int getTotal(Member member, Category category) {
+        return category != null ? getTotal(member.getYear().isNewCurriculum(), member.getDepartment().isHasAdvanced(), member.isSecondDeptComputerScience(), category) : TOTAL_CREDITS;
     }
 
     public int getCultureTotal(Exemption exemption, Department department, int size, Domain domain) {
