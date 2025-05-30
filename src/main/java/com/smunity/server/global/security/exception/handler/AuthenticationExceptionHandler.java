@@ -19,7 +19,7 @@ public class AuthenticationExceptionHandler {
      */
     public static void handleException(HttpServletResponse response, RuntimeException ex,
                                        ErrorCode errorCode) throws IOException {
-        log.warn("[WARNING] {} : {}", ex.getClass(), ex.getMessage());
+        log.warn("{} : {}", ex.getClass(), ex.getMessage());
 
         // 응답의 Content-Type, 문자 인코딩, 상태 코드 설정
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
