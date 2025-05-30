@@ -42,4 +42,10 @@ public class DepartmentService {
         return departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
     }
+
+    @Transactional
+    public void updateMemberCount() {
+        departmentRepository.findAll()
+                .forEach(Department::updateMemberCount);
+    }
 }
