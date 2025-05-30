@@ -30,49 +30,49 @@ public class GeneralExceptionHandler {
     // 사용자 정의 예외(GeneralException) 처리 메서드
     @ExceptionHandler(GeneralException.class)
     protected ResponseEntity<ErrorResponse<Void>> handleGeneralException(GeneralException ex) {
-        log.warn("[WARNING] {} : {}", ex.getClass(), ex.getMessage());
+        log.warn("{} : {}", ex.getClass(), ex.getMessage());
         return ErrorResponse.handle(ex.getErrorCode());
     }
 
     // 학생 인증 예외(AuthException) 처리 메서드
     @ExceptionHandler(AuthException.class)
     protected ResponseEntity<ErrorResponse<Void>> handleAuthException(AuthException ex) {
-        log.warn("[WARNING] {} : {}", ex.getClass(), ex.getMessage());
+        log.warn("{} : {}", ex.getClass(), ex.getMessage());
         return ErrorResponse.handle(ex.getErrorCode());
     }
 
     // 요청 파라미터 검증 실패(MethodArgumentNotValidException) 처리 메서드
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ErrorResponse<Map<String, String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        log.warn("[WARNING] {} : {}", ex.getClass(), ex.getMessage());
+        log.warn("{} : {}", ex.getClass(), ex.getMessage());
         return ErrorResponse.handle(ErrorCode.VALIDATION_FAILED, ex.getFieldErrors());
     }
 
     // 컨트롤러 메서드 파라미터의 유효성 검증 실패(HandlerMethodValidationException) 처리 메서드 - @PermissionCheckValidator
     @ExceptionHandler(HandlerMethodValidationException.class)
     protected ResponseEntity<ErrorResponse<Void>> handleHandlerMethodValidationException(HandlerMethodValidationException ex) {
-        log.warn("[WARNING] {} : {}", ex.getClass(), ex.getMessage());
+        log.warn("{} : {}", ex.getClass(), ex.getMessage());
         return ErrorResponse.handle(extractErrorCode(ex));
     }
 
     // 지원되지 않는 HTTP 메서드 요청(HttpRequestMethodNotSupportedException) 처리 메서드
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     protected ResponseEntity<ErrorResponse<Void>> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
-        log.warn("[WARNING] {} : {}", ex.getClass(), ex.getMessage());
+        log.warn("{} : {}", ex.getClass(), ex.getMessage());
         return ErrorResponse.handle(ErrorCode.METHOD_NOT_ALLOWED);
     }
 
     // 메서드 인자 타입 불일치(MethodArgumentTypeMismatchException) 처리 메서드
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ResponseEntity<ErrorResponse<Void>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
-        log.warn("[WARNING] {} : {}", ex.getClass(), ex.getMessage());
+        log.warn("{} : {}", ex.getClass(), ex.getMessage());
         return ErrorResponse.handle(ErrorCode.INVALID_ENUM_VALUE);
     }
 
     // 학과명 도메인 불일치(DepartmentNotFoundException) 처리 메서드
     @ExceptionHandler(DepartmentNotFoundException.class)
     protected ResponseEntity<ErrorResponse<Void>> handleDepartmentNotFoundException(DepartmentNotFoundException ex) {
-        log.error("[ERROR] {} : {}", ex.getClass(), ex.getMessage(), ex);
+        log.error("{} : {}", ex.getClass(), ex.getMessage(), ex);
         slackUtil.sendMessage(ex);
         return ErrorResponse.handle(ErrorCode.DEPARTMENT_SERVER_ERROR);
     }
@@ -80,7 +80,7 @@ public class GeneralExceptionHandler {
     // 기타 모든 예외(Exception) 처리 메서드
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse<Void>> handleException(Exception ex) {
-        log.error("[ERROR] {} : {}", ex.getClass(), ex.getMessage(), ex);
+        log.error("{} : {}", ex.getClass(), ex.getMessage(), ex);
         slackUtil.sendMessage(ex);
         return ErrorResponse.handle(ErrorCode.INTERNAL_SERVER_ERROR);
     }
