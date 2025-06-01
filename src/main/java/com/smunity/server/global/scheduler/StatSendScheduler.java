@@ -19,7 +19,7 @@ public class StatSendScheduler {
     private final SlackUtil slackUtil;
 
     @Scheduled(cron = "0 0 0 * * *")
-    public void runUpdateMemberCount() {
+    public void sendStatistics() {
         StatResponseDto responseDto = statService.getStatistics();
         slackUtil.sendMessage(responseDto);
         log.info("Statistics sent successfully at {} : {}", LocalDateTime.now(), responseDto);
