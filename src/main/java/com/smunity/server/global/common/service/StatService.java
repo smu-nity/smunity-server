@@ -1,6 +1,5 @@
 package com.smunity.server.global.common.service;
 
-import com.smunity.server.domain.account.repository.LoginStatusRepository;
 import com.smunity.server.domain.question.repository.QuestionRepository;
 import com.smunity.server.global.common.dto.StatResponseDto;
 import com.smunity.server.global.common.mapper.StatMapper;
@@ -18,18 +17,15 @@ import java.time.LocalDateTime;
 public class StatService {
 
     private final MemberRepository memberRepository;
-    private final LoginStatusRepository loginStatusRepository;
     private final QuestionRepository questionRepository;
     private final StatMapper statMapper;
 
     public StatResponseDto getStatistics() {
-        LocalDate now = LocalDate.now();
-        LocalDateTime start = now.minusDays(1).atStartOfDay();
-        LocalDateTime end = now.atStartOfDay();
+        LocalDateTime today = LocalDate.now().atStartOfDay();
+        LocalDateTime yesterday = today.minusDays(1);
         long totalMembers = memberRepository.count();
-        long newRegisters = memberRepository.countByCreatedAtBetween(start, end);
-        long activeMembers = loginStatusRepository.countDistinctMemberByLoginAtBetween(start, end);
+        long newRegisters = memberRepository.countByCreatedAtBetween(yesterday, today);
         long unansweredQuestions = questionRepository.countByAnswerIsNull();
-        return statMapper.toResponse(start.toLocalDate(), totalMembers, newRegisters, activeMembers, unansweredQuestions);
+        return statMapper.toResponse(yesterday.toLocalDate(), totalMembers, newRegisters, unansweredQuestions);
     }
 }
