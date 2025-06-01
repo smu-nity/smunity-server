@@ -27,7 +27,7 @@ public class SlackUtil {
     }
 
     public void sendMessage(StatResponseDto responseDto) {
-        sendMessage("사용자 통계", responseDto.toSlackMessage(), "#2196F3");
+        sendMessage("서비스 통계", responseDto.toSlackMessage(), "#2196F3");
     }
 
     private void sendMessage(String title, String message, String color) {
