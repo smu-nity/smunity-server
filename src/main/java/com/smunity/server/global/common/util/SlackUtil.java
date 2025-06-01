@@ -23,7 +23,7 @@ public class SlackUtil {
     private String SLACK_WEBHOOK_URL;
 
     public void sendMessage(Exception ex) {
-        sendMessage("에러 로그", ex.getMessage(), "#F44336");
+        sendMessage("에러 로그", "<!channel>\n%s".formatted(ex.getMessage()), "#F44336");
     }
 
     public void sendMessage(StatResponseDto responseDto) {
