@@ -12,6 +12,6 @@ public class GeneralException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        return String.format("[%s] %s", errorCode.getCode(), errorCode.getMessage());
+        return "[%s] %s".formatted(errorCode.getCode(), errorCode.getMessage());
     }
 }

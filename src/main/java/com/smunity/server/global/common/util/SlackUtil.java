@@ -1,20 +1,19 @@
-package com.smunity.server.global.exception.util;
+package com.smunity.server.global.common.util;
 
 import com.slack.api.Slack;
 import com.slack.api.model.Attachment;
 import com.slack.api.model.Field;
 import com.slack.api.webhook.Payload;
 import com.slack.api.webhook.WebhookPayloads;
+import com.smunity.server.global.common.dto.StatResponseDto;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
 
-@Slf4j
 @Component
 public class SlackUtil {
 
@@ -24,27 +23,35 @@ public class SlackUtil {
     private String SLACK_WEBHOOK_URL;
 
     public void sendMessage(Exception ex) {
+        sendMessage("에러 로그", "<!channel>\n%s".formatted(ex.getMessage()), "#F44336");
+    }
+
+    public void sendMessage(StatResponseDto responseDto) {
+        sendMessage("서비스 통계", responseDto.toSlackMessage(), "#2196F3");
+    }
+
+    private void sendMessage(String title, String message, String color) {
         try {
-            slack.send(SLACK_WEBHOOK_URL, payload(ex.getMessage()));
+            slack.send(SLACK_WEBHOOK_URL, payload(title, message, color));
         } catch (IOException e) {
             throw new GeneralException(ErrorCode.SLACK_SERVER_ERROR);
         }
     }
 
-    private Payload payload(String message) {
-        return WebhookPayloads.payload(p -> p.attachments(List.of(attachment(message))));
+    private Payload payload(String title, String message, String color) {
+        return WebhookPayloads.payload(p -> p.attachments(List.of(attachment(title, message, color))));
     }
 
-    private Attachment attachment(String message) {
+    private Attachment attachment(String title, String message, String color) {
         return Attachment.builder()
-                .color("#FF0000")
-                .fields(List.of(field(message)))
+                .color(color)
+                .fields(List.of(field(title, message)))
                 .build();
     }
 
-    private Field field(String message) {
+    private Field field(String title, String message) {
         return Field.builder()
-                .title("에러 로그")
+                .title(title)
                 .value(message)
                 .valueShortEnough(false)
                 .build();
