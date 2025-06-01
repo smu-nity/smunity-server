@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -22,11 +23,13 @@ public class StatService {
     private final StatMapper statMapper;
 
     public StatResponseDto getStatistics() {
-        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+        LocalDate now = LocalDate.now();
+        LocalDateTime start = now.minusDays(1).atStartOfDay();
+        LocalDateTime end = now.atStartOfDay();
         long totalMembers = memberRepository.count();
-        long newRegisters = memberRepository.countByCreatedAtAfter(yesterday);
-        long activeMembers = loginStatusRepository.countDistinctMemberByLoginAtAfter(yesterday);
+        long newRegisters = memberRepository.countByCreatedAtBetween(start, end);
+        long activeMembers = loginStatusRepository.countDistinctMemberByLoginAtBetween(start, end);
         long unansweredQuestions = questionRepository.countByAnswerIsNull();
-        return statMapper.toResponse(yesterday.toLocalDate(), totalMembers, newRegisters, activeMembers, unansweredQuestions);
+        return statMapper.toResponse(start.toLocalDate(), totalMembers, newRegisters, activeMembers, unansweredQuestions);
     }
 }

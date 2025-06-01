@@ -7,5 +7,5 @@ import java.time.LocalDateTime;
 
 public interface LoginStatusRepository extends JpaRepository<LoginStatus, Long> {
 
-    long countDistinctMemberByLoginAtAfter(LocalDateTime loginAt);
+    long countDistinctMemberByLoginAtBetween(LocalDateTime start, LocalDateTime end);
 }

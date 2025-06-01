@@ -12,5 +12,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     boolean existsByUsername(String username);
 
-    long countByCreatedAtAfter(LocalDateTime createdAt);
+    long countByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 }
