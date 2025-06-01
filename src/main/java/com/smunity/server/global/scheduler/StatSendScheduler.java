@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -20,5 +22,6 @@ public class StatSendScheduler {
     public void runUpdateMemberCount() {
         StatResponseDto responseDto = statService.getStatistics();
         slackUtil.sendMessage(responseDto);
+        log.info("Statistics sent successfully at {} : {}", LocalDateTime.now(), responseDto);
     }
 }
