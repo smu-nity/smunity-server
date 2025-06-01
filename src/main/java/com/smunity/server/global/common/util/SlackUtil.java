@@ -26,7 +26,11 @@ public class SlackUtil {
     public void sendMessage(Exception ex) {
         sendMessage("에러 로그", ex.getMessage(), "#F44336");
     }
-    
+
+    private void sendMessage(String title, String message) {
+        sendMessage(title, message, "#2196F3");
+    }
+
     private void sendMessage(String title, String message, String color) {
         try {
             slack.send(SLACK_WEBHOOK_URL, payload(title, message, color));
