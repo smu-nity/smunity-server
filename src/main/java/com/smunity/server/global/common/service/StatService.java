@@ -27,6 +27,6 @@ public class StatService {
         long newRegisters = memberRepository.countByCreatedAtAfter(yesterday);
         long activeMembers = loginStatusRepository.countDistinctMemberByLoginAtAfter(yesterday);
         long unansweredQuestions = questionRepository.countByAnswerIsNull();
-        return statMapper.toResponse(totalMembers, newRegisters, activeMembers, unansweredQuestions);
+        return statMapper.toResponse(yesterday.toLocalDate(), totalMembers, newRegisters, activeMembers, unansweredQuestions);
     }
 }
