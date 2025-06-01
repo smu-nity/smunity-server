@@ -2,10 +2,10 @@ package com.smunity.server.global.exception.handler;
 
 import com.smunity.exception.AuthException;
 import com.smunity.server.global.common.dto.ErrorResponse;
+import com.smunity.server.global.common.util.SlackUtil;
 import com.smunity.server.global.exception.DepartmentNotFoundException;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
-import com.smunity.server.global.exception.util.SlackUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSourceResolvable;

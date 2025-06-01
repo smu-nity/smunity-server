@@ -1,4 +1,4 @@
-package com.smunity.server.global.exception.util;
+package com.smunity.server.global.common.util;
 
 import com.slack.api.Slack;
 import com.slack.api.model.Attachment;
