@@ -24,27 +24,31 @@ public class SlackUtil {
     private String SLACK_WEBHOOK_URL;
 
     public void sendMessage(Exception ex) {
+        sendMessage("에러 로그", ex.getMessage(), "#F44336");
+    }
+    
+    private void sendMessage(String title, String message, String color) {
         try {
-            slack.send(SLACK_WEBHOOK_URL, payload(ex.getMessage()));
+            slack.send(SLACK_WEBHOOK_URL, payload(title, message, color));
         } catch (IOException e) {
             throw new GeneralException(ErrorCode.SLACK_SERVER_ERROR);
         }
     }
 
-    private Payload payload(String message) {
-        return WebhookPayloads.payload(p -> p.attachments(List.of(attachment(message))));
+    private Payload payload(String title, String message, String color) {
+        return WebhookPayloads.payload(p -> p.attachments(List.of(attachment(title, message, color))));
     }
 
-    private Attachment attachment(String message) {
+    private Attachment attachment(String title, String message, String color) {
         return Attachment.builder()
-                .color("#FF0000")
-                .fields(List.of(field(message)))
+                .color(color)
+                .fields(List.of(field(title, message)))
                 .build();
     }
 
-    private Field field(String message) {
+    private Field field(String title, String message) {
         return Field.builder()
-                .title("에러 로그")
+                .title(title)
                 .value(message)
                 .valueShortEnough(false)
                 .build();
