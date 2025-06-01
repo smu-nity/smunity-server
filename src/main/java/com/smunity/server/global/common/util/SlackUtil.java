@@ -5,6 +5,7 @@ import com.slack.api.model.Attachment;
 import com.slack.api.model.Field;
 import com.slack.api.webhook.Payload;
 import com.slack.api.webhook.WebhookPayloads;
+import com.smunity.server.global.common.dto.StatResponseDto;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,8 +26,8 @@ public class SlackUtil {
         sendMessage("에러 로그", ex.getMessage(), "#F44336");
     }
 
-    private void sendMessage(String title, String message) {
-        sendMessage(title, message, "#2196F3");
+    public void sendMessage(StatResponseDto responseDto) {
+        sendMessage("사용자 통계", responseDto.toString(), "#2196F3");
     }
 
     private void sendMessage(String title, String message, String color) {
