@@ -33,7 +33,6 @@ public class Answer extends BaseEntity {
 
     public void setMember(Member member) {
         this.member = member;
-        member.getAnswers().add(this);
     }
 
     public void setQuestion(Question question) {
