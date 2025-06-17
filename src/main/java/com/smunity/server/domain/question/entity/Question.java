@@ -29,7 +29,6 @@ public class Question extends BaseEntity {
     @Column(nullable = false)
     private boolean anonymous;
 
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -37,6 +36,11 @@ public class Question extends BaseEntity {
     @Setter
     @OneToOne(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private Answer answer;
+
+    public void setMember(Member member) {
+        this.member = member;
+        member.getQuestions().add(this);
+    }
 
     public void update(String title, String content, boolean anonymous) {
         this.title = title;
