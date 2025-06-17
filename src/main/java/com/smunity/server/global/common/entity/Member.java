@@ -81,12 +81,6 @@ public class Member extends BaseEntity {
         courses.clear();
     }
 
-    public void delete() {
-        Department department = this.department;
-        this.department = null;
-        department.getMembers().remove(this);
-    }
-
     public void changePassword(String password) {
         this.password = password;
     }
