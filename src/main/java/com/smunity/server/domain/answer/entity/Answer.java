@@ -23,7 +23,6 @@ public class Answer extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -31,6 +30,11 @@ public class Answer extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private Question question;
+
+    public void setMember(Member member) {
+        this.member = member;
+        member.getAnswers().add(this);
+    }
 
     public void setQuestion(Question question) {
         this.question = question;

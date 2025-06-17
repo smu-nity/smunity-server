@@ -1,6 +1,9 @@
 package com.smunity.server.global.common.entity;
 
+import com.smunity.server.domain.account.entity.LoginStatus;
+import com.smunity.server.domain.answer.entity.Answer;
 import com.smunity.server.domain.course.entity.Course;
+import com.smunity.server.domain.question.entity.Question;
 import com.smunity.server.global.common.entity.enums.Category;
 import com.smunity.server.global.common.entity.enums.Exemption;
 import com.smunity.server.global.common.entity.enums.MemberRole;
@@ -61,6 +64,15 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Course> courses = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Question> questions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Answer> answers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<LoginStatus> loginStatuses = new ArrayList<>();
+
     public void setDepartment(Department department) {
         this.department = department;
         department.getMembers().add(this);
@@ -79,12 +91,6 @@ public class Member extends BaseEntity {
         this.name = name;
         this.email = email;
         courses.clear();
-    }
-
-    public void delete() {
-        Department department = this.department;
-        this.department = null;
-        department.getMembers().remove(this);
     }
 
     public void changePassword(String password) {
