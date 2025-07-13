@@ -4,6 +4,7 @@ spring:
 
   datasource:
     hikari:
+      minimum-idle: 10
       maximum-pool-size: 40
 
   jpa:
