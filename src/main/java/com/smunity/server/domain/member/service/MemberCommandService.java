@@ -1,6 +1,6 @@
 package com.smunity.server.domain.member.service;
 
-import com.smunity.dto.AuthResponseDto;
+import com.smunity.server.domain.auth.dto.AuthDto;
 import com.smunity.server.domain.auth.dto.AuthRequest;
 import com.smunity.server.domain.auth.service.AuthService;
 import com.smunity.server.domain.department.service.DepartmentService;
@@ -33,10 +33,10 @@ public class MemberCommandService {
     public MemberInfoResponse updateMember(Long memberId, AuthRequest request) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        AuthResponseDto auth = authService.authenticate(request);
-        Department department = departmentService.findDepartmentByName(auth.department());
-        Department secondDepartment = departmentService.findDepartmentByName(auth.secondDepartment());
-        member.update(department, secondDepartment, auth.name(), auth.email());
+        AuthDto dto = authService.authenticate(request);
+        Department department = departmentService.findDepartmentByName(dto.department());
+        Department secondDepartment = departmentService.findDepartmentByName(dto.secondDepartment());
+        member.update(department, secondDepartment, dto.name(), dto.email());
         return memberMapper.toResponse(member);
     }
 

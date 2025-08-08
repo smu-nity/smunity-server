@@ -3,6 +3,7 @@ package com.smunity.server.domain.auth.service;
 import com.smunity.AuthManager;
 import com.smunity.dto.AuthCourseResponseDto;
 import com.smunity.dto.AuthResponseDto;
+import com.smunity.server.domain.auth.dto.AuthDto;
 import com.smunity.server.domain.auth.dto.AuthRequest;
 import com.smunity.server.domain.auth.dto.AuthResponse;
 import com.smunity.server.domain.auth.mapper.AuthMapper;
@@ -25,8 +26,9 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthMapper authMapper;
 
-    public AuthResponseDto authenticate(AuthRequest request) {
-        return AuthManager.authenticate(request.username(), request.password());
+    public AuthDto authenticate(AuthRequest request) {
+        AuthResponseDto responseDto = AuthManager.authenticate(request.username(), request.password());
+        return authMapper.toDto(responseDto);
     }
 
     public List<AuthCourseResponseDto> readCourses(AuthRequest request) {
@@ -44,9 +46,9 @@ public class AuthService {
     }
 
     private AuthResponse auth(AuthRequest request) {
-        AuthResponseDto responseDto = authenticate(request);
+        AuthDto dto = authenticate(request);
         String authToken = jwtTokenProvider.createAuthToken(request.username());
-        return authMapper.toResponse(responseDto, authToken);
+        return authMapper.toResponse(dto, authToken);
     }
 
     private void validateUsername(String username) {
