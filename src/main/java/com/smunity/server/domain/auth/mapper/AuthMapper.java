@@ -10,6 +10,8 @@ import com.smunity.server.global.common.entity.enums.SubDomain;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.Map;
+
 @Mapper(componentModel = "spring")
 public interface AuthMapper {
 
@@ -21,6 +23,8 @@ public interface AuthMapper {
 
     AuthResponse toResponse(AuthDto dto, String authToken);
 
+    @Mapping(target = "department", expression = "java(department(dto))")
+    @Mapping(target = "secondDepartment", expression = "java(department(dto))")
     AuthDto toDto(AuthResponseDto dto);
 
     default Category category(String name, boolean isDoubleMajor) {
@@ -29,5 +33,12 @@ public interface AuthMapper {
 
     default SubDomain subDomain(String name, boolean isNewCurriculum) {
         return SubDomain.of(name, isNewCurriculum);
+    }
+
+    default String department(AuthResponseDto dto) {
+        return Map.of(
+                "지능·데이터융합학부", "핀테크전공",
+                "융합전자공학전공", "지능IOT융합전공"
+        ).getOrDefault(dto.department(), dto.department());
     }
 }
