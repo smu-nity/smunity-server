@@ -3,6 +3,7 @@ package com.smunity.server.domain.question.repository;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.smunity.server.domain.question.entity.Question;
+import com.smunity.server.global.common.util.QueryDslUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,20 +22,21 @@ public class QuestionQueryRepositoryImpl implements QuestionQueryRepository {
 
     @Override
     public Page<Question> findPage(Pageable pageable) {
-        List<Question> content = getContent(pageable);
-        JPAQuery<Long> countQuery = getCountQuery();
+        List<Question> content = fetchContent(pageable);
+        JPAQuery<Long> countQuery = buildCountQuery();
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
-    private List<Question> getContent(Pageable pageable) {
+    private List<Question> fetchContent(Pageable pageable) {
         return query.selectFrom(question)
                 .leftJoin(question.answer).fetchJoin()
+                .orderBy(QueryDslUtil.toOrderSpecifiers(question, pageable.getSort()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
     }
 
-    private JPAQuery<Long> getCountQuery() {
+    private JPAQuery<Long> buildCountQuery() {
         return query.select(question.count())
                 .from(question);
     }
