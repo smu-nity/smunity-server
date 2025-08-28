@@ -21,16 +21,21 @@ public class QuestionQueryRepositoryImpl implements QuestionQueryRepository {
 
     @Override
     public Page<Question> findPage(Pageable pageable) {
-        List<Question> content = query
-                .selectFrom(question)
+        List<Question> content = getContent(pageable);
+        JPAQuery<Long> countQuery = getCountQuery();
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+    }
+
+    private List<Question> getContent(Pageable pageable) {
+        return query.selectFrom(question)
                 .leftJoin(question.answer).fetchJoin()
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+    }
 
-        JPAQuery<Long> countQuery = query
-                .select(question.count())
+    private JPAQuery<Long> getCountQuery() {
+        return query.select(question.count())
                 .from(question);
-        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 }
