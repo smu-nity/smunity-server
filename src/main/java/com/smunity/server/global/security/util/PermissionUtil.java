@@ -17,15 +17,15 @@ public class PermissionUtil {
         }
     }
 
-    // 회원 ID(memberId)와 작성자 ID(authorId)를 비교하고 관리자인지 여부(isAdmin)를 검사하여 권한 확인
-    public static boolean checkPermission(Long memberId, boolean isAdmin, Long authorId) {
-        return memberId.equals(authorId) || isAdmin;
-    }
-
     // 주어진 권한 목록에 관리자 권한이 포함되어 있는지 확인
     public static boolean isAdmin(Collection<? extends GrantedAuthority> authorities) {
         return authorities.stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(ROLE_ADMIN.name()::equals);
+    }
+
+    // 회원 ID(memberId)와 작성자 ID(authorId)를 비교하고 관리자인지 여부(isAdmin)를 검사하여 권한 확인
+    private static boolean checkPermission(Long memberId, boolean isAdmin, Long authorId) {
+        return memberId.equals(authorId) || isAdmin;
     }
 }
