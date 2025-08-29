@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface DepartmentMapper {
 
-    @Mapping(target = "count", source = "memberCount")
+    @Mapping(target = "count", expression = "java(department.getMembers().size())")
     DepartmentResponse toResponse(Department department);
 
     @Mapping(target = "isEditable", ignore = true)
