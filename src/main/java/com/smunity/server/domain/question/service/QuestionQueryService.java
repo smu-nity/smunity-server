@@ -21,7 +21,7 @@ public class QuestionQueryService {
     private final QuestionMapper questionMapper;
 
     public Page<QuestionReadResponse> readQuestions(Long memberId, Pageable pageable) {
-        Page<Question> questions = questionRepository.findAll(pageable);
+        Page<Question> questions = questionRepository.findPage(pageable);
         return questionMapper.toResponse(questions, memberId);
     }
 
