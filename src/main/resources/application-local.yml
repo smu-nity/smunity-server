@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:file:~/db/smunity
+    url: jdbc:h2:file:~/db/smunity;MODE=MySQL
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -12,7 +12,6 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
         show_sql: true
         format_sql: true
 
