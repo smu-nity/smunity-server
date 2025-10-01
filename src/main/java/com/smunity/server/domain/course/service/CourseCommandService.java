@@ -14,6 +14,7 @@ import com.smunity.server.global.common.repository.MemberRepository;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import java.util.List;
 
 import static com.smunity.server.domain.course.service.StandardService.TOTAL_CREDITS;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -53,6 +55,7 @@ public class CourseCommandService {
     }
 
     private List<Course> toEntity(List<AuthCourseResponseDto> dtos, Member member) {
+        log.info("[CourseFetch] event=readCourses status=success memberId={} size={} payload={}", member.getId(), dtos.size(), dtos);
         return dtos.stream()
                 .filter(dto -> isValidCourse(member.getId(), dto))
                 .map(dto -> toEntity(dto, member))
