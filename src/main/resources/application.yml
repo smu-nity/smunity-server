@@ -12,6 +12,8 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 1000
+        show_sql: true
+        format_sql: true
 
 jwt:
   secret: ${JWT_SECRET:your-strong-random-secret-key-here}
