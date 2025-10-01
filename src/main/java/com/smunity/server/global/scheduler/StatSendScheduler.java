@@ -4,11 +4,11 @@ import com.smunity.server.global.common.dto.StatResponseDto;
 import com.smunity.server.global.common.service.StatService;
 import com.smunity.server.global.common.util.SlackUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-@Slf4j
+import static com.smunity.server.global.common.logging.Loggers.event;
+
 @Component
 @RequiredArgsConstructor
 public class StatSendScheduler {
@@ -20,6 +20,6 @@ public class StatSendScheduler {
     public void sendStatistics() {
         StatResponseDto responseDto = statService.getStatistics();
         slackUtil.sendMessage(responseDto);
-        log.info("[StatSendScheduler] event=sendStatistics status=success payload={}", responseDto);
+        event.info("[StatSendScheduler] event=sendStatistics status=success payload={}", responseDto);
     }
 }
