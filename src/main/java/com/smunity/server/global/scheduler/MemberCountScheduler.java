@@ -18,6 +18,6 @@ public class MemberCountScheduler {
     @Scheduled(cron = "0 0 * * * *")
     public void updateMemberCount() {
         departmentService.updateMemberCount();
-        log.info("Member count update completed at {}", LocalDateTime.now());
+        log.info("[MemberCountScheduler] event=updateMemberCount status=success timestamp={}", LocalDateTime.now());
     }
 }

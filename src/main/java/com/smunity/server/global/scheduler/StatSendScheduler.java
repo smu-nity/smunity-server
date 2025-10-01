@@ -22,6 +22,6 @@ public class StatSendScheduler {
     public void sendStatistics() {
         StatResponseDto responseDto = statService.getStatistics();
         slackUtil.sendMessage(responseDto);
-        log.info("Statistics sent successfully at {} : {}", LocalDateTime.now(), responseDto);
+        log.info("[StatSendScheduler] event=sendStatistics status=success timestamp={} payload={}", LocalDateTime.now(), responseDto);
     }
 }
