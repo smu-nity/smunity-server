@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.smunity.server.domain.course.service.StandardService.TOTAL_CREDITS;
+import static com.smunity.server.global.common.logging.Loggers.event;
 
 @Service
 @Transactional
@@ -53,6 +54,7 @@ public class CourseCommandService {
     }
 
     private List<Course> toEntity(List<AuthCourseResponseDto> dtos, Member member) {
+        event.info("[CourseFetch] event=readCourses status=success memberId={} size={} payload={}", member.getId(), dtos.size(), dtos);
         return dtos.stream()
                 .filter(dto -> isValidCourse(member.getId(), dto))
                 .map(dto -> toEntity(dto, member))
