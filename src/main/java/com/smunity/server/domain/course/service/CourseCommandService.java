@@ -37,7 +37,7 @@ public class CourseCommandService {
         List<AuthCourseResponseDto> responseDtos = authService.readCourses(request);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        List<Course> courses = toEntity(responseDtos, member);
+        List<Course> courses = toEntity(member, responseDtos);
         courseRepository.saveAll(courses);
         List<CourseResponse> responses = courseMapper.toResponse(member.getCourses());
         return courseMapper.toResponse(TOTAL_CREDITS, member.getCompletedCredits(), responses);
@@ -47,17 +47,17 @@ public class CourseCommandService {
         return !dto.grade().equals("F") && !courseRepository.existsByMemberIdAndNumber(memberId, dto.number());
     }
 
-    private Course toEntity(AuthCourseResponseDto dto, Member member) {
+    private Course toEntity(Member member, AuthCourseResponseDto dto) {
         Course course = authMapper.toEntity(dto, member.isDoubleMajor(), member.isNewCurriculum());
         course.setMember(member);
         return course;
     }
 
-    private List<Course> toEntity(List<AuthCourseResponseDto> dtos, Member member) {
+    private List<Course> toEntity(Member member, List<AuthCourseResponseDto> dtos) {
         event.info("[CourseFetch] event=readCourses status=success memberId={} size={} payload={}", member.getId(), dtos.size(), dtos);
         return dtos.stream()
                 .filter(dto -> isValidCourse(member.getId(), dto))
-                .map(dto -> toEntity(dto, member))
+                .map(dto -> toEntity(member, dto))
                 .toList();
     }
 }

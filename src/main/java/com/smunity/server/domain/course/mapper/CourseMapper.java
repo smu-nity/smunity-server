@@ -10,6 +10,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
+import static com.smunity.server.domain.course.service.StandardService.TOTAL_CREDITS;
 import static com.smunity.server.global.common.entity.enums.Category.CULTURE;
 import static com.smunity.server.global.common.entity.enums.Category.ETC;
 
@@ -24,19 +25,19 @@ public interface CourseMapper {
                 .toList();
     }
 
-    default CreditResponse toResponse(int total, Member member) {
+    default CreditResponse toResponse(Member member) {
         int completed = member.getCompletedCredits();
         return CreditResponse.builder()
                 .username(member.getUsername())
                 .name(member.getName())
-                .total(total)
+                .total(TOTAL_CREDITS)
                 .completed(completed)
                 .major(member.getCompletedMajorCredits())
                 .secondMajor(member.getCompletedSecondMajorCredits())
                 .culture(member.getCompletedCredits(CULTURE))
                 .etc(member.getCompletedCredits(ETC))
-                .required(calculateRequired(total, completed))
-                .completion(calculateCompletion(total, completed))
+                .required(calculateRequired(TOTAL_CREDITS, completed))
+                .completion(calculateCompletion(TOTAL_CREDITS, completed))
                 .isDoubleMajor(member.isDoubleMajor())
                 .build();
     }
