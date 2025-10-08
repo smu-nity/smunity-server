@@ -4,10 +4,13 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.PathBuilder;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 
-public class QueryDslUtil {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class QueryDslUtil {
 
     public static <T> OrderSpecifier<?>[] toOrderSpecifiers(EntityPathBase<T> qClass, Sort sort) {
         PathBuilder<T> pathBuilder = new PathBuilder<>(qClass.getType(), qClass.getMetadata());
