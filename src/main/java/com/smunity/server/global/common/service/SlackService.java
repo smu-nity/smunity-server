@@ -1,4 +1,4 @@
-package com.smunity.server.global.common.util;
+package com.smunity.server.global.common.service;
 
 import com.slack.api.Slack;
 import com.slack.api.model.Attachment;
@@ -9,13 +9,13 @@ import com.smunity.server.global.common.dto.StatResponseDto;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 
-@Component
-public class SlackUtil {
+@Service
+public class SlackService {
 
     private final Slack slack = Slack.getInstance();
 
