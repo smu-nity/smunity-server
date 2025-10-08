@@ -15,8 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -31,7 +29,7 @@ public class AuthService {
         return authMapper.toDto(responseDto);
     }
 
-    public List<AuthCourseResponseDto> readCourses(AuthRequest request) {
+    public AuthCourseResponseDto readCourses(AuthRequest request) {
         return AuthManager.readCourses(request.username(), request.password());
     }
 

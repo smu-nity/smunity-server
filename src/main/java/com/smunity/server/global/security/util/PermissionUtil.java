@@ -2,13 +2,16 @@ package com.smunity.server.global.security.util;
 
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
 import static com.smunity.server.global.common.entity.enums.MemberRole.ROLE_ADMIN;
 
-public class PermissionUtil {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class PermissionUtil {
 
     // 주어진 회원 ID(memberId), 관리자인지 여부(isAdmin), 작성자 ID(authorId)를 기준으로 권한 검증
     public static void validatePermission(Long memberId, Boolean isAdmin, Long authorId) {

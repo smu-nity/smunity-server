@@ -28,7 +28,7 @@ public class CurriculumService {
 
     public List<CultureResponse> readCurriculums(Member member, Domain domain) {
         List<Curriculum> curriculums = curriculumRepository.findAllByYearAndDomain(member.getYear(), domain);
-        return curriculumMapper.toResponse(curriculums, getExemptions(member.getExemption()), member);
+        return curriculumMapper.toResponse(member, curriculums, getExemptions(member.getExemption()));
     }
 
     private Set<SubDomain> getExemptions(Exemption exemption) {

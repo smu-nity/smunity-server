@@ -1,10 +1,13 @@
 package com.smunity.server.domain.account.util;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-public class IpUtil {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class IpUtil {
 
     private static final List<String> IP_HEADER_CANDIDATES = List.of(
             "X-Forwarded-For",

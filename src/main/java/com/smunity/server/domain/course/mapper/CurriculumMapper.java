@@ -12,15 +12,15 @@ import java.util.Set;
 @Mapper(componentModel = "spring")
 public interface CurriculumMapper {
 
-    default List<CultureResponse> toResponse(List<Curriculum> curriculums, Set<SubDomain> exemptions, Member member) {
+    default List<CultureResponse> toResponse(Member member, List<Curriculum> curriculums, Set<SubDomain> exemptions) {
         return curriculums.stream()
                 .filter(curriculum -> !member.getSubDomain().equals(curriculum.getSubDomain()))
                 .filter(curriculum -> !exemptions.contains(curriculum.getSubDomain()))
-                .map(curriculum -> toResponse(curriculum.getSubDomain(), member))
+                .map(curriculum -> toResponse(member, curriculum.getSubDomain()))
                 .toList();
     }
 
-    default CultureResponse toResponse(SubDomain subDomain, Member member) {
+    default CultureResponse toResponse(Member member, SubDomain subDomain) {
         return CultureResponse.builder()
                 .subDomain(subDomain)
                 .subDomainName(subDomain.getName())

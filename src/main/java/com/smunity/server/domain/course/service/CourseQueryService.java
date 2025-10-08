@@ -19,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.smunity.server.domain.course.service.StandardService.TOTAL_CREDITS;
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -45,7 +43,7 @@ public class CourseQueryService {
     public CreditResponse readCoursesCredit(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        return courseMapper.toResponse(TOTAL_CREDITS, member);
+        return courseMapper.toResponse(member);
     }
 
     public ResultResponse<CultureResponse> readCultureCourses(Long memberId, Domain domain) {
