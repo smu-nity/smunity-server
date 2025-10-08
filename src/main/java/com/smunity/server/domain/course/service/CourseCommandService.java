@@ -1,6 +1,7 @@
 package com.smunity.server.domain.course.service;
 
 import com.smunity.dto.AuthCourseResponseDto;
+import com.smunity.dto.CourseResponseDto;
 import com.smunity.server.domain.auth.dto.AuthRequest;
 import com.smunity.server.domain.auth.mapper.AuthMapper;
 import com.smunity.server.domain.auth.service.AuthService;
@@ -34,30 +35,29 @@ public class CourseCommandService {
     private final CourseMapper courseMapper;
 
     public ResultResponse<CourseResponse> createCourses(Long memberId, AuthRequest request) {
-        List<AuthCourseResponseDto> responseDtos = authService.readCourses(request);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        List<Course> courses = toEntity(member, responseDtos);
+        List<Course> courses = toEntity(member, authService.readCourses(request));
         courseRepository.saveAll(courses);
         List<CourseResponse> responses = courseMapper.toResponse(member.getCourses());
         return courseMapper.toResponse(TOTAL_CREDITS, member.getCompletedCredits(), responses);
     }
 
-    private boolean isValidCourse(Long memberId, AuthCourseResponseDto dto) {
+    private List<Course> toEntity(Member member, AuthCourseResponseDto dto) {
+        event.info("[CourseFetch] event=readCourses status=success memberId={} payload={}", member.getId(), dto);
+        return dto.content().stream()
+                .filter(c -> isValidCourse(member.getId(), c))
+                .map(c -> toEntity(member, c))
+                .toList();
+    }
+
+    private boolean isValidCourse(Long memberId, CourseResponseDto dto) {
         return !dto.grade().equals("F") && !courseRepository.existsByMemberIdAndNumber(memberId, dto.number());
     }
 
-    private Course toEntity(Member member, AuthCourseResponseDto dto) {
+    private Course toEntity(Member member, CourseResponseDto dto) {
         Course course = authMapper.toEntity(dto, member.isDoubleMajor(), member.isNewCurriculum());
         course.setMember(member);
         return course;
-    }
-
-    private List<Course> toEntity(Member member, List<AuthCourseResponseDto> dtos) {
-        event.info("[CourseFetch] event=readCourses status=success memberId={} size={} payload={}", member.getId(), dtos.size(), dtos);
-        return dtos.stream()
-                .filter(dto -> isValidCourse(member.getId(), dto))
-                .map(dto -> toEntity(member, dto))
-                .toList();
     }
 }

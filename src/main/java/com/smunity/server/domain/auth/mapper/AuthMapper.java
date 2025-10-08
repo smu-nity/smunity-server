@@ -1,7 +1,7 @@
 package com.smunity.server.domain.auth.mapper;
 
-import com.smunity.dto.AuthCourseResponseDto;
 import com.smunity.dto.AuthResponseDto;
+import com.smunity.dto.CourseResponseDto;
 import com.smunity.server.domain.auth.dto.AuthDto;
 import com.smunity.server.domain.auth.dto.AuthResponse;
 import com.smunity.server.domain.course.entity.Course;
@@ -25,7 +25,7 @@ public interface AuthMapper {
     @Mapping(target = "member", ignore = true)
     @Mapping(target = "category", expression = "java(category(dto.type(), isDoubleMajor))")
     @Mapping(target = "subDomain", expression = "java(subDomain(dto.domain(), isNewCurriculum))")
-    Course toEntity(AuthCourseResponseDto dto, boolean isDoubleMajor, boolean isNewCurriculum);
+    Course toEntity(CourseResponseDto dto, boolean isDoubleMajor, boolean isNewCurriculum);
 
     AuthResponse toResponse(AuthDto dto, String authToken);
 
