@@ -59,8 +59,7 @@
   <img src="https://img.shields.io/badge/GitHub-181717?style=round-square&logo=github&logoColor=white"/>
   <img src="https://img.shields.io/badge/Github Actions-2088FF?style=round-square&logo=githubactions&logoColor=white"/>
 
-- ### Cloud
+- #### Cloud
 
   <img src="http://is.am/63dc"/>
   <img src="http://is.am/63db"/>
-  
