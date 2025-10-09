@@ -53,11 +53,12 @@
 
   <img src="https://img.shields.io/badge/Redis-7.1.0-FF4438?style=round-square&logo=redis&logoColor=white"/>
 
-- #### CI/CD
+- ### DevOps
 
   <img src="https://img.shields.io/badge/Git-F05032?style=round-square&logo=Git&logoColor=white"/>
   <img src="https://img.shields.io/badge/GitHub-181717?style=round-square&logo=github&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Github Actions-2088FF?style=round-square&logo=githubactions&logoColor=white"/>
+  <img src="https://img.shields.io/badge/GitHub%20Actions-2088FF?style=round-square&logo=githubactions&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=round-square&logo=Docker&logoColor=white"/>
 
 - #### Cloud
 
