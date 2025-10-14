@@ -68,7 +68,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
                 // 모든 사용자 접근 허용
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .requestMatchers("/h2-console/**", "/actuator/prometheus").permitAll()
+                .requestMatchers("/h2-console/**", "/actuator/**").permitAll()
                 .requestMatchers("/api/v1/accounts/login", "/api/v1/accounts/refresh", "/api/v1/auth/**").permitAll()
                 .requestMatchers("/api/v1/terms/**", "/api/v1/departments", "/api/v1/members/count").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/questions/**").permitAll()
