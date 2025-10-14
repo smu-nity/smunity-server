@@ -9,7 +9,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
-  
+
 jobs:
   #  build:
   #    runs-on: ubuntu-latest
@@ -66,6 +66,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -75,6 +78,11 @@ jobs:
 
       - name: Generate OpenAPI (offline)
         run: ./gradlew clean generateOpenApiDocs
+
+      - name: Sort OpenAPI tags by name
+        run: |
+          jq '.tags |= sort_by(.name)' build/openapi.json > build/openapi_sorted.json
+          mv build/openapi_sorted.json build/openapi.json
 
       - name: Set up Node
         uses: actions/setup-node@v4
