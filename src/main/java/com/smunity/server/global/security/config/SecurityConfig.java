@@ -39,33 +39,10 @@ public class SecurityConfig {
     }
 
     /**
-     * Spring Security 의 formLogin 필터 체인 설정
-     */
-    @Bean
-    public SecurityFilterChain formLoginFilterChain(HttpSecurity http) throws Exception {
-        // Swagger UI 및 로그인 페이지에 대한 보안 설정
-        http.securityMatcher("/swagger-ui/**", "/v3/api-docs/**", "/login");
-
-        // 로그인 성공 시 Swagger UI로 리다이렉트
-        http.formLogin(authorize -> authorize
-                .defaultSuccessUrl("/swagger-ui/index.html")
-                .permitAll()
-        );
-
-        // 요청 경로별 접근 권한 설정
-        http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").hasRole("ADMIN")
-                .anyRequest().permitAll()
-        );
-
-        return http.build();
-    }
-
-    /**
      * Spring Security 필터 체인 설정
      */
     @Bean
-    public SecurityFilterChain jwtFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // CSRF 보호 비활성화
         http.csrf(AbstractHttpConfigurer::disable);
 
@@ -90,6 +67,7 @@ public class SecurityConfig {
         // 요청 경로별 접근 권한 설정
         http.authorizeHttpRequests(authorize -> authorize
                 // 모든 사용자 접근 허용
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/h2-console/**", "/actuator/prometheus").permitAll()
                 .requestMatchers("/api/v1/accounts/login", "/api/v1/accounts/refresh", "/api/v1/auth/**").permitAll()
                 .requestMatchers("/api/v1/terms/**", "/api/v1/departments", "/api/v1/members/count").permitAll()
