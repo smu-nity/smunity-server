@@ -3,7 +3,7 @@ name: SMUNITY CI/CD Pipeline
 on:
   push:
     branches:
-      - feature/292
+      - main
 
 permissions:
   contents: read
@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   build:
-    name: Deploy to Elastic Beanstalk
+    name: Deploy Elastic Beanstalk
     runs-on: ubuntu-latest
 
     steps:
@@ -61,7 +61,7 @@ jobs:
           deployment_package: deploy/smunity.zip
 
   docs:
-    name: Deploy API Docs (Redoc → GitHub Pages)
+    name: Deploy API Docs
     runs-on: ubuntu-latest
     needs: build
 
