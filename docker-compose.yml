@@ -1,0 +1,25 @@
+services:
+  app:
+    container_name: smunity-server
+    image: smunity/server:latest
+    build: .
+    environment:
+      SPRING_PROFILE: prod
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      REDIS_URL: redis
+      REDIS_PORT: 6379
+    ports:
+      - "8080:8080"
+    depends_on:
+      redis:
+        condition: service_started
+    restart: always
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    restart: always
