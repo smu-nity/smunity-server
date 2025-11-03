@@ -35,7 +35,7 @@ services:
       - --collation-server=utf8mb4_unicode_ci
       - --skip-character-set-client-handshake
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-p$password" ]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-p$$MYSQL_ROOT_PASSWORD" ]
       interval: 3s
       timeout: 3s
       retries: 10
