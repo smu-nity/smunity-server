@@ -1,6 +1,6 @@
 services:
   app:
-    container_name: smunity-server
+    container_name: smunity-server-dev
     image: smunity/server:latest
     build: .
     environment:
