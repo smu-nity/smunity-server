@@ -12,10 +12,10 @@ services:
       REDIS_PORT: 6379
     ports:
       - "8080:8080"
+    networks: [ smunity ]
     depends_on:
       redis:
         condition: service_started
-    networks: [ smunity ]
     restart: always
 
   redis:
