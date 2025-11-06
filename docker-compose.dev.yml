@@ -5,9 +5,9 @@ services:
     build: .
     environment:
       SPRING_PROFILE: dev
-      DB_URL: jdbc:mysql://mysql:3306/smunity
-      DB_USERNAME: root
-      DB_PASSWORD: password
+      DB_URL: ${DB_URL:-jdbc:mysql://mysql:3306/smunity}
+      DB_USERNAME: ${DB_USERNAME:-root}
+      DB_PASSWORD: ${DB_PASSWORD:-password}
       REDIS_URL: redis
       REDIS_PORT: 6379
     ports:
