@@ -1,6 +1,6 @@
 services:
-  app:
-    container_name: smunity-server
+  server:
+    container_name: server
     image: smunity/server:latest
     build: .
     environment:
@@ -15,6 +15,7 @@ services:
     depends_on:
       redis:
         condition: service_started
+    networks: [ smunity ]
     restart: always
 
   redis:
@@ -22,4 +23,9 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
+    networks: [ smunity ]
     restart: always
+
+networks:
+  smunity:
+    external: true
