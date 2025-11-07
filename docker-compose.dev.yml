@@ -8,8 +8,8 @@ services:
       DB_URL: ${DB_URL:-jdbc:mysql://mysql:3306/smunity}
       DB_USERNAME: ${DB_USERNAME:-root}
       DB_PASSWORD: ${DB_PASSWORD:-password}
-      REDIS_URL: redis
-      REDIS_PORT: 6379
+      REDIS_URL: ${REDIS_URL:-redis}
+      REDIS_PORT: ${REDIS_PORT:-6379}
     ports:
       - "8080:8080"
     depends_on:
