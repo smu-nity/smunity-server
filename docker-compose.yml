@@ -12,6 +12,7 @@ services:
       REDIS_PORT: ${REDIS_PORT}
       REDIS_PASSWORD: ${REDIS_PASSWORD}
       SLACK_WEBHOOK_URL: ${SLACK_WEBHOOK_URL}
+      LOKI_URL: ${LOKI_URL}
     ports:
       - "8080:8080"
     networks: [ smunity ]
