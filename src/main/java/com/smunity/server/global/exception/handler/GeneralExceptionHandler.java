@@ -2,7 +2,7 @@ package com.smunity.server.global.exception.handler;
 
 import com.smunity.exception.AuthException;
 import com.smunity.server.global.common.dto.ErrorResponse;
-import com.smunity.server.global.common.service.SlackService;
+import com.smunity.server.global.common.service.SlackNotifier;
 import com.smunity.server.global.exception.DepartmentNotFoundException;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
@@ -25,7 +25,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class GeneralExceptionHandler {
 
-    private final SlackService slackService;
+    private final SlackNotifier slackNotifier;
 
     // 사용자 정의 예외(GeneralException) 처리 메서드
     @ExceptionHandler(GeneralException.class)
@@ -73,7 +73,7 @@ public class GeneralExceptionHandler {
     @ExceptionHandler(DepartmentNotFoundException.class)
     protected ResponseEntity<ErrorResponse<Void>> handleDepartmentNotFoundException(DepartmentNotFoundException ex) {
         log.error("{} : {}", ex.getClass(), ex.getMessage(), ex);
-        slackService.sendMessage(ex);
+        slackNotifier.sendMessage(ex);
         return ErrorResponse.handle(ErrorCode.DEPARTMENT_SERVER_ERROR);
     }
 
@@ -81,7 +81,7 @@ public class GeneralExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse<Void>> handleException(Exception ex) {
         log.error("{} : {}", ex.getClass(), ex.getMessage(), ex);
-        slackService.sendMessage(ex);
+        slackNotifier.sendMessage(ex);
         return ErrorResponse.handle(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 

@@ -41,7 +41,3 @@ server:
   tomcat:
     mbeanregistry:
       enabled: true
-
-slack:
-  webhook:
-    url: ${SLACK_WEBHOOK_URL:https://hooks.slack.com}

@@ -14,3 +14,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+
+slack:
+  webhook:
+    url: ${SLACK_WEBHOOK_URL}

@@ -9,23 +9,27 @@ import com.smunity.server.global.common.dto.StatResponseDto;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 
+@Profile("prod")
 @Service
-public class SlackService {
+public class SlackNotifierImpl implements SlackNotifier {
 
     private final Slack slack = Slack.getInstance();
 
     @Value("${slack.webhook.url}")
     private String SLACK_WEBHOOK_URL;
 
+    @Override
     public void sendMessage(Exception ex) {
         sendMessage("에러 로그", "<!channel>\n%s".formatted(ex.getMessage()), "#F44336");
     }
 
+    @Override
     public void sendMessage(StatResponseDto responseDto) {
         sendMessage("서비스 통계", responseDto.toSlackMessage(), "#2196F3");
     }
