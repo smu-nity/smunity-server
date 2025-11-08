@@ -1,15 +1,15 @@
 services:
-  app:
-    container_name: smunity-server
+  server:
+    container_name: smunity-server-dev
     image: smunity/server:latest
     build: .
     environment:
       SPRING_PROFILE: dev
-      DB_URL: jdbc:mysql://mysql:3306/smunity
-      DB_USERNAME: root
-      DB_PASSWORD: password
-      REDIS_URL: redis
-      REDIS_PORT: 6379
+      DB_URL: ${DB_URL:-jdbc:mysql://mysql:3306/smunity}
+      DB_USERNAME: ${DB_USERNAME:-root}
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+      REDIS_HOST: ${REDIS_HOST:-redis}
+      REDIS_PORT: ${REDIS_PORT:-6379}
     ports:
       - "8080:8080"
     depends_on:
@@ -23,8 +23,8 @@ services:
     container_name: mysql
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: smunity
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-password}
     volumes:
       - mysql-data:/var/lib/mysql
       - ./docker/db/init.sql:/docker-entrypoint-initdb.d/init.sql
