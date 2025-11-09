@@ -57,7 +57,7 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.TAG }}
             ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
 
       - name: Upload docker-compose files
         uses: appleboy/scp-action@v0.1.7
