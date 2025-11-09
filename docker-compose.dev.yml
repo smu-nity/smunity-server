@@ -3,6 +3,7 @@ services:
     container_name: smunity-server-dev
     image: ghcr.io/smu-nity/smunity-server:latest
     build: .
+    platform: linux/amd64
     environment:
       SPRING_PROFILE: dev
       DB_URL: ${DB_URL:-jdbc:mysql://mysql:3306/smunity}
