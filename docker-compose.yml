@@ -1,8 +1,7 @@
 services:
   server:
     container_name: smunity-server
-    image: smunity/server:latest
-    build: .
+    image: ${IMAGE}
     environment:
       SPRING_PROFILE: prod
       DB_URL: ${DB_URL}
