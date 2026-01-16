@@ -3,6 +3,7 @@ services:
     container_name: smunity-server
     image: ${IMAGE}
     environment:
+      TZ: Asia/Seoul
       SPRING_PROFILE: prod
       DB_URL: ${DB_URL}
       DB_USERNAME: ${DB_USERNAME}
