@@ -1,6 +1,7 @@
 package com.smunity.server.global.exception.handler;
 
-import com.smunity.exception.AuthException;
+import com.smunity.exception.AuthClientException;
+import com.smunity.exception.AuthServerException;
 import com.smunity.server.global.common.dto.ErrorResponse;
 import com.smunity.server.global.common.service.SlackNotifier;
 import com.smunity.server.global.exception.DepartmentNotFoundException;
@@ -34,13 +35,6 @@ public class GeneralExceptionHandler {
         return ErrorResponse.handle(ex.getErrorCode());
     }
 
-    // 학생 인증 예외(AuthException) 처리 메서드
-    @ExceptionHandler(AuthException.class)
-    protected ResponseEntity<ErrorResponse<Void>> handleAuthException(AuthException ex) {
-        log.warn("{} : {}", ex.getClass(), ex.getMessage());
-        return ErrorResponse.handle(ex.getErrorCode());
-    }
-
     // 요청 파라미터 검증 실패(MethodArgumentNotValidException) 처리 메서드
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ErrorResponse<Map<String, String>>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
@@ -67,6 +61,21 @@ public class GeneralExceptionHandler {
     protected ResponseEntity<ErrorResponse<Void>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
         log.warn("{} : {}", ex.getClass(), ex.getMessage());
         return ErrorResponse.handle(ErrorCode.INVALID_ENUM_VALUE);
+    }
+
+    // 학생 인증 클라이언트 예외(AuthClientException) 처리 메서드
+    @ExceptionHandler(AuthClientException.class)
+    protected ResponseEntity<ErrorResponse<Void>> handleAuthClientException(AuthClientException ex) {
+        log.warn("{} : {}", ex.getClass(), ex.getMessage());
+        return ErrorResponse.handle(ex.getErrorCode());
+    }
+
+    // 학생 인증 서버 예외(AuthServerException) 처리 메서드
+    @ExceptionHandler(AuthServerException.class)
+    protected ResponseEntity<ErrorResponse<Void>> handleAuthServerException(AuthServerException ex) {
+        log.error("{} : {}", ex.getClass(), ex.getMessage(), ex);
+        slackNotifier.sendMessage(ex);
+        return ErrorResponse.handle(ex.getErrorCode());
     }
 
     // 학과명 도메인 불일치(DepartmentNotFoundException) 처리 메서드
