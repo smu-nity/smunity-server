@@ -56,7 +56,6 @@
 
         <logger name="event" level="INFO" additivity="false">
             <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="LOKI_ASYNC"/>
         </logger>
     </springProfile>
 </configuration>
