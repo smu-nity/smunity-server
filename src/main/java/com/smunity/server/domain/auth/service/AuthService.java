@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.smunity.server.global.common.logging.Loggers.event;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -26,11 +28,14 @@ public class AuthService {
 
     public AuthDto authenticate(AuthRequest request) {
         AuthResponseDto responseDto = AuthManager.authenticate(request.username(), request.password());
+        event.info("[AuthService] event=authenticate status=success username={} payload={}", request.username(), responseDto);
         return authMapper.toDto(responseDto);
     }
 
     public AuthCourseResponseDto readCourses(AuthRequest request) {
-        return AuthManager.readCourses(request.username(), request.password());
+        AuthCourseResponseDto responseDto = AuthManager.readCourses(request.username(), request.password());
+        event.info("[AuthService] event=readCourses status=success username={} payload={}", request.username(), responseDto);
+        return responseDto;
     }
 
     public AuthResponse registerAuth(AuthRequest request) {
