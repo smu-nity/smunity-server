@@ -1,11 +1,12 @@
 package com.smunity.server.global.exception.code;
 
+import com.smunity.exception.code.BaseCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ErrorCode {
+public enum ErrorCode implements BaseCode {
 
     // Common Errors
     INTERNAL_SERVER_ERROR(500, "COMMON000", "서버 에러, 관리자에게 문의 바랍니다."),
