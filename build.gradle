@@ -53,7 +53,7 @@ dependencies {
     implementation 'com.slack.api:slack-api-client:1.30.0'
 
     // Auth
-    implementation 'kr.co.smunity:sangmyung-univ-auth:1.0.8'
+    implementation 'kr.co.smunity:sangmyung-univ-auth:1.0.9'
 
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
