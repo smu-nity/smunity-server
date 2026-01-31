@@ -113,7 +113,7 @@ public class JwtTokenProvider implements AuthProvider {
     // 액세스 토큰의 만료 시간 계산
     private Date expirationDate(boolean isRefresh) {
         Date now = new Date();
-        long expirationTime = jwtProperties.getExpirationTime(isRefresh) * 1000;
+        long expirationTime = jwtProperties.getExpirationTime(isRefresh) * 1_000;
         return new Date(now.getTime() + expirationTime);
     }
 
