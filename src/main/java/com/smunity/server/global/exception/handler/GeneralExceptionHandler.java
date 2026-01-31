@@ -10,7 +10,6 @@ import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -68,7 +67,7 @@ public class GeneralExceptionHandler {
     // 학생 인증 서버 예외(AuthServerException) 처리 메서드
     @ExceptionHandler(AuthServerException.class)
     protected ResponseEntity<ErrorResponse<Void>> handleAuthServerException(AuthServerException ex) {
-        return handleException(ex, true, ex.getErrorCode(), HttpStatus.UNAUTHORIZED);
+        return handleException(ex, true, ex.getErrorCode());
     }
 
     // 학과명 도메인 불일치(DepartmentNotFoundException) 처리 메서드
@@ -103,11 +102,5 @@ public class GeneralExceptionHandler {
     private ResponseEntity<ErrorResponse<Map<String, String>>> handleException(BindException ex, Boolean isError, BaseCode code) {
         handleException(ex, isError);
         return ErrorResponse.handle(code, ex.getFieldErrors());
-    }
-
-    // 공통 예외 처리 메서드 (HTTP 상태코드 지정)
-    private ResponseEntity<ErrorResponse<Void>> handleException(Exception ex, Boolean isError, BaseCode code, HttpStatus status) {
-        handleException(ex, isError);
-        return ErrorResponse.handle(status, code);
     }
 }
