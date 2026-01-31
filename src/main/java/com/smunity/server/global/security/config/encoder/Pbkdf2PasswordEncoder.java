@@ -16,7 +16,7 @@ public class Pbkdf2PasswordEncoder implements PasswordEncoder {
 
     private final StringKeyGenerator saltGenerator = KeyGenerators.string();
     private final String PREFIX = "pbkdf2_sha256";
-    private final int ITERATIONS = 390000;
+    private final int ITERATIONS = 390_000;
 
     @Override
     public String encode(CharSequence rawPassword) {
