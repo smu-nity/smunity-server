@@ -13,14 +13,14 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
- * 컨트롤러 메서드의 파라미터가 @AuthMember Member 타입일 때 해당 파라미터를 처리하도록 지정하는 클래스
+ * 컨트롤러 메서드의 파라미터가 @AuthMember Long 타입일 때 해당 파라미터를 처리하도록 지정하는 클래스
  */
 @Component
 @RequiredArgsConstructor
 public class AuthMemberArgumentResolver implements HandlerMethodArgumentResolver {
 
     /**
-     * 파라미터 타입 확인 (@AuthMember, Member)
+     * 파라미터 타입 확인 (@AuthMember, Long)
      */
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
