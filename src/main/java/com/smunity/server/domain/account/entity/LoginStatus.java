@@ -15,13 +15,13 @@ public class LoginStatus extends TimeEntity {
     @Id
     @Column(name = "login_status_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     private String ipAddress;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    Member member;
+    private Member member;
 
     public void setMember(Member member) {
         this.member = member;

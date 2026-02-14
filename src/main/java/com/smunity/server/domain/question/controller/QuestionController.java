@@ -33,7 +33,8 @@ public class QuestionController {
     @Operation(summary = "질문 목록 조회", description = "질문 목록을 페이징 처리하여 조회합니다.")
     public ResponseEntity<Page<QuestionReadResponse>> readQuestions(
             @AuthMember Long memberId,
-            @ParameterObject @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+            @ParameterObject @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
         Page<QuestionReadResponse> responses = questionQueryService.readQuestions(memberId, pageable);
         return ResponseEntity.ok(responses);
     }
@@ -47,16 +48,17 @@ public class QuestionController {
 
     @PostMapping
     @Operation(summary = "질문 생성", description = "로그인한 회원으로 질문을 생성합니다.")
-    public ResponseEntity<QuestionResponse> createQuestion(@AuthMember Long memberId, @RequestBody @Valid QuestionRequest request) {
+    public ResponseEntity<QuestionResponse> createQuestion(@AuthMember Long memberId,
+                                                           @RequestBody @Valid QuestionRequest request) {
         QuestionResponse response = questionCommandService.createQuestion(memberId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{questionId}")
     @Operation(summary = "질문 수정", description = "로그인한 회원이 본인이 작성한 질문을 수정합니다.")
-    public ResponseEntity<QuestionResponse> updateQuestion(
-            @AuthMember Long memberId, @AuthAdmin Boolean isAdmin,
-            @PathVariable Long questionId, @RequestBody @Valid QuestionRequest request) {
+    public ResponseEntity<QuestionResponse> updateQuestion(@AuthMember Long memberId, @AuthAdmin Boolean isAdmin,
+                                                           @PathVariable Long questionId,
+                                                           @RequestBody @Valid QuestionRequest request) {
         QuestionResponse response = questionCommandService.updateQuestion(memberId, isAdmin, questionId, request);
         return ResponseEntity.ok(response);
     }

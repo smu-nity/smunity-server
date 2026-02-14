@@ -32,7 +32,8 @@ public enum SubDomain {
 
     public static SubDomain of(String name, boolean isNewCurriculum) {
         SubDomain subDomain = SubDomain.hasEngMath(name) ? BASIC_ENG_MATH : SubDomain.findByName(name);
-        return isNewCurriculum && subDomain != null && subDomain.isNaturalOrEngineer() ? BALANCE_NATURAL_ENGINEER : subDomain;
+        return isNewCurriculum && subDomain != null && subDomain.isNaturalOrEngineer()
+                ? BALANCE_NATURAL_ENGINEER : subDomain;
     }
 
     private static SubDomain findByName(String name) {

@@ -99,7 +99,8 @@ public class GeneralExceptionHandler {
     }
 
     // Validation 예외 처리 메서드 (BindException 전용)
-    private ResponseEntity<ErrorResponse<Map<String, String>>> handleException(BindException ex, Boolean isError, BaseCode code) {
+    private ResponseEntity<ErrorResponse<Map<String, String>>> handleException(BindException ex, Boolean isError,
+                                                                               BaseCode code) {
         handleException(ex, isError);
         return ErrorResponse.handle(code, ex.getFieldErrors());
     }

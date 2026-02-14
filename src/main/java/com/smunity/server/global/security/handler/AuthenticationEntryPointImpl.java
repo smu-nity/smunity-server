@@ -19,8 +19,7 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
      * 인증 실패 시 호출되는 메서드
      */
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response,
-                         AuthenticationException ex) throws IOException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex) throws IOException {
         AuthenticationExceptionHandler.handleException(response, ex, ErrorCode.UNAUTHORIZED_EXCEPTION);
     }
 }

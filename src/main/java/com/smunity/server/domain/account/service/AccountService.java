@@ -32,8 +32,8 @@ public class AccountService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AccountMapper accountMapper;
 
-    public RegisterResponse register(String memberName, RegisterRequest request) {
-        validateUser(memberName, request.username());
+    public RegisterResponse register(String username, RegisterRequest request) {
+        validateUser(username, request.username());
         Member member = accountMapper.toEntity(request);
         Year year = findYearByUsername(request.username());
         Department department = departmentService.findDepartmentByName(request.department());
@@ -69,8 +69,7 @@ public class AccountService {
 
     private Year findYearByUsername(String username) {
         int year = Integer.parseInt(username.substring(0, 4));
-        return (year >= 2017 ? yearRepository.findByValue(year) : yearRepository.findById(1L))
-                .orElseThrow(() -> new GeneralException(ErrorCode.YEAR_NOT_FOUND));
+        return (year >= 2017 ? yearRepository.findByValue(year) : yearRepository.findById(1L)).orElseThrow(() -> new GeneralException(ErrorCode.YEAR_NOT_FOUND));
     }
 
     private LoginResponse generateToken(String username, Long memberId, MemberRole memberRole) {
@@ -80,8 +79,8 @@ public class AccountService {
         return accountMapper.toResponse(username, memberRole, accessToken, refreshToken);
     }
 
-    private void validateUser(String memberName, String username) {
-        validateVerified(memberName, username);
+    private void validateUser(String verifiedUser, String username) {
+        validateVerified(verifiedUser, username);
         validateUsername(username);
     }
 

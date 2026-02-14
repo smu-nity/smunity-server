@@ -19,7 +19,8 @@ public class MajorQueryRepositoryImpl implements MajorQueryRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public List<Major> findByDepartmentAndCategory(Department department, Category category, List<String> completedNumbers) {
+    public List<Major> findByDepartmentAndCategory(Department department, Category category,
+                                                   List<String> completedNumbers) {
         return query.selectFrom(major)
                 .where(
                         departmentEq(department),

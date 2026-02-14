@@ -16,9 +16,13 @@ public enum Category {
     CULTURE("교양"),
     ETC("기타");
 
-    private static final Map<String, Category> CULTURE_MAP = Map.of("교필", CULTURE, "교선", CULTURE, "1교직", MAJOR_OPTIONAL);
+    private static final Map<String, Category> CULTURE_MAP = Map.of(
+            "교필", CULTURE, "교선", CULTURE, "1교직", MAJOR_OPTIONAL
+    );
     private static final Map<String, Category> SINGLE_MAJOR_MAP = Map.of("1전심", MAJOR_ADVANCED, "1전선", MAJOR_OPTIONAL);
-    private static final Map<String, Category> DOUBLE_MAJOR_MAP = Map.of("1전심", FIRST_MAJOR, "1전선", FIRST_MAJOR, "2전심", SECOND_MAJOR, "2전선", SECOND_MAJOR);
+    private static final Map<String, Category> DOUBLE_MAJOR_MAP = Map.of(
+            "1전심", FIRST_MAJOR, "1전선", FIRST_MAJOR, "2전심", SECOND_MAJOR, "2전선", SECOND_MAJOR
+    );
 
     private final String name;
 

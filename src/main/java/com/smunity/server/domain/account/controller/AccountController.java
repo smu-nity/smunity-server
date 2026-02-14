@@ -25,8 +25,9 @@ public class AccountController {
 
     @PostMapping("/register")
     @Operation(summary = "회원가입", description = "회원 정보를 바탕으로 회원을 등록합니다.")
-    public ResponseEntity<RegisterResponse> register(@AuthVerified String memberName, @RequestBody @Valid RegisterRequest request) {
-        RegisterResponse response = accountService.register(memberName, request);
+    public ResponseEntity<RegisterResponse> register(@AuthVerified String username,
+                                                     @RequestBody @Valid RegisterRequest request) {
+        RegisterResponse response = accountService.register(username, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

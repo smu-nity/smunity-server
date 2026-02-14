@@ -18,8 +18,7 @@ public class RefreshTokenService {
     private final JwtProperties jwtProperties;
 
     public RefreshToken findRefreshToken(String token) {
-        return refreshTokenRepository.findById(token)
-                .orElseThrow(() -> new GeneralException(ErrorCode.INVALID_REFRESH_TOKEN));
+        return refreshTokenRepository.findById(token).orElseThrow(() -> new GeneralException(ErrorCode.INVALID_REFRESH_TOKEN));
     }
 
     @Transactional
@@ -31,7 +30,6 @@ public class RefreshTokenService {
 
     @Transactional
     public void deleteRefreshToken(String token) {
-        refreshTokenRepository.findById(token)
-                .ifPresent(refreshTokenRepository::delete);
+        refreshTokenRepository.findById(token).ifPresent(refreshTokenRepository::delete);
     }
 }

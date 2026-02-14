@@ -16,6 +16,6 @@ public class MemberCountScheduler {
     @Scheduled(cron = "0 0 * * * *")
     public void updateMemberCount() {
         departmentService.updateMemberCount();
-        event.info("[MemberCountScheduler] event=updateMemberCount status=success");
+        event.info("[MemberCountScheduler] event=updateMemberCount");
     }
 }

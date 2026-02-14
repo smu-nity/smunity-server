@@ -25,8 +25,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
      * 요청을 필터링하고, 인증 정보를 설정
      */
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request,
-                                    @NonNull HttpServletResponse response,
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         // HTTP 요청에서 인증 정보를 추출하고 검증
         Authentication authentication = authProvider.getAuthentication(request);

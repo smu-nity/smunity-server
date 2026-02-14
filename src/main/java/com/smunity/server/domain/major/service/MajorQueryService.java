@@ -5,6 +5,7 @@ import com.smunity.server.domain.major.entity.Major;
 import com.smunity.server.domain.major.mapper.MajorMapper;
 import com.smunity.server.domain.major.repository.MajorQueryRepository;
 import com.smunity.server.global.common.dto.ListResponse;
+import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.entity.enums.Category;
 import com.smunity.server.global.common.repository.MemberRepository;
@@ -30,7 +31,9 @@ public class MajorQueryService {
     public ListResponse<MajorResponse> readMajors(Long memberId, Category category) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        List<Major> majors = majorQueryRepository.findByDepartmentAndCategory(member.getDepartment(category), getMajorCategory(category), member.getCompletedNumbers());
+        Department department = member.getDepartment(category);
+        List<Major> majors = majorQueryRepository
+                .findByDepartmentAndCategory(department, getMajorCategory(category), member.getCompletedNumbers());
         return majorMapper.toResponse(majors);
     }
 }

@@ -77,7 +77,8 @@ public class JwtTokenProvider implements AuthProvider {
             getClaims(token);
             return true;
         } catch (ExpiredJwtException e) {
-            throw new JwtAuthenticationException(isRefresh ? ErrorCode.RELOGIN_EXCEPTION : ErrorCode.EXPIRED_JWT_EXCEPTION);
+            ErrorCode errorCode = isRefresh ? ErrorCode.RELOGIN_EXCEPTION : ErrorCode.EXPIRED_JWT_EXCEPTION;
+            throw new JwtAuthenticationException(errorCode);
         } catch (JwtException | IllegalArgumentException e) {
             throw new JwtAuthenticationException(ErrorCode.INVALID_TOKEN_EXCEPTION);
         }
