@@ -4,6 +4,7 @@ import com.smunity.server.global.security.annotation.AuthMember;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -36,6 +37,6 @@ public class AuthMemberArgumentResolver implements HandlerMethodArgumentResolver
     public Long resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer,
                                 @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return Long.valueOf(authentication.getName());
+        return authentication instanceof AnonymousAuthenticationToken ? null : Long.valueOf(authentication.getName());
     }
 }
