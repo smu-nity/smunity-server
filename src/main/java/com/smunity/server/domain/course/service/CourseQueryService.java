@@ -50,7 +50,8 @@ public class CourseQueryService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         List<CultureResponse> cultures = curriculumService.readCurriculums(member, domain);
-        int total = standardService.getCultureTotal(member.getExemption(), member.getDepartment(), cultures.size(), domain);
+        int total = standardService
+                .getCultureTotal(member.getExemption(), member.getDepartment(), cultures.size(), domain);
         int completed = calculateCultureCompleted(cultures);
         return courseMapper.toResponse(total, completed, cultures);
     }

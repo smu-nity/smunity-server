@@ -17,8 +17,7 @@ public class AuthenticationExceptionHandler {
     /**
      * 인증·인가 예외 발생 시 오류 응답을 반환
      */
-    public static void handleException(HttpServletResponse response, RuntimeException ex,
-                                       ErrorCode errorCode) throws IOException {
+    public static void handleException(HttpServletResponse response, RuntimeException ex, ErrorCode errorCode) throws IOException {
         log.warn("{} : {}", ex.getClass(), ex.getMessage());
 
         // 응답의 Content-Type, 문자 인코딩, 상태 코드 설정

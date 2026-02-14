@@ -28,13 +28,13 @@ public class AuthService {
 
     public AuthDto authenticate(AuthRequest request) {
         AuthResponseDto responseDto = AuthManager.authenticate(request.username(), request.password());
-        event.info("[AuthService] event=authenticate status=success username={} payload={}", request.username(), responseDto);
+        event.info("[AuthService] event=authenticate username={} payload={}", request.username(), responseDto);
         return authMapper.toDto(responseDto);
     }
 
     public AuthCourseResponseDto readCourses(AuthRequest request) {
         AuthCourseResponseDto responseDto = AuthManager.readCourses(request.username(), request.password());
-        event.info("[AuthService] event=readCourses status=success username={} payload={}", request.username(), responseDto);
+        event.info("[AuthService] event=readCourses username={} payload={}", request.username(), responseDto);
         return responseDto;
     }
 

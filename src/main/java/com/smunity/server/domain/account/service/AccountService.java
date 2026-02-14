@@ -69,8 +69,7 @@ public class AccountService {
 
     private Year findYearByUsername(String username) {
         int year = Integer.parseInt(username.substring(0, 4));
-        return (year >= 2017 ? yearRepository.findByValue(year) : yearRepository.findById(1L))
-                .orElseThrow(() -> new GeneralException(ErrorCode.YEAR_NOT_FOUND));
+        return (year >= 2017 ? yearRepository.findByValue(year) : yearRepository.findById(1L)).orElseThrow(() -> new GeneralException(ErrorCode.YEAR_NOT_FOUND));
     }
 
     private LoginResponse generateToken(String username, Long memberId, MemberRole memberRole) {

@@ -24,7 +24,8 @@ public class MajorController {
 
     @GetMapping
     @Operation(summary = "전공과목 목록 조회", description = "이수구분을 기준으로 로그인한 회원이 이수하지 않은 전공과목 목록을 조회합니다.")
-    public ResponseEntity<ListResponse<MajorResponse>> readMajors(@AuthMember Long memberId, @RequestParam(required = false) Category category) {
+    public ResponseEntity<ListResponse<MajorResponse>> readMajors(@AuthMember Long memberId,
+                                                                  @RequestParam(required = false) Category category) {
         ListResponse<MajorResponse> response = majorQueryService.readMajors(memberId, category);
         return ResponseEntity.ok(response);
     }

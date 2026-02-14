@@ -29,7 +29,8 @@ public class CourseController {
 
     @GetMapping
     @Operation(summary = "이수과목 조회", description = "이수구분을 기준으로 로그인한 회원의 이수과목 목록을 조회합니다.")
-    public ResponseEntity<ResultResponse<CourseResponse>> readCourses(@AuthMember Long memberId, @RequestParam(required = false) Category category) {
+    public ResponseEntity<ResultResponse<CourseResponse>> readCourses(@AuthMember Long memberId,
+                                                                      @RequestParam(required = false) Category category) {
         ResultResponse<CourseResponse> response = courseQueryService.readCourses(memberId, category);
         return ResponseEntity.ok(response);
     }
@@ -43,14 +44,16 @@ public class CourseController {
 
     @GetMapping("/cultures/{domain}")
     @Operation(summary = "이수 교양과목 강의 조회", description = "교양 이수구분을 기준으로 로그인한 회원의 이수 교양과목 목록을 조회합니다.")
-    public ResponseEntity<ResultResponse<CultureResponse>> readCultureCourses(@AuthMember Long memberId, @PathVariable Domain domain) {
+    public ResponseEntity<ResultResponse<CultureResponse>> readCultureCourses(@AuthMember Long memberId,
+                                                                              @PathVariable Domain domain) {
         ResultResponse<CultureResponse> response = courseQueryService.readCultureCourses(memberId, domain);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/upload")
     @Operation(summary = "이수과목 업로드", description = "로그인한 회원의 이수과목을 업로드합니다.")
-    public ResponseEntity<ResultResponse<CourseResponse>> uploadCourses(@AuthMember Long memberId, @RequestBody @Valid AuthRequest request) {
+    public ResponseEntity<ResultResponse<CourseResponse>> uploadCourses(@AuthMember Long memberId,
+                                                                        @RequestBody @Valid AuthRequest request) {
         ResultResponse<CourseResponse> response = courseCommandService.createCourses(memberId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

@@ -30,7 +30,8 @@ public record ErrorResponse<T>(
         return ResponseEntity.status(HttpStatus.valueOf(errorCode.getValue())).body(from(errorCode));
     }
 
-    public static ResponseEntity<ErrorResponse<Map<String, String>>> handle(BaseCode errorCode, List<FieldError> fieldErrors) {
+    public static ResponseEntity<ErrorResponse<Map<String, String>>> handle(BaseCode errorCode,
+                                                                            List<FieldError> fieldErrors) {
         return ResponseEntity.status(HttpStatus.valueOf(errorCode.getValue())).body(of(errorCode, fieldErrors));
     }
 

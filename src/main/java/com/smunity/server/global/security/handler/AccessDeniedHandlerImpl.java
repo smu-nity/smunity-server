@@ -19,8 +19,7 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
      * 접근 권한이 없을 때 호출되는 메서드
      */
     @Override
-    public void handle(HttpServletRequest request, HttpServletResponse response,
-                       AccessDeniedException ex) throws IOException {
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException ex) throws IOException {
         AuthenticationExceptionHandler.handleException(response, ex, ErrorCode.FORBIDDEN_EXCEPTION);
     }
 }

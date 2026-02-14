@@ -20,6 +20,6 @@ public class StatSendScheduler {
     public void sendStatistics() {
         StatResponseDto responseDto = statService.getStatistics();
         slackNotifier.sendMessage(responseDto);
-        event.info("[StatSendScheduler] event=sendStatistics status=success payload={}", responseDto);
+        event.info("[StatSendScheduler] event=sendStatistics payload={}", responseDto);
     }
 }

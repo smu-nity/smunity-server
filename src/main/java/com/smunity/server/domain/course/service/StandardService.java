@@ -13,7 +13,9 @@ public class StandardService {
     public static final int TOTAL_CREDITS = 130;
 
     public int getTotal(Member member, Category category) {
-        return category != null ? getTotal(member.getYear().isNewCurriculum(), member.getDepartment().isHasAdvanced(), member.isSecondDeptComputerScience(), category) : TOTAL_CREDITS;
+        return category != null ?
+                getTotal(member.getYear().isNewCurriculum(), member.getDepartment().isHasAdvanced(),
+                        member.isSecondDeptComputerScience(), category) : TOTAL_CREDITS;
     }
 
     public int getCultureTotal(Exemption exemption, Department department, int size, Domain domain) {
