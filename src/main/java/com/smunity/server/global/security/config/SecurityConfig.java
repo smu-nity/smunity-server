@@ -74,13 +74,13 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/terms/**", "/api/v1/departments", "/api/v1/members/count").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/questions/**").permitAll()
 
-                // 재학생 인증 완료 사용자만 접근 허용 (ROLE_VERIFIED)
-                .requestMatchers("/api/v1/accounts/register").hasAuthority(MemberRole.ROLE_VERIFIED.name())
+                // 인증된 사용자만 접근 허용 (ROLE_VERIFIED)
+                .requestMatchers("/api/v1/accounts/register", "/api/v1/members/password/reset").hasAuthority(MemberRole.ROLE_VERIFIED.name())
 
-                // 관리자 권한 사용자만 접근 허용 (ROLE_ADMIN)
+                // 관리자만 접근 허용 (ROLE_ADMIN)
                 .requestMatchers("/api/v1/members", "/api/v1/questions/{questionId}/answer").hasAuthority(MemberRole.ROLE_ADMIN.name())
 
-                // 그 외 요청은 일반 사용자와 관리자 권한 사용자만 접근 허용 (ROLE_USER, ROLE_ADMIN)
+                // 그 외 요청은 회원과 관리자만 접근 허용 (ROLE_USER, ROLE_ADMIN)
                 .anyRequest().hasAnyAuthority(MemberRole.ROLE_USER.name(), MemberRole.ROLE_ADMIN.name())
         );
 
