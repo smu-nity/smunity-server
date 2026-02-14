@@ -1,12 +1,11 @@
 package com.smunity.server.global.security.resolver;
 
 import com.smunity.server.global.security.annotation.AuthMember;
-import com.smunity.server.global.security.provider.JwtTokenProvider;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -19,8 +18,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @Component
 @RequiredArgsConstructor
 public class AuthMemberArgumentResolver implements HandlerMethodArgumentResolver {
-
-    private final JwtTokenProvider jwtTokenProvider;
 
     /**
      * 파라미터 타입 확인 (@AuthMember, Member)
@@ -37,9 +34,8 @@ public class AuthMemberArgumentResolver implements HandlerMethodArgumentResolver
      */
     @Override
     public Long resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        Authentication authentication = jwtTokenProvider.getAuthentication(request);
-        return authentication != null ? Long.valueOf(authentication.getName()) : null;
+                                @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return Long.valueOf(authentication.getName());
     }
 }
