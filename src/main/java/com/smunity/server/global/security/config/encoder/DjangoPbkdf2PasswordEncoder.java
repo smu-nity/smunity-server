@@ -12,7 +12,7 @@ import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Base64;
 
-public class Pbkdf2PasswordEncoder implements PasswordEncoder {
+public class DjangoPbkdf2PasswordEncoder implements PasswordEncoder {
 
     private final StringKeyGenerator saltGenerator = KeyGenerators.string();
     private final String PREFIX = "pbkdf2_sha256";
