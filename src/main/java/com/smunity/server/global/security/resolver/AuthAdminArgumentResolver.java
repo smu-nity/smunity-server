@@ -38,7 +38,7 @@ public class AuthAdminArgumentResolver implements HandlerMethodArgumentResolver 
      */
     @Override
     public Boolean resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                   @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         Authentication authentication = jwtTokenProvider.getAuthentication(request);
         return authentication != null ? PermissionUtil.isAdmin(authentication.getAuthorities()) : null;

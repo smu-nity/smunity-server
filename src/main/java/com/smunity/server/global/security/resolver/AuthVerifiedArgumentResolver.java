@@ -36,7 +36,7 @@ public class AuthVerifiedArgumentResolver implements HandlerMethodArgumentResolv
      */
     @Override
     public String resolveArgument(@NonNull MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                  @NonNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         return jwtTokenProvider.getUsername(request);
     }
