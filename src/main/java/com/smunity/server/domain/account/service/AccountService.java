@@ -32,8 +32,8 @@ public class AccountService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AccountMapper accountMapper;
 
-    public RegisterResponse register(String memberName, RegisterRequest request) {
-        validateUser(memberName, request.username());
+    public RegisterResponse register(String username, RegisterRequest request) {
+        validateUser(username, request.username());
         Member member = accountMapper.toEntity(request);
         Year year = findYearByUsername(request.username());
         Department department = departmentService.findDepartmentByName(request.department());

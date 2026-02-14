@@ -80,9 +80,9 @@ public class MemberController {
 
     @PatchMapping("/password/reset")
     @Operation(summary = "비밀번호 재설정", description = "인증 토큰 검증 후 비밀번호를 변경합니다.")
-    public ResponseEntity<MemberInfoResponse> changePasswordByAuth(@AuthVerified String memberName,
+    public ResponseEntity<MemberInfoResponse> changePasswordByAuth(@AuthVerified String username,
                                                                    @RequestBody @Valid ChangePasswordRequest request) {
-        MemberInfoResponse response = memberCommandService.changePasswordByAuth(memberName, request);
+        MemberInfoResponse response = memberCommandService.changePasswordByAuth(username, request);
         return ResponseEntity.ok(response);
     }
 
