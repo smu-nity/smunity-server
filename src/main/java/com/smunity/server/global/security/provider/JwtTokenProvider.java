@@ -30,7 +30,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtTokenProvider implements AuthProvider {
 
-    private static final String CLAIM_IS_ACCESS_TOKEN = "isAccessToken";
     private static final String CLAIM_MEMBER_ROLE = "memberRole";
 
     private final JwtProperties jwtProperties;
@@ -47,23 +46,14 @@ public class JwtTokenProvider implements AuthProvider {
      * JWT access 토큰 생성
      */
     public String createAccessToken(Long memberId, MemberRole memberRole, boolean isRefresh) {
-        return createToken(String.valueOf(memberId), true, memberRole, isRefresh);
+        return createToken(String.valueOf(memberId), memberRole, isRefresh);
     }
 
     /**
      * JWT auth 토큰 생성 (재학생 인증)
      */
     public String createAuthToken(String username) {
-        return createToken(username, false, MemberRole.ROLE_VERIFIED, false);
-    }
-
-    /**
-     * HTTP 요청에서 사용자 이름을 추출 (재학생 인증)
-     */
-    public String getUsername(HttpServletRequest request) {
-        String token = resolveToken(request);
-        Claims claims = getClaims(token);
-        return !claims.get(CLAIM_IS_ACCESS_TOKEN, Boolean.class) ? claims.getSubject() : null;
+        return createToken(username, MemberRole.ROLE_VERIFIED, false);
     }
 
     /**
@@ -101,10 +91,9 @@ public class JwtTokenProvider implements AuthProvider {
     }
 
     // JWT 토큰 생성
-    private String createToken(String subject, boolean isAccessToken, MemberRole memberRole, boolean isRefresh) {
+    private String createToken(String subject, MemberRole memberRole, boolean isRefresh) {
         return Jwts.builder()
                 .subject(subject)
-                .claim(CLAIM_IS_ACCESS_TOKEN, isAccessToken)
                 .claim(CLAIM_MEMBER_ROLE, memberRole.name())
                 .signWith(jwtProperties.getSecretKey())
                 .expiration(expirationDate(isRefresh))
