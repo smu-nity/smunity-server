@@ -79,8 +79,8 @@ public class AccountService {
         return accountMapper.toResponse(username, memberRole, accessToken, refreshToken);
     }
 
-    private void validateUser(String memberName, String username) {
-        validateVerified(memberName, username);
+    private void validateUser(String verifiedUser, String username) {
+        validateVerified(verifiedUser, username);
         validateUsername(username);
     }
 
