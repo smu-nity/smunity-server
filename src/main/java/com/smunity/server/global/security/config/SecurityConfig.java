@@ -1,5 +1,6 @@
 package com.smunity.server.global.security.config;
 
+import com.smunity.server.global.common.entity.enums.MemberRole;
 import com.smunity.server.global.security.config.encoder.Pbkdf2PasswordEncoder;
 import com.smunity.server.global.security.filter.AuthenticationExceptionFilter;
 import com.smunity.server.global.security.filter.AuthenticationFilter;
@@ -74,10 +75,10 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/v1/questions/**").permitAll()
 
                 // 재학생 인증 완료 사용자만 접근 허용 (ROLE_VERIFIED)
-                .requestMatchers("/api/v1/accounts/register").hasRole("VERIFIED")
+                .requestMatchers("/api/v1/accounts/register").hasAuthority(MemberRole.ROLE_VERIFIED.name())
 
                 // 관리자 권한 사용자만 접근 허용 (ROLE_ADMIN)
-                .requestMatchers("/api/v1/members", "/api/v1/questions/{questionId}/answer").hasRole("ADMIN")
+                .requestMatchers("/api/v1/members", "/api/v1/questions/{questionId}/answer").hasAuthority(MemberRole.ROLE_ADMIN.name())
 
                 // 그 외 요청은 인증된 사용자만 접근 허용 (ROLE_USER, ROLE_ADMIN)
                 .anyRequest().authenticated()
