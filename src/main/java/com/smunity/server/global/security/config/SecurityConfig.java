@@ -1,7 +1,7 @@
 package com.smunity.server.global.security.config;
 
 import com.smunity.server.global.common.entity.enums.MemberRole;
-import com.smunity.server.global.security.config.encoder.DjangoPbkdf2PasswordEncoder;
+import com.smunity.server.global.security.encoder.DjangoPbkdf2PasswordEncoder;
 import com.smunity.server.global.security.filter.AuthenticationExceptionFilter;
 import com.smunity.server.global.security.filter.AuthenticationFilter;
 import com.smunity.server.global.security.handler.AccessDeniedHandlerImpl;

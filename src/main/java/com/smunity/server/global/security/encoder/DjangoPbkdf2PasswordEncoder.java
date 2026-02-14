@@ -1,4 +1,4 @@
-package com.smunity.server.global.security.config.encoder;
+package com.smunity.server.global.security.encoder;
 
 import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.security.crypto.keygen.StringKeyGenerator;
