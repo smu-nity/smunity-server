@@ -1,6 +1,6 @@
 package com.smunity.server.domain.question.mapper;
 
-import com.smunity.server.domain.question.dto.QuestionReadResponse;
+import com.smunity.server.domain.question.dto.QuestionDetailResponse;
 import com.smunity.server.domain.question.dto.QuestionRequest;
 import com.smunity.server.domain.question.dto.QuestionResponse;
 import com.smunity.server.domain.question.entity.Question;
@@ -14,14 +14,14 @@ public interface QuestionMapper {
     QuestionResponse toResponse(Question question);
 
     @Mapping(target = "isAuthor", expression = "java(question.getIsAuthor(memberId))")
-    QuestionReadResponse toResponse(Question question, Long memberId);
+    QuestionDetailResponse toResponse(Question question, Long memberId);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "member", ignore = true)
     @Mapping(target = "answer", ignore = true)
     Question toEntity(QuestionRequest request);
 
-    default Page<QuestionReadResponse> toResponse(Page<Question> questions, Long memberId) {
-        return questions.map(question -> toResponse(question, memberId));
+    default Page<QuestionResponse> toResponse(Page<Question> questions) {
+        return questions.map(this::toResponse);
     }
 }

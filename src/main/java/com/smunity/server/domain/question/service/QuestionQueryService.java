@@ -1,6 +1,7 @@
 package com.smunity.server.domain.question.service;
 
-import com.smunity.server.domain.question.dto.QuestionReadResponse;
+import com.smunity.server.domain.question.dto.QuestionDetailResponse;
+import com.smunity.server.domain.question.dto.QuestionResponse;
 import com.smunity.server.domain.question.entity.Question;
 import com.smunity.server.domain.question.mapper.QuestionMapper;
 import com.smunity.server.domain.question.repository.QuestionRepository;
@@ -20,12 +21,12 @@ public class QuestionQueryService {
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
 
-    public Page<QuestionReadResponse> readQuestions(Long memberId, Pageable pageable) {
+    public Page<QuestionResponse> readQuestions(Pageable pageable) {
         Page<Question> questions = questionRepository.findPage(pageable);
-        return questionMapper.toResponse(questions, memberId);
+        return questionMapper.toResponse(questions);
     }
 
-    public QuestionReadResponse readQuestion(Long memberId, Long questionId) {
+    public QuestionDetailResponse readQuestion(Long memberId, Long questionId) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
         return questionMapper.toResponse(question, memberId);

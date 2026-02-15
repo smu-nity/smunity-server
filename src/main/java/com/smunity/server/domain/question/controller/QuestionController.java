@@ -1,6 +1,6 @@
 package com.smunity.server.domain.question.controller;
 
-import com.smunity.server.domain.question.dto.QuestionReadResponse;
+import com.smunity.server.domain.question.dto.QuestionDetailResponse;
 import com.smunity.server.domain.question.dto.QuestionRequest;
 import com.smunity.server.domain.question.dto.QuestionResponse;
 import com.smunity.server.domain.question.service.QuestionCommandService;
@@ -31,18 +31,18 @@ public class QuestionController {
 
     @GetMapping
     @Operation(summary = "질문 목록 조회", description = "질문 목록을 페이징 처리하여 조회합니다.")
-    public ResponseEntity<Page<QuestionReadResponse>> readQuestions(
-            @AuthMember Long memberId,
+    public ResponseEntity<Page<QuestionResponse>> readQuestions(
             @ParameterObject @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        Page<QuestionReadResponse> responses = questionQueryService.readQuestions(memberId, pageable);
+        Page<QuestionResponse> responses = questionQueryService.readQuestions(pageable);
         return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/{questionId}")
     @Operation(summary = "질문 조회", description = "질문을 조회합니다.")
-    public ResponseEntity<QuestionReadResponse> readQuestion(@AuthMember Long memberId, @PathVariable Long questionId) {
-        QuestionReadResponse response = questionQueryService.readQuestion(memberId, questionId);
+    public ResponseEntity<QuestionDetailResponse> readQuestion(@AuthMember Long memberId,
+                                                               @PathVariable Long questionId) {
+        QuestionDetailResponse response = questionQueryService.readQuestion(memberId, questionId);
         return ResponseEntity.ok(response);
     }
 
