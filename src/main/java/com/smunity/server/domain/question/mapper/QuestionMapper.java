@@ -21,7 +21,7 @@ public interface QuestionMapper {
     @Mapping(target = "answer", ignore = true)
     Question toEntity(QuestionRequest request);
 
-    default Page<QuestionReadResponse> toResponse(Page<Question> questions, Long memberId) {
-        return questions.map(question -> toResponse(question, memberId));
+    default Page<QuestionResponse> toResponse(Page<Question> questions) {
+        return questions.map(this::toResponse);
     }
 }

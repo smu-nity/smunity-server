@@ -31,11 +31,10 @@ public class QuestionController {
 
     @GetMapping
     @Operation(summary = "질문 목록 조회", description = "질문 목록을 페이징 처리하여 조회합니다.")
-    public ResponseEntity<Page<QuestionReadResponse>> readQuestions(
-            @AuthMember Long memberId,
+    public ResponseEntity<Page<QuestionResponse>> readQuestions(
             @ParameterObject @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        Page<QuestionReadResponse> responses = questionQueryService.readQuestions(memberId, pageable);
+        Page<QuestionResponse> responses = questionQueryService.readQuestions(pageable);
         return ResponseEntity.ok(responses);
     }
 
