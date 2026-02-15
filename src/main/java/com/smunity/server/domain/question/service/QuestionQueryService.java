@@ -1,6 +1,6 @@
 package com.smunity.server.domain.question.service;
 
-import com.smunity.server.domain.question.dto.QuestionReadResponse;
+import com.smunity.server.domain.question.dto.QuestionDetailResponse;
 import com.smunity.server.domain.question.dto.QuestionResponse;
 import com.smunity.server.domain.question.entity.Question;
 import com.smunity.server.domain.question.mapper.QuestionMapper;
@@ -26,7 +26,7 @@ public class QuestionQueryService {
         return questionMapper.toResponse(questions);
     }
 
-    public QuestionReadResponse readQuestion(Long memberId, Long questionId) {
+    public QuestionDetailResponse readQuestion(Long memberId, Long questionId) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
         return questionMapper.toResponse(question, memberId);

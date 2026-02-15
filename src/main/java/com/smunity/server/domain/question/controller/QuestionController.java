@@ -1,6 +1,6 @@
 package com.smunity.server.domain.question.controller;
 
-import com.smunity.server.domain.question.dto.QuestionReadResponse;
+import com.smunity.server.domain.question.dto.QuestionDetailResponse;
 import com.smunity.server.domain.question.dto.QuestionRequest;
 import com.smunity.server.domain.question.dto.QuestionResponse;
 import com.smunity.server.domain.question.service.QuestionCommandService;
@@ -40,8 +40,9 @@ public class QuestionController {
 
     @GetMapping("/{questionId}")
     @Operation(summary = "질문 조회", description = "질문을 조회합니다.")
-    public ResponseEntity<QuestionReadResponse> readQuestion(@AuthMember Long memberId, @PathVariable Long questionId) {
-        QuestionReadResponse response = questionQueryService.readQuestion(memberId, questionId);
+    public ResponseEntity<QuestionDetailResponse> readQuestion(@AuthMember Long memberId,
+                                                               @PathVariable Long questionId) {
+        QuestionDetailResponse response = questionQueryService.readQuestion(memberId, questionId);
         return ResponseEntity.ok(response);
     }
 

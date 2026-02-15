@@ -1,6 +1,6 @@
 package com.smunity.server.domain.question.mapper;
 
-import com.smunity.server.domain.question.dto.QuestionReadResponse;
+import com.smunity.server.domain.question.dto.QuestionDetailResponse;
 import com.smunity.server.domain.question.dto.QuestionRequest;
 import com.smunity.server.domain.question.dto.QuestionResponse;
 import com.smunity.server.domain.question.entity.Question;
@@ -14,7 +14,7 @@ public interface QuestionMapper {
     QuestionResponse toResponse(Question question);
 
     @Mapping(target = "isAuthor", expression = "java(question.getIsAuthor(memberId))")
-    QuestionReadResponse toResponse(Question question, Long memberId);
+    QuestionDetailResponse toResponse(Question question, Long memberId);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "member", ignore = true)
