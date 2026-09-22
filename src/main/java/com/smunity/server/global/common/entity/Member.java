@@ -155,6 +155,10 @@ public class Member extends BaseEntity {
         return secondDepartment != null;
     }
 
+    public boolean isTransfer() {
+        return exemption == Exemption.TRANSFER;
+    }
+
     public boolean isSecondDeptComputerScience() {
         return isDoubleMajor() && secondDepartment.isComputerScience();
     }

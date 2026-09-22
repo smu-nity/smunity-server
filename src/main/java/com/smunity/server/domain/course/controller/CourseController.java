@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/courses")
@@ -30,8 +32,9 @@ public class CourseController {
     @GetMapping
     @Operation(summary = "이수과목 조회", description = "이수구분을 기준으로 로그인한 회원의 이수과목 목록을 조회합니다.")
     public ResponseEntity<ResultResponse<CourseResponse>> readCourses(@AuthMember Long memberId,
-                                                                      @RequestParam(required = false) Category category) {
-        ResultResponse<CourseResponse> response = courseQueryService.readCourses(memberId, category);
+                                                                      @RequestParam(name = "category", required = false)
+                                                                      List<Category> categories) {
+        ResultResponse<CourseResponse> response = courseQueryService.readCourses(memberId, categories);
         return ResponseEntity.ok(response);
     }
 

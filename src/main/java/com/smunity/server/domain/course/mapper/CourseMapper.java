@@ -40,6 +40,7 @@ public interface CourseMapper {
                 .required(calculateRequired(TOTAL_CREDITS, completed))
                 .completion(calculateCompletion(TOTAL_CREDITS, completed))
                 .isDoubleMajor(member.isDoubleMajor())
+                .isTransfer(member.isTransfer())
                 .build();
     }
 
