@@ -30,12 +30,12 @@ public class CourseQueryService {
     private final CourseRepository courseRepository;
     private final CourseMapper courseMapper;
 
-    public ResultResponse<CourseResponse> readCourses(Long memberId, Category category) {
+    public ResultResponse<CourseResponse> readCourses(Long memberId, List<Category> categories) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        List<Course> courses = courseRepository.findByMemberIdAndCategory(memberId, category);
+        List<Course> courses = courseRepository.findByMemberIdAndCategories(memberId, categories);
         List<CourseResponse> responses = courseMapper.toResponse(courses);
-        int total = standardService.getTotal(member, category);
+        int total = standardService.getTotal(member, categories);
         int completed = calculateCompleted(courses);
         return courseMapper.toResponse(total, completed, responses);
     }

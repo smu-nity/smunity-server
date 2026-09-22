@@ -16,11 +16,11 @@ public class CourseQueryRepositoryImpl implements CourseQueryRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public List<Course> findByMemberIdAndCategory(Long memberId, Category category) {
+    public List<Course> findByMemberIdAndCategories(Long memberId, List<Category> categories) {
         return query.selectFrom(course)
                 .where(
                         memberIdEq(memberId),
-                        categoryEq(category)
+                        categoryIn(categories)
                 )
                 .fetch();
     }
@@ -29,7 +29,7 @@ public class CourseQueryRepositoryImpl implements CourseQueryRepository {
         return id != null ? course.member.id.eq(id) : null;
     }
 
-    private BooleanExpression categoryEq(Category category) {
-        return category != null ? course.category.eq(category) : null;
+    private BooleanExpression categoryIn(List<Category> categories) {
+        return categories != null && !categories.isEmpty() ? course.category.in(categories) : null;
     }
 }

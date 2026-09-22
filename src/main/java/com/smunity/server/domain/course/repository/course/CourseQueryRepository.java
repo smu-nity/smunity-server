@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface CourseQueryRepository {
 
-    List<Course> findByMemberIdAndCategory(Long memberId, Category category);
+    List<Course> findByMemberIdAndCategories(Long memberId, List<Category> categories);
 }

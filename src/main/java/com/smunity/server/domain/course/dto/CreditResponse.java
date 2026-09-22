@@ -14,7 +14,8 @@ public record CreditResponse(
         int etc,
         int required,
         int completion,
-        boolean isDoubleMajor
+        boolean isDoubleMajor,
+        boolean isTransfer
 ) {
 
 }
