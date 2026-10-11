@@ -15,9 +15,21 @@ spring:
     hibernate:
       ddl-auto: none
 
-logging:
-  loki:
-    url: ${LOKI_URL}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "info"
+
+  prometheus:
+    metrics:
+      export:
+        enabled: false
+
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http.server.requests: false
 
 slack:
   webhook:

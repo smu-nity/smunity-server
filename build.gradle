@@ -46,9 +46,6 @@ dependencies {
     // Prometheus
     implementation 'io.micrometer:micrometer-registry-prometheus'
 
-    // Loki
-    implementation 'com.github.loki4j:loki-logback-appender:1.5.2'
-
     // Slack
     implementation 'com.slack.api:slack-api-client:1.30.0'
 
