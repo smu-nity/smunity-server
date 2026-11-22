@@ -9,7 +9,7 @@ import lombok.*;
 @Entity
 @Getter
 @Builder
-@Table(name = "core_course")
+@Table(name = "core_course", uniqueConstraints = @UniqueConstraint(name = "uk_course_member_number", columnNames = {"member_id", "subject_number"}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Course {

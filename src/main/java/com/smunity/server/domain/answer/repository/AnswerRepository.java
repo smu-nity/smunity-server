@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     Optional<Answer> findByQuestionId(Long questionId);
+
+    boolean existsByQuestionId(Long questionId);
 }
