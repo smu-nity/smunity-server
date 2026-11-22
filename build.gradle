@@ -39,6 +39,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+
+    // Cache
+    implementation 'com.github.ben-manes.caffeine:caffeine'
+
+    // Hibernate Metrics (hibernate.generate_statistics 활성화 시 쿼리 수 측정)
+    implementation 'org.hibernate.orm:hibernate-micrometer'
 
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
