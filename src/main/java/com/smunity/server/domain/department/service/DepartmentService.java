@@ -3,6 +3,7 @@ package com.smunity.server.domain.department.service;
 import com.smunity.server.domain.department.dto.DepartmentEditResponse;
 import com.smunity.server.domain.department.dto.DepartmentResponse;
 import com.smunity.server.domain.department.mapper.DepartmentMapper;
+import com.smunity.server.domain.department.repository.DepartmentQueryRepository;
 import com.smunity.server.global.common.dto.ListResponse;
 import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.repository.DepartmentRepository;
@@ -10,10 +11,13 @@ import com.smunity.server.global.exception.DepartmentNotFoundException;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.smunity.server.global.config.CacheConfig.DEPARTMENTS;
 
 @Service
 @Transactional(readOnly = true)
@@ -21,11 +25,12 @@ import java.util.List;
 public class DepartmentService {
 
     private final DepartmentRepository departmentRepository;
+    private final DepartmentQueryRepository departmentQueryRepository;
     private final DepartmentMapper departmentMapper;
 
+    @Cacheable(cacheNames = DEPARTMENTS, key = "'all'")
     public ListResponse<DepartmentResponse> readDepartments() {
-        List<Department> departments = departmentRepository.findAll();
-        return departmentMapper.toResponse(departments);
+        return ListResponse.from(departmentQueryRepository.findAllWithMemberCount());
     }
 
     public ListResponse<DepartmentEditResponse> readEditableDepartments() {
@@ -41,11 +46,5 @@ public class DepartmentService {
     public Department findDepartmentById(Long departmentId) {
         return departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.DEPARTMENT_NOT_FOUND));
-    }
-
-    @Transactional
-    public void updateMemberCount() {
-        departmentRepository.findAll()
-                .forEach(Department::updateMemberCount);
     }
 }

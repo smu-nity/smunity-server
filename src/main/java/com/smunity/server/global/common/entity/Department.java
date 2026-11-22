@@ -33,17 +33,10 @@ public class Department {
     @Column(nullable = false)
     private boolean hasAdvanced;
 
-    @Column(nullable = false)
-    private int memberCount = 0;
-
     private String code;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Member> members = new ArrayList<>();
-
-    public void updateMemberCount() {
-        this.memberCount = members.size();
-    }
 
     public boolean isComputerScience() {
         return id == 1L;

@@ -5,7 +5,6 @@ import com.slack.api.model.Attachment;
 import com.slack.api.model.Field;
 import com.slack.api.webhook.Payload;
 import com.slack.api.webhook.WebhookPayloads;
-import com.smunity.server.global.common.dto.StatResponseDto;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,11 +26,6 @@ public class SlackNotifierImpl implements SlackNotifier {
     @Override
     public void sendMessage(Exception ex) {
         sendMessage("에러 로그", "<!channel>\n%s".formatted(ex.getMessage()), "#F44336");
-    }
-
-    @Override
-    public void sendMessage(StatResponseDto responseDto) {
-        sendMessage("서비스 통계", responseDto.toSlackMessage(), "#2196F3");
     }
 
     private void sendMessage(String title, String message, String color) {
