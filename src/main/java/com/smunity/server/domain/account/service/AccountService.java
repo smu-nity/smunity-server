@@ -14,6 +14,7 @@ import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import com.smunity.server.global.security.provider.JwtTokenProvider;
 import com.smunity.server.global.security.provider.TokenType;
+import com.smunity.server.global.security.provider.VerifiedInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,14 +34,14 @@ public class AccountService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AccountMapper accountMapper;
 
-    public RegisterResponse register(String username, RegisterRequest request) {
-        validateUser(username, request.username());
-        Member member = accountMapper.toEntity(request);
-        Year year = findYearByUsername(request.username());
-        Department department = departmentService.findDepartmentByName(request.department());
-        Department secondDepartment = departmentService.findDepartmentByName(request.secondDepartment());
+    public RegisterResponse register(VerifiedInfo info, RegisterRequest request) {
+        validateUsername(info.username());
+        Member member = accountMapper.toEntity(info);
+        Year year = findYearByUsername(info.username());
+        Department department = departmentService.findDepartmentByName(info.department());
+        Department secondDepartment = departmentService.findDepartmentByName(info.secondDepartment());
         String encodedPw = passwordEncoder.encode(request.password());
-        member.setInfo(year, department, secondDepartment, encodedPw);
+        member.setInfo(year, department, secondDepartment, info.teachingTrack(), encodedPw);
         return accountMapper.toResponse(memberRepository.save(member));
     }
 
@@ -78,17 +79,6 @@ public class AccountService {
         String refreshToken = jwtTokenProvider.createRefreshToken(memberId, memberRole);
         refreshTokenService.saveRefreshToken(memberId, refreshToken);
         return accountMapper.toResponse(username, memberRole, accessToken, refreshToken);
-    }
-
-    private void validateUser(String verifiedUser, String username) {
-        validateVerified(verifiedUser, username);
-        validateUsername(username);
-    }
-
-    private void validateVerified(String verifiedUser, String username) {
-        if (!verifiedUser.equals(username)) {
-            throw new GeneralException(ErrorCode.UNVERIFIED_USER);
-        }
     }
 
     private void validateUsername(String username) {

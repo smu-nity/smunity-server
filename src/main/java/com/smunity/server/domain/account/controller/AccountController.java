@@ -4,6 +4,7 @@ import com.smunity.server.domain.account.dto.*;
 import com.smunity.server.domain.account.service.AccountService;
 import com.smunity.server.global.security.annotation.AuthMember;
 import com.smunity.server.global.security.annotation.AuthVerified;
+import com.smunity.server.global.security.provider.VerifiedInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -25,9 +26,9 @@ public class AccountController {
 
     @PostMapping("/register")
     @Operation(summary = "회원가입", description = "회원 정보를 바탕으로 회원을 등록합니다.")
-    public ResponseEntity<RegisterResponse> register(@AuthVerified String username,
+    public ResponseEntity<RegisterResponse> register(@AuthVerified VerifiedInfo info,
                                                      @RequestBody @Valid RegisterRequest request) {
-        RegisterResponse response = accountService.register(username, request);
+        RegisterResponse response = accountService.register(info, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

@@ -8,7 +8,8 @@ public record AuthDto(
         String name,
         String email,
         String department,
-        String secondDepartment
+        String secondDepartment,
+        boolean teachingTrack
 ) {
 
 }

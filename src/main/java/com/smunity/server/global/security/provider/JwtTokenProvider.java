@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -50,21 +51,35 @@ public class JwtTokenProvider implements AuthProvider {
      * JWT access 토큰 생성
      */
     public String createAccessToken(Long memberId, MemberRole memberRole) {
-        return createToken(String.valueOf(memberId), memberRole, TokenType.ACCESS);
+        return createToken(String.valueOf(memberId), memberRole, TokenType.ACCESS, Map.of());
     }
 
     /**
      * JWT refresh 토큰 생성
      */
     public String createRefreshToken(Long memberId, MemberRole memberRole) {
-        return createToken(String.valueOf(memberId), memberRole, TokenType.REFRESH);
+        return createToken(String.valueOf(memberId), memberRole, TokenType.REFRESH, Map.of());
     }
 
     /**
      * JWT auth 토큰 생성 (재학생 인증)
      */
     public String createAuthToken(String username) {
-        return createToken(username, MemberRole.ROLE_VERIFIED, TokenType.AUTH);
+        return createToken(username, MemberRole.ROLE_VERIFIED, TokenType.AUTH, Map.of());
+    }
+
+    /**
+     * JWT auth 토큰 생성 (회원가입용: 학교 인증 정보를 클레임에 포함)
+     */
+    public String createAuthToken(VerifiedInfo info) {
+        return createToken(info.username(), MemberRole.ROLE_VERIFIED, TokenType.AUTH, info.toClaims());
+    }
+
+    /**
+     * 인증된 요청의 AUTH 토큰에서 학교 인증 정보 추출 (회원가입용 클레임이 없으면 null)
+     */
+    public VerifiedInfo getVerifiedInfo(Authentication authentication) {
+        return authentication.getDetails() instanceof Claims claims ? VerifiedInfo.of(claims.getSubject(), claims) : null;
     }
 
     /**
@@ -102,12 +117,15 @@ public class JwtTokenProvider implements AuthProvider {
         String memberRole = claims.get(CLAIM_MEMBER_ROLE, String.class);
         Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(memberRole));
         User principal = new User(claims.getSubject(), "", authorities);
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        authentication.setDetails(claims);
+        return authentication;
     }
 
     // JWT 토큰 생성
-    private String createToken(String subject, MemberRole memberRole, TokenType type) {
+    private String createToken(String subject, MemberRole memberRole, TokenType type, Map<String, Object> extraClaims) {
         return Jwts.builder()
+                .claims(extraClaims)
                 .subject(subject)
                 .claim(CLAIM_MEMBER_ROLE, memberRole.name())
                 .claim(CLAIM_TOKEN_TYPE, type.name())

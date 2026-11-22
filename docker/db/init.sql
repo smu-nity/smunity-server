@@ -32,6 +32,7 @@ create table common_member
     username             varchar(255)                                      not null,
     department_id        bigint                                            null,
     second_department_id bigint                                            null,
+    teaching_track       bit default b'0'                                  not null,
     year_id              bigint                                            null,
     exemption            enum ('FOREIGN', 'DISABLED', 'TRANSFER')          null,
     constraint UKnukl4wikhup994cvb6stc4o37
