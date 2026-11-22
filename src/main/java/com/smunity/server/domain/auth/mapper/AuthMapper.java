@@ -7,6 +7,7 @@ import com.smunity.server.domain.auth.dto.AuthResponse;
 import com.smunity.server.domain.course.entity.Course;
 import com.smunity.server.global.common.entity.enums.Category;
 import com.smunity.server.global.common.entity.enums.SubDomain;
+import com.smunity.server.global.security.provider.VerifiedInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -28,6 +29,8 @@ public interface AuthMapper {
     Course toEntity(CourseResponseDto dto, boolean isDoubleMajor, boolean isNewCurriculum);
 
     AuthResponse toResponse(AuthDto dto, String authToken);
+
+    VerifiedInfo toVerifiedInfo(AuthDto dto);
 
     @Mapping(target = "department", qualifiedByName = "mapDepartment")
     @Mapping(target = "secondDepartment", qualifiedByName = "mapDepartment")

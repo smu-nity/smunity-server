@@ -12,6 +12,7 @@ public record MemberResponse(
         String name,
         String department,
         String secondDepartment,
+        boolean teachingTrack,
         String email,
         MemberRole memberRole,
         LocalDateTime createdAt,

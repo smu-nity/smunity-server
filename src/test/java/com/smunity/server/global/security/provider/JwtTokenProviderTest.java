@@ -94,4 +94,34 @@ class JwtTokenProviderTest {
         assertThat(provider.createRefreshToken(1L, MemberRole.ROLE_USER))
                 .isNotEqualTo(provider.createRefreshToken(1L, MemberRole.ROLE_USER));
     }
+
+    @Test
+    void 회원가입용_auth_토큰은_학교_인증_정보를_담는다() {
+        VerifiedInfo info = new VerifiedInfo("201911019", "홍길동", "test@example.com", "컴퓨터과학전공", "국어교육과", true);
+        String token = provider.createAuthToken(info);
+
+        var authentication = provider.getAuthentication(bearer(token));
+
+        assertThat(authentication).isNotNull();
+        assertThat(provider.getVerifiedInfo(authentication)).isEqualTo(info);
+    }
+
+    @Test
+    void 복수전공이_없으면_secondDepartment는_null이고_teachingTrack은_false다() {
+        VerifiedInfo info = new VerifiedInfo("201911019", "홍길동", "test@example.com", "컴퓨터과학전공", null, false);
+        String token = provider.createAuthToken(info);
+
+        var authentication = provider.getAuthentication(bearer(token));
+
+        assertThat(provider.getVerifiedInfo(authentication)).isEqualTo(info);
+    }
+
+    @Test
+    void 학과_정보가_없는_auth_토큰은_VerifiedInfo가_null이다() {
+        String token = provider.createAuthToken("201911019");
+
+        var authentication = provider.getAuthentication(bearer(token));
+
+        assertThat(provider.getVerifiedInfo(authentication)).isNull();
+    }
 }

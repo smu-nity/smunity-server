@@ -36,7 +36,7 @@ public class MemberCommandService {
         AuthDto dto = authService.authenticate(request);
         Department department = departmentService.findDepartmentByName(dto.department());
         Department secondDepartment = departmentService.findDepartmentByName(dto.secondDepartment());
-        member.update(department, secondDepartment, dto.name(), dto.email());
+        member.update(department, secondDepartment, dto.teachingTrack(), dto.name(), dto.email());
         return memberMapper.toResponse(member);
     }
 

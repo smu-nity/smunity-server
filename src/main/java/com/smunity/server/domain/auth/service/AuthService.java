@@ -40,7 +40,9 @@ public class AuthService {
 
     public AuthResponse registerAuth(AuthRequest request) {
         validateUsername(request.username());
-        return auth(request);
+        AuthDto dto = authenticate(request);
+        String authToken = jwtTokenProvider.createAuthToken(authMapper.toVerifiedInfo(dto));
+        return authMapper.toResponse(dto, authToken);
     }
 
     public AuthResponse resetPassword(AuthRequest request) {

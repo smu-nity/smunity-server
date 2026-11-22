@@ -58,6 +58,10 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "second_department_id")
     private Department secondDepartment;
 
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean teachingTrack = false;
+
     @Enumerated(EnumType.STRING)
     private Exemption exemption;
 
@@ -78,16 +82,18 @@ public class Member extends BaseEntity {
         department.getMembers().add(this);
     }
 
-    public void setInfo(Year year, Department department, Department secondDepartment, String encodePw) {
+    public void setInfo(Year year, Department department, Department secondDepartment, boolean teachingTrack, String encodePw) {
         this.year = year;
         setDepartment(department);
         this.secondDepartment = secondDepartment;
+        this.teachingTrack = teachingTrack;
         password = encodePw;
     }
 
-    public void update(Department department, Department secondDepartment, String name, String email) {
+    public void update(Department department, Department secondDepartment, boolean teachingTrack, String name, String email) {
         this.department = department;
         this.secondDepartment = secondDepartment;
+        this.teachingTrack = teachingTrack;
         this.name = name;
         this.email = email;
         courses.clear();

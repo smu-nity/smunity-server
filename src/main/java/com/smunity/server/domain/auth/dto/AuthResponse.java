@@ -9,6 +9,7 @@ public record AuthResponse(
         String email,
         String department,
         String secondDepartment,
+        boolean teachingTrack,
         String authToken
 ) {
 
