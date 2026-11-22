@@ -12,6 +12,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:-password}
       REDIS_HOST: ${REDIS_HOST:-redis}
       REDIS_PORT: ${REDIS_PORT:-6379}
+      JWT_SECRET: ${JWT_SECRET:-dev-only-secret-key-must-be-32-bytes-or-more-change-me}
     ports:
       - "8080:8080"
     depends_on:

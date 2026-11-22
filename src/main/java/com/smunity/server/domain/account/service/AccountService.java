@@ -13,6 +13,7 @@ import com.smunity.server.global.common.repository.YearRepository;
 import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import com.smunity.server.global.security.provider.JwtTokenProvider;
+import com.smunity.server.global.security.provider.TokenType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ public class AccountService {
     }
 
     public LoginResponse refresh(RefreshRequest request) {
-        jwtTokenProvider.validateToken(request.refreshToken(), true);
+        jwtTokenProvider.validateToken(request.refreshToken(), TokenType.REFRESH);
         RefreshToken oldRefreshToken = refreshTokenService.findRefreshToken(request.refreshToken());
         Member member = memberRepository.findById(oldRefreshToken.getMemberId())
                 .orElseThrow(() -> new GeneralException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -61,7 +62,7 @@ public class AccountService {
     }
 
     public void logout(Long memberId, RefreshRequest request) {
-        jwtTokenProvider.validateToken(request.refreshToken(), true);
+        jwtTokenProvider.validateToken(request.refreshToken(), TokenType.REFRESH);
         RefreshToken oldRefreshToken = refreshTokenService.findRefreshToken(request.refreshToken());
         validateMember(memberId, oldRefreshToken);
         refreshTokenService.deleteRefreshToken(oldRefreshToken.getToken());
@@ -73,8 +74,8 @@ public class AccountService {
     }
 
     private LoginResponse generateToken(String username, Long memberId, MemberRole memberRole) {
-        String accessToken = jwtTokenProvider.createAccessToken(memberId, memberRole, false);
-        String refreshToken = jwtTokenProvider.createAccessToken(memberId, memberRole, true);
+        String accessToken = jwtTokenProvider.createAccessToken(memberId, memberRole);
+        String refreshToken = jwtTokenProvider.createRefreshToken(memberId, memberRole);
         refreshTokenService.saveRefreshToken(memberId, refreshToken);
         return accountMapper.toResponse(username, memberRole, accessToken, refreshToken);
     }
