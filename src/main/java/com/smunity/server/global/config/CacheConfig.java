@@ -1,5 +1,6 @@
 package com.smunity.server.global.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smunity.server.domain.department.dto.DepartmentResponse;
@@ -61,8 +62,10 @@ public class CacheConfig implements CachingConfigurer {
     }
 
     // 제네릭 레코드를 정확한 타입으로 역직렬화하도록 캐시별 타입을 지정한다.
+    // 배포 중 이전 버전이 저장한 캐시를 읽을 수 있도록 모르는 필드는 무시한다.
     private Jackson2JsonRedisSerializer<Object> valueSerializer(Class<?> type, Class<?>... parameterTypes) {
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         JavaType javaType = objectMapper.getTypeFactory().constructParametricType(type, parameterTypes);
         return new Jackson2JsonRedisSerializer<>(objectMapper, javaType);
     }

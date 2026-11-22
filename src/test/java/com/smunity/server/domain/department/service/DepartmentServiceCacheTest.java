@@ -87,6 +87,24 @@ class DepartmentServiceCacheTest {
     }
 
     @Test
+    void 이전_버전이_저장한_캐시에_모르는_필드가_있어도_캐시에서_읽는다() {
+        connectionFactory = connectionFactory(6379);
+        assumeRedisAvailable(connectionFactory);
+        // 이전 버전 DTO에만 있던 필드(memberCount, version)가 섞인 캐시
+        new StringRedisTemplate(connectionFactory).opsForValue().set(KEY, """
+                {"count":1,"version":1,"content":[
+                  {"college":"융합공과대학","name":"컴퓨터과학전공","code":"03005","count":3,"memberCount":3}
+                ]}
+                """, Duration.ofMinutes(1));
+        DepartmentService service = departmentService(connectionFactory);
+
+        ListResponse<DepartmentResponse> cached = service.readDepartments();
+
+        assertThat(cached.content()).isEqualTo(DEPARTMENTS);
+        verify(departmentQueryRepository, never()).findAllWithMemberCount();
+    }
+
+    @Test
     void 캐시는_전용_prefix_키에_5분_TTL로_저장된다() {
         connectionFactory = connectionFactory(6379);
         assumeRedisAvailable(connectionFactory);
