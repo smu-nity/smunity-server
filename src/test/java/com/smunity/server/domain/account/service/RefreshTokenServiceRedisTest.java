@@ -9,14 +9,18 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
@@ -28,6 +32,7 @@ class RefreshTokenServiceRedisTest {
     private StringRedisTemplate redisTemplate;
     private RefreshTokenService service;
     private String token;
+    private final List<Long> memberIds = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
@@ -52,6 +57,7 @@ class RefreshTokenServiceRedisTest {
     @AfterEach
     void tearDown() {
         if (redisTemplate != null && token != null) service.deleteRefreshToken(token);
+        if (redisTemplate != null) memberIds.forEach(id -> service.deleteAllByMemberId(id));
         if (connectionFactory != null) connectionFactory.destroy();
     }
 
@@ -60,6 +66,50 @@ class RefreshTokenServiceRedisTest {
         service.saveRefreshToken(7L, token);
         Long ttl = redisTemplate.getExpire("refresh_token:" + token);
         assertThat(ttl).isBetween(1L, 60L);
+    }
+
+    private long newMemberId() {
+        long id = 900_000_000L + ThreadLocalRandom.current().nextLong(100_000_000L);
+        memberIds.add(id);
+        return id;
+    }
+
+    @Test
+    void 회원의_모든_토큰을_폐기하고_다른_회원의_토큰은_유지한다() {
+        long memberId = newMemberId();
+        long otherId = newMemberId();
+        String t1 = token + "-1", t2 = token + "-2", other = token + "-other";
+        service.saveRefreshToken(memberId, t1);
+        service.saveRefreshToken(memberId, t2);
+        service.saveRefreshToken(otherId, other);
+
+        service.deleteAllByMemberId(memberId);
+
+        assertThat(redisTemplate.hasKey("refresh_token:" + t1)).isFalse();
+        assertThat(redisTemplate.hasKey("refresh_token:" + t2)).isFalse();
+        assertThat(redisTemplate.hasKey("refresh_token_member:" + memberId)).isFalse();
+        assertThat(service.findMemberId(other)).isEqualTo(otherId);
+        assertThatThrownBy(() -> service.consumeRefreshToken(t1)).isInstanceOf(GeneralException.class);
+    }
+
+    @Test
+    void 소비하거나_삭제한_토큰은_회원_목록에서도_제거된다() {
+        long memberId = newMemberId();
+        String t1 = token + "-1", t2 = token + "-2";
+        service.saveRefreshToken(memberId, t1);
+        service.saveRefreshToken(memberId, t2);
+
+        service.consumeRefreshToken(t1);
+        service.deleteRefreshToken(t2);
+
+        assertThat(redisTemplate.opsForSet().members("refresh_token_member:" + memberId)).isEmpty();
+    }
+
+    @Test
+    void 회원_토큰_목록에도_TTL이_설정된다() {
+        long memberId = newMemberId();
+        service.saveRefreshToken(memberId, token);
+        assertThat(redisTemplate.getExpire("refresh_token_member:" + memberId)).isBetween(1L, 60L);
     }
 
     @Test
