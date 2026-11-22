@@ -16,3 +16,6 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
+jwt:
+  secret: local-only-secret-key-for-development-must-be-32-bytes-or-more
