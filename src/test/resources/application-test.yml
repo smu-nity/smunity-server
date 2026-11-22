@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:smunity-test;MODE=MySQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+jwt:
+  secret: test-only-secret-key-for-test-must-be-32-bytes-or-more
