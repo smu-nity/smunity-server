@@ -30,6 +30,8 @@ public class AnswerCommandService {
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.QUESTION_NOT_FOUND));
+        if (answerRepository.existsByQuestionId(questionId))
+            throw new GeneralException(ErrorCode.ANSWER_CONFLICT);
         Answer answer = answerMapper.toEntity(request);
         answer.setData(member, question);
         return answerMapper.toResponse(answerRepository.save(answer));

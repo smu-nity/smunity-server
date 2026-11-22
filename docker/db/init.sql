@@ -78,6 +78,8 @@ create table core_course
     type           varchar(255)                                                                                                                                                                                                                                                                                                                                not null,
     subject_year   varchar(255)                                                                                                                                                                                                                                                                                                                                not null,
     member_id      bigint                                                                                                                                                                                                                                                                                                                                      null,
+    constraint uk_course_member_number
+        unique (member_id, subject_number),
     constraint FKpmb6uj4m3s9o701125v933itu
         foreign key (member_id) references common_member (member_id)
 );

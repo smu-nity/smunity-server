@@ -44,6 +44,7 @@ public enum ErrorCode implements BaseCode {
 
     // Answer Errors
     ANSWER_NOT_FOUND(404, "ANSWER001", "해당 답변을 찾을 수 없습니다."),
+    ANSWER_CONFLICT(409, "ANSWER002", "이미 답변이 등록된 질문입니다."),
 
     // Term Errors
     TERM_NOT_FOUND(404, "TERM001", "해당 학기를 찾을 수 없습니다."),
