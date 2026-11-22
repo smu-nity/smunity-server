@@ -1,7 +1,6 @@
 package com.smunity.server.domain.account.service;
 
 import com.smunity.server.domain.account.dto.*;
-import com.smunity.server.domain.account.entity.RefreshToken;
 import com.smunity.server.domain.account.mapper.AccountMapper;
 import com.smunity.server.domain.department.service.DepartmentService;
 import com.smunity.server.global.common.entity.Department;
@@ -55,18 +54,17 @@ public class AccountService {
 
     public LoginResponse refresh(RefreshRequest request) {
         jwtTokenProvider.validateToken(request.refreshToken(), TokenType.REFRESH);
-        RefreshToken oldRefreshToken = refreshTokenService.findRefreshToken(request.refreshToken());
-        Member member = memberRepository.findById(oldRefreshToken.getMemberId())
+        Long memberId = refreshTokenService.consumeRefreshToken(request.refreshToken());
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.ACCOUNT_NOT_FOUND));
-        refreshTokenService.deleteRefreshToken(oldRefreshToken.getToken());
         return generateToken(member.getUsername(), member.getId(), member.getRole());
     }
 
     public void logout(Long memberId, RefreshRequest request) {
         jwtTokenProvider.validateToken(request.refreshToken(), TokenType.REFRESH);
-        RefreshToken oldRefreshToken = refreshTokenService.findRefreshToken(request.refreshToken());
-        validateMember(memberId, oldRefreshToken);
-        refreshTokenService.deleteRefreshToken(oldRefreshToken.getToken());
+        Long ownerId = refreshTokenService.findMemberId(request.refreshToken());
+        validateMember(memberId, ownerId);
+        refreshTokenService.deleteRefreshToken(request.refreshToken());
     }
 
     private Year findYearByUsername(String username) {
@@ -87,8 +85,8 @@ public class AccountService {
         }
     }
 
-    private void validateMember(Long memberId, RefreshToken refreshToken) {
-        if (!memberId.equals(refreshToken.getMemberId())) {
+    private void validateMember(Long memberId, Long ownerId) {
+        if (!memberId.equals(ownerId)) {
             throw new GeneralException(ErrorCode.FORBIDDEN_EXCEPTION);
         }
     }
