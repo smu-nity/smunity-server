@@ -1,0 +1,46 @@
+# 부하 테스트 전용 프로파일 (#342)
+# 접속 정보는 파일에 기록하지 않고 실행 시 환경 변수로 전달한다.
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      username: ${REDIS_USERNAME:}
+      password: ${REDIS_PASSWORD:}
+      timeout: 1s
+
+  jpa:
+    hibernate:
+      ddl-auto: none # 스키마 변경 금지
+    properties:
+      hibernate:
+        generate_statistics: true # hibernate.* 메트릭(쿼리 수) 수집
+
+department:
+  read-strategy: ${DEPARTMENT_READ_STRATEGY:DENORMALIZED}
+  cache:
+    ttl: ${DEPARTMENT_CACHE_TTL:1m} # 유지 구간(5분) 안에 만료 시점이 여러 번 포함되도록 짧게 설정
+  scheduler:
+    enabled: ${DEPARTMENT_SCHEDULER_ENABLED:false} # 기본 비활성화 (member_count 쓰기 방지)
+    cron: ${DEPARTMENT_SCHEDULER_CRON:0 0 * * * *}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics"
+
+  prometheus:
+    metrics:
+      export:
+        enabled: false
+
+logging:
+  level:
+    org.hibernate.engine.internal.StatisticalLoggingSessionEventListener: warn

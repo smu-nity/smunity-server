@@ -29,4 +29,18 @@
             <appender-ref ref="CONSOLE"/>
         </logger>
     </springProfile>
+
+    <springProfile name="loadtest">
+        <root level="WARN">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+
+        <logger name="event" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+
+        <logger name="com.smunity.server.domain.department.config" level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+    </springProfile>
 </configuration>
