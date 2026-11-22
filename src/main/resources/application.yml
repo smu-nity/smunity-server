@@ -2,11 +2,6 @@ spring:
   profiles:
     active: ${SPRING_PROFILE:local}
 
-  datasource:
-    hikari:
-      minimum-idle: 10
-      maximum-pool-size: 40
-
   jpa:
     open-in-view: false
     properties:
