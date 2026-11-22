@@ -1,6 +1,8 @@
 package com.smunity.server.domain.course.controller;
 
+import com.smunity.dto.AuthCourseResponseDto;
 import com.smunity.server.domain.auth.dto.AuthRequest;
+import com.smunity.server.domain.auth.service.AuthService;
 import com.smunity.server.domain.course.dto.CourseResponse;
 import com.smunity.server.domain.course.dto.CreditResponse;
 import com.smunity.server.domain.course.dto.CultureResponse;
@@ -26,6 +28,7 @@ import java.util.List;
 @Tag(name = "05 Course API", description = "이수과목 관련 API")
 public class CourseController {
 
+    private final AuthService authService;
     private final CourseQueryService courseQueryService;
     private final CourseCommandService courseCommandService;
 
@@ -57,7 +60,8 @@ public class CourseController {
     @Operation(summary = "이수과목 업로드", description = "로그인한 회원의 이수과목을 업로드합니다.")
     public ResponseEntity<ResultResponse<CourseResponse>> uploadCourses(@AuthMember Long memberId,
                                                                         @RequestBody @Valid AuthRequest request) {
-        ResultResponse<CourseResponse> response = courseCommandService.createCourses(memberId, request);
+        AuthCourseResponseDto dto = authService.readCourses(request);
+        ResultResponse<CourseResponse> response = courseCommandService.createCourses(memberId, dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

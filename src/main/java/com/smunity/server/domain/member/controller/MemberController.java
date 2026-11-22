@@ -1,6 +1,8 @@
 package com.smunity.server.domain.member.controller;
 
+import com.smunity.server.domain.auth.dto.AuthDto;
 import com.smunity.server.domain.auth.dto.AuthRequest;
+import com.smunity.server.domain.auth.service.AuthService;
 import com.smunity.server.domain.member.dto.*;
 import com.smunity.server.domain.member.service.MemberCommandService;
 import com.smunity.server.domain.member.service.MemberQueryService;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "03 Member API", description = "회원 관련 API")
 public class MemberController {
 
+    private final AuthService authService;
     private final MemberQueryService memberQueryService;
     private final MemberCommandService memberCommandService;
 
@@ -50,7 +53,8 @@ public class MemberController {
     @Operation(summary = "내 정보 수정", description = "로그인한 회원의 정보를 수정합니다.")
     public ResponseEntity<MemberInfoResponse> updateMember(@AuthMember Long memberId,
                                                            @RequestBody @Valid AuthRequest request) {
-        MemberInfoResponse response = memberCommandService.updateMember(memberId, request);
+        AuthDto dto = authService.authenticate(request);
+        MemberInfoResponse response = memberCommandService.updateMember(memberId, dto);
         return ResponseEntity.ok(response);
     }
 

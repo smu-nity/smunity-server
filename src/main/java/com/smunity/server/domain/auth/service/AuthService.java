@@ -13,12 +13,10 @@ import com.smunity.server.global.exception.code.ErrorCode;
 import com.smunity.server.global.security.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import static com.smunity.server.global.common.logging.Loggers.event;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class AuthService {
 

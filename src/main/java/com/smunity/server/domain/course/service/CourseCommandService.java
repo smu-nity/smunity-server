@@ -2,9 +2,7 @@ package com.smunity.server.domain.course.service;
 
 import com.smunity.dto.AuthCourseResponseDto;
 import com.smunity.dto.CourseResponseDto;
-import com.smunity.server.domain.auth.dto.AuthRequest;
 import com.smunity.server.domain.auth.mapper.AuthMapper;
-import com.smunity.server.domain.auth.service.AuthService;
 import com.smunity.server.domain.course.dto.CourseResponse;
 import com.smunity.server.domain.course.dto.ResultResponse;
 import com.smunity.server.domain.course.entity.Course;
@@ -27,16 +25,15 @@ import static com.smunity.server.domain.course.service.StandardService.TOTAL_CRE
 @RequiredArgsConstructor
 public class CourseCommandService {
 
-    private final AuthService authService;
     private final MemberRepository memberRepository;
     private final CourseRepository courseRepository;
     private final AuthMapper authMapper;
     private final CourseMapper courseMapper;
 
-    public ResultResponse<CourseResponse> createCourses(Long memberId, AuthRequest request) {
+    public ResultResponse<CourseResponse> createCourses(Long memberId, AuthCourseResponseDto dto) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
-        List<Course> courses = toEntity(member, authService.readCourses(request));
+        List<Course> courses = toEntity(member, dto);
         courseRepository.saveAll(courses);
         List<CourseResponse> responses = courseMapper.toResponse(member.getCourses());
         return courseMapper.toResponse(TOTAL_CREDITS, member.getCompletedCredits(), responses);
