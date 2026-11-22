@@ -1,5 +1,6 @@
 package com.smunity.server.domain.member.service;
 
+import com.smunity.server.domain.account.service.RefreshTokenService;
 import com.smunity.server.domain.auth.dto.AuthDto;
 import com.smunity.server.domain.auth.dto.AuthRequest;
 import com.smunity.server.domain.auth.service.AuthService;
@@ -29,6 +30,7 @@ public class MemberCommandService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final MemberMapper memberMapper;
+    private final RefreshTokenService refreshTokenService;
 
     public MemberInfoResponse updateMember(Long memberId, AuthRequest request) {
         Member member = memberRepository.findById(memberId)
@@ -45,6 +47,7 @@ public class MemberCommandService {
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         String newEncodedPw = passwordEncoder.encode(request.password());
         member.changePassword(newEncodedPw);
+        refreshTokenService.deleteAllByMemberId(memberId);
         return memberMapper.toResponse(member);
     }
 
@@ -75,5 +78,6 @@ public class MemberCommandService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.MEMBER_NOT_FOUND));
         memberRepository.delete(member);
+        refreshTokenService.deleteAllByMemberId(memberId);
     }
 }

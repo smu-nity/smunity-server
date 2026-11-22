@@ -5,10 +5,14 @@ import com.smunity.server.global.exception.code.ErrorCode;
 import com.smunity.server.global.security.config.JwtProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
 import java.time.Duration;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,6 +29,7 @@ class RefreshTokenServiceTest {
 
     private StringRedisTemplate redisTemplate;
     private ValueOperations<String, String> valueOperations;
+    private SetOperations<String, String> setOperations;
     private RefreshTokenService service;
 
     @SuppressWarnings("unchecked")
@@ -32,7 +37,9 @@ class RefreshTokenServiceTest {
     void setUp() {
         redisTemplate = mock(StringRedisTemplate.class);
         valueOperations = mock(ValueOperations.class);
+        setOperations = mock(SetOperations.class);
         when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+        when(redisTemplate.opsForSet()).thenReturn(setOperations);
 
         JwtProperties.TokenProperties token = new JwtProperties.TokenProperties();
         token.setAccessExpirationTime(1800);
@@ -46,6 +53,8 @@ class RefreshTokenServiceTest {
     void 토큰을_회원_ID와_만료시간과_함께_저장한다() {
         service.saveRefreshToken(7L, "token-1");
         verify(valueOperations).set(KEY, "7", Duration.ofSeconds(1209600));
+        verify(setOperations).add("refresh_token_member:7", "token-1");
+        verify(redisTemplate).expire("refresh_token_member:7", Duration.ofSeconds(1209600));
     }
 
     @Test
@@ -53,7 +62,29 @@ class RefreshTokenServiceTest {
         when(valueOperations.getAndDelete(KEY)).thenReturn("7");
         assertThat(service.consumeRefreshToken("token-1")).isEqualTo(7L);
         verify(valueOperations).getAndDelete(KEY);
+        verify(setOperations).remove("refresh_token_member:7", "token-1");
         verify(redisTemplate, never()).delete(anyString());
+    }
+
+    @Test
+    void 회원의_모든_토큰을_폐기한다() {
+        when(setOperations.members("refresh_token_member:7")).thenReturn(Set.of("token-1", "token-2"));
+
+        service.deleteAllByMemberId(7L);
+
+        verify(redisTemplate).delete(argThat((Collection<String> keys) ->
+                keys.size() == 2 && keys.containsAll(List.of("refresh_token:token-1", "refresh_token:token-2"))));
+        verify(redisTemplate).delete("refresh_token_member:7");
+    }
+
+    @Test
+    void 토큰이_없는_회원도_예외없이_폐기를_처리한다() {
+        when(setOperations.members("refresh_token_member:7")).thenReturn(Set.of());
+
+        service.deleteAllByMemberId(7L);
+
+        verify(redisTemplate).delete("refresh_token_member:7");
+        verify(redisTemplate, never()).delete(anyCollection());
     }
 
     @Test
