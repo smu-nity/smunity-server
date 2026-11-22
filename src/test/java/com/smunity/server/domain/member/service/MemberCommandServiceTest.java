@@ -1,10 +1,11 @@
 package com.smunity.server.domain.member.service;
 
 import com.smunity.server.domain.account.service.RefreshTokenService;
-import com.smunity.server.domain.auth.service.AuthService;
+import com.smunity.server.domain.auth.dto.AuthDto;
 import com.smunity.server.domain.department.service.DepartmentService;
 import com.smunity.server.domain.member.dto.ChangePasswordRequest;
 import com.smunity.server.domain.member.mapper.MemberMapper;
+import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.entity.Member;
 import com.smunity.server.global.common.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -29,8 +30,6 @@ class MemberCommandServiceTest {
     private RefreshTokenService refreshTokenService;
     @Mock
     private MemberMapper memberMapper;
-    @Mock
-    private AuthService authService;
     @Mock
     private DepartmentService departmentService;
     @InjectMocks
@@ -70,5 +69,20 @@ class MemberCommandServiceTest {
 
         verify(memberRepository).delete(member);
         verify(refreshTokenService).deleteAllByMemberId(1L);
+    }
+
+    @Test
+    void 인증된_정보로_회원_정보를_수정한다() {
+        Member member = mock(Member.class);
+        Department department = mock(Department.class);
+        AuthDto dto = mock(AuthDto.class);
+        when(dto.department()).thenReturn("컴퓨터과학전공");
+        when(dto.secondDepartment()).thenReturn(null);
+        when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
+        when(departmentService.findDepartmentByName("컴퓨터과학전공")).thenReturn(department);
+
+        service.updateMember(1L, dto);
+
+        verify(member).update(eq(department), any(), anyBoolean(), any(), any());
     }
 }
