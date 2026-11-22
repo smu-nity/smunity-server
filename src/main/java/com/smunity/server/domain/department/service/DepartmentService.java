@@ -3,6 +3,7 @@ package com.smunity.server.domain.department.service;
 import com.smunity.server.domain.department.dto.DepartmentEditResponse;
 import com.smunity.server.domain.department.dto.DepartmentResponse;
 import com.smunity.server.domain.department.mapper.DepartmentMapper;
+import com.smunity.server.domain.department.reader.DepartmentReader;
 import com.smunity.server.global.common.dto.ListResponse;
 import com.smunity.server.global.common.entity.Department;
 import com.smunity.server.global.common.repository.DepartmentRepository;
@@ -11,6 +12,7 @@ import com.smunity.server.global.exception.GeneralException;
 import com.smunity.server.global.exception.code.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -22,10 +24,12 @@ public class DepartmentService {
 
     private final DepartmentRepository departmentRepository;
     private final DepartmentMapper departmentMapper;
+    private final DepartmentReader departmentReader;
 
+    // 트랜잭션은 DepartmentReader 내부(캐시 안쪽)에서 시작한다. (DepartmentReaderConfig)
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public ListResponse<DepartmentResponse> readDepartments() {
-        List<Department> departments = departmentRepository.findAll();
-        return departmentMapper.toResponse(departments);
+        return departmentReader.readDepartments();
     }
 
     public ListResponse<DepartmentEditResponse> readEditableDepartments() {
